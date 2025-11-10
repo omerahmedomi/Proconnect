@@ -4,6 +4,7 @@ import Link from "next/link";
 import { auth } from "@/lib/auth";
 
 import { signOutAction } from "./actions/auth";
+import NavigationBar from "@/components/navbar";
 
 export default async function Home() {
   const session = await auth.api.getSession({
@@ -12,17 +13,20 @@ export default async function Home() {
 
   if (!session) {
     return (
-      <div className="flex flex-col items-center justify-center h-screen gap-4">
-        <h1 className="text-4xl font-bold">Cosden Solutions</h1>
-        <div className="flex gap-4 mt-8">
-          <button >
-            <Link href="/signup">Sign Up</Link>
-          </button>
-          <button >
-            <Link href="/signin">Sign In</Link>
-          </button>
+      <>
+        <NavigationBar />
+        <div className="flex flex-col items-center justify-center h-screen gap-4">
+          <h1 className="text-4xl font-bold">Cosden Solutions</h1>
+          <div className="flex gap-4 mt-8">
+            <button>
+              <Link href="/signup">Sign Up</Link>
+            </button>
+            <button>
+              <Link href="/signin">Sign In</Link>
+            </button>
+          </div>
         </div>
-      </div>
+      </>
     );
   }
 
