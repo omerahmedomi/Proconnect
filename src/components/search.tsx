@@ -4,7 +4,7 @@ export default function Search(){
 
 
     return (
-      <div className="relative w-3/4 self-stretch ">
+      <div className="relative  self-stretch ">
         <input
           type="text"
           className="shadow bg-gray-50  w-full  rounded-full h-full px-11 text-sm focus:outline-cyan-500 peer focus:bg-white"
