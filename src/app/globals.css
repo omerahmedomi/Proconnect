@@ -1,5 +1,70 @@
 @import "tailwindcss";
 
+@theme{
+  --color-ff:
+}
+
+
+
+@layer components  {
+  .nav-bar {
+@apply flex items-center justify-between px-4 py-3 gap-4
+  }
+  .nav-logo-link {
+    @apply flex items-center shrink-0 cursor-pointer
+  }
+  .btn-register{
+    @apply text-white hover:bg-cyan-600 cursor-pointer transition-all duration-700 bg-cyan-500 border border-cyan-50  rounded-2xl py-1 px-4 
+  }
+  .btn-sign-in{
+    @apply hover:bg-cyan-100 hover:text-cyan-900 transition-all duration-300  py-1 px-4  text-gray-800  rounded-2xl  cursor-pointer
+  }
+  .btn-lg-register{
+    @apply text-white hover:bg-cyan-600 cursor-pointer transition-all duration-700 bg-cyan-500 border border-cyan-50  rounded-2xl p-1
+  }
+  .btn-lg-sign-in{
+    @apply hover:bg-cyan-100 hover:text-cyan-900 transition-all duration-300  p-1  text-gray-800  rounded-2xl  cursor-pointer
+  }
+  .search-input {
+    @apply shadow bg-gray-50  w-full  rounded-full h-full px-11 text-sm focus:outline-cyan-500 focus:bg-white
+  }
+  .search-container {
+    @apply relative  self-stretch basis-lg
+  }
+  .search-icon {
+    @apply absolute top-1/2 -translate-y-1/2 pl-3.5 shrink-0 text-gray-400 peer-focus:text-cyan-500
+  }
+  .search-cancel {
+    @apply absolute right-0 top-1/2 pr-3.5 -translate-y-1/2 shrink-0 hidden peer-focus:block text-gray-400 hover:text-black
+  }
+  .btn-auth-container{
+    @apply  hidden lg:flex gap-4
+  }
+  .btn-auth-side-container {
+    @apply space-y-3 px-10 py-3  flex flex-col
+  }
+  .menu-icon{
+    @apply shrink-0 hover:bg-gray-100 rounded-lg transition duration-200 px-2 cursor-pointer
+  }
+  .menu-cancel {
+    @apply hover:bg-gray-100 rounded-lg transition duration-200 px-2
+  }
+  .menu-header {
+    @apply flex justify-between p-4 items-center border-b
+  }
+  .menu-container {
+    @apply fixed right-0 top-0 h-screen z-50 bg-white transition-all ease-in-out shadow-lg
+  }
+}
+
+@layer utilities{
+  .nav-text-link{
+   @apply text-2xl hidden sm:block
+  }
+
+}
+
+
 /* :root {
   --background: #ffffff;
   --foreground: #171717;
