@@ -55,13 +55,36 @@
   .menu-container {
     @apply fixed right-0 top-0 h-screen z-50 bg-white transition-all ease-in-out shadow-lg
   }
+  .hero-container {
+    @apply flex bg-linear-to-br from-indigo-50 to-white flex-col gap-y-5 px-4 py-15
+  }
+  
 }
 
 @layer utilities{
   .nav-text-link{
    @apply text-2xl hidden sm:block
   }
+  .text-48-bold{
+    @apply text-5xl font-bold leading-14
+  
+  }
+  .text-20-gray{
 
+    @apply text-xl text-gray-500
+  }
+  .hero-btn-auth-wrapper {
+    @apply flex flex-col space-y-4
+  }
+  .hero-btn-signup{
+    @apply  rounded-lg bg-linear-to-r from-blue-300 to-indigo-100 font-semibold py-2 text-lg space-x-1 cursor-pointer hover:from-blue-400 hover:to-indigo-200 transition-colors duration-700
+  }
+  .hero-btn-signin {
+    @apply border-2 hover:bg-gray-50 transition-colors duration-500 border-cyan-100 rounded-lg bg-white font-semibold py-2 text-lg shadow cursor-pointer
+  }.flex-2-center{
+    @apply flex gap-x-2 items-center
+flex gap-x-2 items-center
+  }
 }
 
 
