@@ -18,12 +18,9 @@ export default function HeroSection(){
           <div className="flex flex-col space-y-4">
             <button className="group hero-btn-signup">
               <span>Join now - it's free</span>
-              <ArrowRight className="inline group-hover:translate-x-1 transition-all duration-300"  />
+              <ArrowRight className="inline group-hover:translate-x-1 transition-all duration-300" />
             </button>
-            <button className="hero-btn-signin">
-              {" "}
-              Sign In
-            </button>
+            <button className="hero-btn-signin"> Sign In</button>
           </div>
 
           <div className="flex gap-x-2 text-sm text-gray-600">
@@ -38,16 +35,28 @@ export default function HeroSection(){
           </div>
         </div>
 
-
-        <div className="bg-white shadow-lg rounded-lg ">
-            <div className="flex p-4 items-center gap-x-2">
-                <Users className="bg-green-400 rounded-full p-3" size={50}/>
-                <div>
-                    <h3 className="font-semibold">Professional Network</h3>
-                    <p className="text-sm text-gray-600">Connect with industry experts</p>
-                </div>
+        <div className="hero-2-wrapper ">
+          <div className="hero-2-card">
+            <Users className="bg-green-400 rounded-full p-3" size={50} />
+            <div className="hero-card-texts">
+              <h3>Professional Network</h3>
+              <p>Connect with industry experts</p>
             </div>
-
+          </div>
+          <div className="hero-2-card">
+            <Users className="bg-green-400 rounded-full p-3" size={50} />
+            <div className="hero-card-texts">
+              <h3>Professional Network</h3>
+              <p>Connect with industry experts</p>
+            </div>
+          </div>
+          <div className="hero-2-card">
+            <Users className="bg-green-400 rounded-full p-3" size={50} />
+            <div className="hero-card-texts">
+              <h3>Professional Network</h3>
+              <p>Connect with industry experts</p>
+            </div>
+          </div>
         </div>
       </section>
     );
