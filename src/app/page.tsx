@@ -5,6 +5,7 @@ import { auth } from "@/lib/auth";
 
 import { signOutAction } from "./actions/auth";
 import NavigationBar from "@/components/navbar";
+import HeroSection from "@/components/herosection";
 
 export default async function Home() {
   const session = await auth.api.getSession({
@@ -15,6 +16,7 @@ export default async function Home() {
     return (
       <>
         <NavigationBar />
+        <HeroSection/>
         <div className="flex flex-col items-center justify-center h-screen gap-4">
           <h1 className="text-4xl font-bold">Cosden Solutions</h1>
           <div className="flex gap-4 mt-8">
