@@ -1,12 +1,15 @@
 "use client";
 import { MenuIcon, X } from "lucide-react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 export default function SideMenu() {
   const [isMenuOpen, setIsMenuOpen] = useState<boolean>(false);
+
+ 
   return (
-    <div className="lg:hidden">
+
+    <div className="lg:hidden overflow-hidden!">
       <MenuIcon
-        className="menu-icon"
+        className="menu-icon w-"
         size={40}
         onClick={() => setIsMenuOpen((prev) => !prev)}
       />
@@ -20,7 +23,7 @@ export default function SideMenu() {
 
       <div
         className={`menu-container  ${
-          isMenuOpen ? "w-100" : "w-0"
+          isMenuOpen ? "translate-x-0" : " translate-x-full"
         }`}
       >
         <div className="menu-header">
@@ -35,12 +38,8 @@ export default function SideMenu() {
         </div>
 
         <div className="btn-auth-side-container">
-          <button className="btn-lg-sign-in">
-            Sign In
-          </button>
-          <button className="btn-lg-register">
-            Join Now
-          </button>
+          <button className="btn-lg-sign-in">Sign In</button>
+          <button className="btn-lg-register">Join Now</button>
         </div>
       </div>
     </div>

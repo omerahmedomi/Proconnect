@@ -3,19 +3,19 @@ import { ArrowRight, Briefcase, Users } from "lucide-react";
 export default function HeroSection(){
 
     return (
-      <section className="hero-container">
-        <div className="space-y-7">
+      <section className="hero-container ">
+        <div className="space-y-7 flex-1 ">
           <div className="space-y-7">
             <h1 className="text-48-bold">
               Welcome to your professional network
             </h1>
-            <p className="text-20-gray">
+            <p className="text-20-gray ">
               Connect with industry leaders, share your expertise, and discover
               opportunities that shape your career journey
             </p>
           </div>
 
-          <div className="flex flex-col space-y-4">
+          <div className="hero-btn-auth-wrapper">
             <button className="group hero-btn-signup">
               <span>Join now - it's free</span>
               <ArrowRight className="inline group-hover:translate-x-1 transition-all duration-300" />

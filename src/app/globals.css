@@ -8,7 +8,7 @@
 
 @layer components  {
   .nav-bar {
-@apply flex items-center justify-between px-4 py-3 gap-4 shadow
+@apply flex items-center justify-between px-4 py-3 gap-8 shadow
   }
   .nav-logo-link {
     @apply flex items-center shrink-0 cursor-pointer
@@ -29,7 +29,7 @@
     @apply shadow bg-gray-50  w-full  rounded-full h-full px-11 text-sm focus:outline-cyan-500 focus:bg-white
   }
   .search-container {
-    @apply relative  self-stretch basis-lg
+    @apply relative  self-stretch grow
   }
   .search-icon {
     @apply absolute top-1/2 -translate-y-1/2 pl-3.5 shrink-0 text-gray-400 peer-focus:text-cyan-500
@@ -44,7 +44,7 @@
     @apply space-y-3 px-10 py-3  flex flex-col
   }
   .menu-icon{
-    @apply shrink-0 hover:bg-gray-100 rounded-lg transition duration-200 px-2 cursor-pointer
+    @apply  hover:bg-gray-100 rounded-lg transition duration-200 px-2 cursor-pointer shrink-0
   }
   .menu-cancel {
     @apply hover:bg-gray-100 rounded-lg transition duration-200 px-2
@@ -53,26 +53,26 @@
     @apply flex justify-between p-4 items-center border-b
   }
   .menu-container {
-    @apply fixed right-0 top-0 h-screen z-50 bg-white transition-all ease-in-out shadow-lg
+    @apply fixed right-0 top-0 h-screen z-50 bg-white transition-all ease-in-out shadow-lg duration-300 w-full sm:w-100
   }
   .hero-container {
-    @apply flex bg-linear-to-br from-indigo-50 to-white flex-col gap-y-5 px-4 py-15
+    @apply flex bg-linear-to-br from-indigo-50 to-white flex-col gap-y-5 px-4 py-15 lg:flex-row lg:items-center lg:gap-x-5
   }
   .hero-btn-auth-wrapper {
-    @apply flex flex-col space-y-4
+    @apply flex flex-col space-y-4 min-[635px]:flex-row  min-[635px]:items-center gap-x-6
   }
   .hero-btn-signup{
-    @apply  rounded-lg bg-linear-to-r from-blue-300 to-indigo-100 font-semibold py-2 text-lg space-x-1 cursor-pointer hover:from-blue-400 hover:to-indigo-200 transition-colors duration-700
+    @apply  rounded-lg bg-linear-to-r from-blue-300 to-indigo-100 font-semibold py-2 text-lg space-x-1 cursor-pointer hover:from-blue-400 hover:to-indigo-200 transition-colors duration-700 min-[635px]:self-start min-[635px]:px-5  
   }
   .hero-btn-signin {
-    @apply border-2 hover:bg-gray-50 transition-colors duration-500 border-cyan-100 rounded-lg bg-white font-semibold py-2 text-lg shadow cursor-pointer
+    @apply border-2 hover:bg-gray-50 transition-colors duration-500 border-cyan-100 rounded-lg bg-white font-semibold py-1.5 text-lg shadow cursor-pointer min-[635px]:self-start  min-[635px]:px-8  
   }
   .flex-2-center{
     @apply flex gap-x-2 items-center
 
   }
   .hero-2-wrapper{
-    @apply bg-white shadow-lg rounded-lg p-3
+    @apply bg-white shadow-lg rounded-lg p-3 flex-1 
   }
   .hero-2-card {
     @apply  px-5 py-4 flex gap-x-2 items-center
@@ -85,7 +85,7 @@
    @apply text-2xl hidden sm:block
   }
   .text-48-bold{
-    @apply text-5xl font-bold leading-14
+    @apply text-5xl font-bold leading-14 lg:text-6xl
   
   }
   .text-20-gray{
