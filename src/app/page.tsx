@@ -8,6 +8,7 @@ import NavigationBar from "@/components/navbar";
 import HeroSection from "@/components/herosection";
 import { Globe, Network, Target, Zap } from "lucide-react";
 import WhyCard from "@/components/whycard";
+import CountUpData from "@/components/countupdata";
 
 export default async function Home() {
   const session = await auth.api.getSession({
@@ -52,6 +53,7 @@ export default async function Home() {
             />
           </div>
         </div>
+        <CountUpData/>
         <div className="flex flex-col items-center justify-center h-screen gap-4">
           <h1 className="text-4xl font-bold">Cosden Solutions</h1>
           <div className="flex gap-4 mt-8">
