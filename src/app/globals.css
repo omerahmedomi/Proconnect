@@ -47,7 +47,7 @@
     @apply  hover:bg-gray-100 rounded-lg transition duration-200 px-2 cursor-pointer shrink-0
   }
   .menu-cancel {
-    @apply hover:bg-gray-100 rounded-lg transition duration-200 px-2
+    @apply hover:bg-gray-100 rounded-lg transition duration-200 px-2 cursor-pointer
   }
   .menu-header {
     @apply flex justify-between p-4 items-center border-b
@@ -76,6 +76,9 @@
   }
   .hero-2-card {
     @apply  px-5 py-4 flex gap-x-2 items-center
+  }
+  .why-logo {
+    @apply group-hover:scale-104  text-white p-3 rounded-lg mb-3 bg-cyan-600
   }
   
 }
