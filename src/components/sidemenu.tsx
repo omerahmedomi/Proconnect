@@ -1,6 +1,7 @@
 "use client";
 import { MenuIcon, X } from "lucide-react";
 import { useEffect, useState } from "react";
+import Link from "next/link";
 export default function SideMenu() {
   const [isMenuOpen, setIsMenuOpen] = useState<boolean>(false);
 
@@ -38,8 +39,10 @@ export default function SideMenu() {
         </div>
 
         <div className="btn-auth-side-container">
-          <button className="btn-lg-sign-in">Sign In</button>
-          <button className="btn-lg-register">Join Now</button>
+
+          <Link href="/signin" className="btn-lg-sign-in">Sign In</Link>
+
+          <Link href="/signup" className="btn-lg-register">Join Now</Link>
         </div>
       </div>
     </div>

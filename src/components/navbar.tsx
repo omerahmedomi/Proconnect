@@ -17,12 +17,14 @@ export default function NavigationBar(){
 
         <SideMenu />
         <div className="btn-auth-container">
-          <button className="btn-sign-in">
+          <Link href={'/signin'} className="btn-sign-in">
             Sign In
-          </button>
-          <button className="btn-register">
+          </Link>
+          <Link href={'/signup'}
+          
+          className="btn-register">
             Join Now
-          </button>
+          </Link>
         </div>
       </nav>
     );

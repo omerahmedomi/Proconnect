@@ -67,13 +67,13 @@ export default async function Home() {
             advancing their careers on our platform
           </p>
           <div className="flex flex-col gap-3 bg items-center sm:flex-row">
-            <button className="hero-btn-signup px-4">
+            <Link href={'/signup'} className="hero-btn-signup px-4 group">
               Get started today
               <ArrowRight className="inline group-hover:translate-x-1 transition-all duration-300" />
-            </button>
-            <button className="hero-btn-signin px-4">
+            </Link>
+            <Link href={'/signin'} className="hero-btn-signin px-4">
               Already have an account?
-            </button>
+            </Link>
           </div>
         </div>
         <div className="flex flex-col items-center justify-center h-screen gap-4">

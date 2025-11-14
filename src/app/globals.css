@@ -1,14 +1,14 @@
 @import "tailwindcss";
 
 @theme{
-  --color-ff:
+  --font-roboto:var(--font-roboto)
 }
 
 
 
 @layer components  {
   .nav-bar {
-@apply flex items-center sticky top-0 z-30 w-full justify-between px-4 py-3 gap-8 shadow bg-white 
+@apply flex items-center sticky top-0 z-30 w-full justify-between px-4 py-3 gap-12 lg:gap-16 shadow bg-white 
   }
   .nav-logo-link {
     @apply flex items-center shrink-0 cursor-pointer
@@ -35,13 +35,13 @@
     @apply absolute top-1/2 -translate-y-1/2 pl-3.5 shrink-0 text-gray-400 peer-focus:text-cyan-500
   }
   .search-cancel {
-    @apply absolute right-0 top-1/2 pr-3.5 -translate-y-1/2 shrink-0 hidden peer-focus:block text-gray-400 hover:text-black
+    @apply absolute right-0 top-1/2 pr-3.5 -translate-y-1/2 shrink-0 hidden peer-focus:block text-gray-400 hover:text-black cursor-pointer
   }
   .btn-auth-container{
     @apply  hidden lg:flex gap-4
   }
   .btn-auth-side-container {
-    @apply space-y-3 px-10 py-3  flex flex-col
+    @apply space-y-3 px-10 py-3  flex flex-col text-center
   }
   .menu-icon{
     @apply  hover:bg-gray-100 rounded-lg transition duration-200 px-2 cursor-pointer shrink-0
@@ -59,7 +59,7 @@
     @apply flex bg-linear-to-br from-indigo-50 to-white flex-col gap-y-5 px-4 py-15 lg:flex-row lg:items-center lg:gap-x-5
   }
   .hero-btn-auth-wrapper {
-    @apply flex flex-col space-y-4 min-[635px]:flex-row  min-[635px]:items-center gap-x-6
+    @apply flex flex-col space-y-4 min-[635px]:flex-row  min-[635px]:items-center gap-x-6 text-center
   }
   .hero-btn-signup{
     @apply  rounded-lg bg-linear-to-r from-blue-300 to-indigo-100 font-semibold py-2 text-lg space-x-1 cursor-pointer hover:from-blue-400 hover:to-indigo-200 transition-colors duration-700 min-[635px]:self-start min-[635px]:px-5  

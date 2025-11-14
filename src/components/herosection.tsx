@@ -1,4 +1,5 @@
 import { ArrowRight, Briefcase, Users } from "lucide-react";
+import Link from "next/link";
 
 export default function HeroSection(){
 
@@ -16,11 +17,11 @@ export default function HeroSection(){
           </div>
 
           <div className="hero-btn-auth-wrapper">
-            <button className="group hero-btn-signup">
+            <Link href={'/signup'} className="group hero-btn-signup">
               <span>Join now - it's free</span>
               <ArrowRight className="inline group-hover:translate-x-1 transition-all duration-300" />
-            </button>
-            <button className="hero-btn-signin"> Sign In</button>
+            </Link>
+            <Link href={'signin'} className="hero-btn-signin"> Sign In</Link>
           </div>
 
           <div className="flex gap-x-2 text-sm text-gray-600">
