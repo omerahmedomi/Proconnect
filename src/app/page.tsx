@@ -67,7 +67,7 @@ export default async function Home() {
             advancing their careers on our platform
           </p>
           <div className="flex flex-col gap-3 bg items-center sm:flex-row">
-            <Link href={'/signup'} className="hero-btn-signup px-4 group">
+            <Link href={'/signup'} className="hero-btn-signup px-4 group self-center">
               Get started today
               <ArrowRight className="inline group-hover:translate-x-1 transition-all duration-300" />
             </Link>
