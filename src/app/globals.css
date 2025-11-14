@@ -8,7 +8,7 @@
 
 @layer components  {
   .nav-bar {
-@apply flex items-center justify-between px-4 py-3 gap-8 shadow
+@apply flex items-center sticky top-0 z-30 w-full justify-between px-4 py-3 gap-8 shadow bg-white 
   }
   .nav-logo-link {
     @apply flex items-center shrink-0 cursor-pointer
@@ -80,6 +80,16 @@
   .why-logo {
     @apply group-hover:scale-104  text-white p-3 rounded-lg mb-3 bg-cyan-600
   }
+  .count-up-container {
+    @apply w-full grid grid-cols-2  py-16 gap-10 lg:grid-cols-4 bg-linear-to-r from-cyan-100 to-cyan-100 via-cyan-50
+  }
+  .count-up-data-container {
+    @apply flex  flex-col items-center
+  }
+ .ready{
+  @apply py-20 px-4 flex flex-col items-center gap-y-7
+  
+}
   
 }
 
@@ -107,6 +117,17 @@
 .hero-card-texts p {
   @apply text-sm text-gray-600
 }
+.count-up-data-container h3{
+  @apply  text-4xl lg:text-5xl font-bold
+}
+.count-up-data-container p{
+  @apply text-gray-600
+
+}
+.ready h2,p {
+  @apply text-center
+}
+
 /* :root {
   --background: #ffffff;
   --foreground: #171717;
