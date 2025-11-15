@@ -13,34 +13,34 @@ export const signUpAction = async (prevState:any,formData: FormData) => {
 
   const confirmPassword = formData.get('confirmPassword') as string
 
-  if (confirmPassword !== password)
-
-  try {
-    
-    await auth.api.signUpEmail({
-      body: {
-        email,
-        password,
-        name,
-        callbackURL:'/'
-      },
-    });
-    redirect('/')
-  } catch (error) {
-    if(error instanceof APIError){
-
-      return {
-        error: error.message,
-        values:{
-          name,
+  
+    try {
+      if (confirmPassword !== password) {
+        throw new Error("Passwords do not match");
+      }
+      await auth.api.signUpEmail({
+        body: {
           email,
           password,
-          confirmPassword
-        }
-      };
+          name,
+          callbackURL: "/",
+        },
+      });
+      
+      redirect("/");
+    } catch (error) {
+      // if (error instanceof APIError) {
+        return {
+          error: error.message,
+          values: {
+            name,
+            email,
+            password,
+            confirmPassword,
+          },
+        // };
+      }
     }
-    
-  }
 };
 
 export const signInAction = async (prevState:any,formData: FormData) => {
