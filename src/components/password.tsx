@@ -3,7 +3,7 @@
 import { Eye, EyeOff } from "lucide-react";
 import { useState } from "react";
 
-export default function Password({ type }: { type: string }) {
+export default function Password({ type,defaultValue }: { type: string,defultValue:any}) {
   const [isVisible, setIsVisible] = useState<boolean>(false);
 
   return (
@@ -15,6 +15,7 @@ export default function Password({ type }: { type: string }) {
         placeholder={
           type === "confirmPassword" ? "Confirm Password" : "Password"
         }
+        defaultValue={defaultValue}
         required
       />
 

@@ -10,7 +10,13 @@ export const signUpAction = async (prevState:any,formData: FormData) => {
   const password = formData.get("password") as string;
 
   const name = formData.get("name") as string;
+
+  const confirmPassword = formData.get('confirmPassword') as string
+
+  if (confirmPassword !== password)
+
   try {
+    
     await auth.api.signUpEmail({
       body: {
         email,
@@ -24,9 +30,13 @@ export const signUpAction = async (prevState:any,formData: FormData) => {
     if(error instanceof APIError){
 
       return {
-        // ...prevState,
         error: error.message,
-        success: false,
+        values:{
+          name,
+          email,
+          password,
+          confirmPassword
+        }
       };
     }
     
@@ -52,9 +62,13 @@ export const signInAction = async (prevState:any,formData: FormData) => {
  } catch (error) {
   if(error instanceof APIError){
     return {
-      // ...prevState,
+      
       error: error.message,
-      success: false,
+      values:{
+        email,
+        password
+      }
+      
     };
   }
  }
