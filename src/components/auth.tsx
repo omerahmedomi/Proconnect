@@ -2,8 +2,9 @@ import Link from 'next/link'
 import { signInAction, signUpAction } from '@/app/actions/auth';
 import Password from './password';
 import Submit from './submit';
+import AuthForm from './authform';
 
-export default function AuthComponent({type}){
+export default function AuthComponent({type}:{type:string}){
     return (
       <div className="flex flex-col items-center  justify-center  gap-4 px-18 py-10 w-full max-w-[555px] border mx-4 rounded-lg shadow-2xl border-blue-200">
         <h1 className="text-3xl font-semibold text-center  text-gray-700">
@@ -30,39 +31,7 @@ export default function AuthComponent({type}){
           <p>or</p>
           <div className="w-4 h-px bg-gray-200 grow"></div>
         </div>
-        <form
-          action={type === "signup" ? signUpAction : signInAction}
-          className="flex flex-col gap-5  w-full"
-        >
-          {type === "signup" && (
-            <input
-              type="text"
-              name="name"
-              required
-              placeholder="Your Full Name"
-              className="auth-input"
-            />
-          )}
-
-          <input
-            type="email"
-            name="email"
-            placeholder="Email"
-            required
-            className="auth-input"
-          />
-
-          <Password type="password" />
-          {type == "signin" && (
-            <Link href="/" className="auth-link self-end">
-              Forgot password?
-            </Link>
-          )}
-
-          {type === "signup" && <Password type="confirmPassword" />}
-
-         <Submit type={type}/>
-        </form>
+        <AuthForm type={type}/>
       </div>
     );
 }
