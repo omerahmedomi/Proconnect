@@ -3,7 +3,7 @@ import Link from "next/link";
 
 import { auth } from "@/lib/auth";
 
-import { signOutAction } from "./actions/auth";
+import { signOutAction } from "../actions/auth";
 import NavigationBar from "@/components/navbar";
 import HeroSection from "@/components/herosection";
 import { ArrowRight, Globe, Network, Target, Zap } from "lucide-react";
@@ -18,7 +18,6 @@ export default async function Home() {
   if (!session) {
     return (
       <>
-        <NavigationBar />
         <HeroSection />
         <div className="px-4 py-20 space-y-9">
           <div className="flex flex-col items-center gap-y-5 text-center">
@@ -67,11 +66,14 @@ export default async function Home() {
             advancing their careers on our platform
           </p>
           <div className="flex flex-col gap-3 bg items-center sm:flex-row">
-            <Link href={'/signup'} className="hero-btn-signup px-4 group self-center">
+            <Link
+              href={"/signup"}
+              className="hero-btn-signup px-4 group self-center"
+            >
               Get started today
               <ArrowRight className="inline group-hover:translate-x-1 transition-all duration-300" />
             </Link>
-            <Link href={'/signin'} className="hero-btn-signin px-4">
+            <Link href={"/signin"} className="hero-btn-signin px-4">
               Already have an account?
             </Link>
           </div>

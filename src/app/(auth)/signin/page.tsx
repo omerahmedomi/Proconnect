@@ -1,6 +1,4 @@
-
-
-import {signInAction} from '../actions/auth'
+import { signInAction } from "../../actions/auth";
 
 export default function SignInPage() {
   return (
