@@ -1,5 +1,5 @@
 import Link from 'next/link'
-import { signUpAction } from '@/app/actions/auth';
+import { signInAction, signUpAction } from '@/app/actions/auth';
 import Password from './password';
 
 export default function AuthComponent({type}){
@@ -29,13 +29,19 @@ export default function AuthComponent({type}){
           <p>or</p>
           <div className="w-4 h-px bg-gray-200 grow"></div>
         </div>
-        <form action={signUpAction} className="flex flex-col gap-5  w-full">
-          <input
-            type="text"
-            name="name"
-            placeholder="Your Full Name"
-            className={`auth-input ${type == "signin" && "hidden"}`}
-          />
+        <form
+          action={type === "signup" ? signUpAction : signInAction}
+          className="flex flex-col gap-5  w-full"
+        >
+          {type === "signup" && (
+            <input
+              type="text"
+              name="name"
+              required
+              placeholder="Your Full Name"
+              className="auth-input"
+            />
+          )}
 
           <input
             type="email"
@@ -46,18 +52,19 @@ export default function AuthComponent({type}){
           />
 
           <Password type="password" />
-          {type == 'signin' && (
-            <Link href ='/'className='auth-link self-end'>Forgot password?</Link>
+          {type == "signin" && (
+            <Link href="/" className="auth-link self-end">
+              Forgot password?
+            </Link>
           )}
 
-          <span className={`${type == "signin" && "hidden"}`}>
-            <Password type="confirmPassword" />
-          </span>
+          {type === "signup" && <Password type="confirmPassword" />}
+
           <button
             type="submit"
             className="w-full p-3 bg-black rounded text-white font-semibold hover:bg-white hover:text-black cursor-pointer transition-colors border duration-300 active:text-black active:bg-white"
           >
-            Sign {type.slice(-2)}
+            SIGN {type.slice(-2).toUpperCase()}
           </button>
         </form>
       </div>
