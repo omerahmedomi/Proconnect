@@ -13,6 +13,7 @@ export const signUpAction = async (formData: FormData) => {
       email,
       password,
       name,
+      callbackURL:'/'
     },
   });
   redirect('/')
@@ -27,6 +28,7 @@ export const signInAction = async (formData: FormData) => {
     body: {
       email,
       password,
+      callbackURL:'/'
      
     },
   });

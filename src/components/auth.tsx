@@ -1,6 +1,7 @@
 import Link from 'next/link'
 import { signInAction, signUpAction } from '@/app/actions/auth';
 import Password from './password';
+import Submit from './submit';
 
 export default function AuthComponent({type}){
     return (
@@ -60,12 +61,7 @@ export default function AuthComponent({type}){
 
           {type === "signup" && <Password type="confirmPassword" />}
 
-          <button
-            type="submit"
-            className="w-full p-3 bg-black rounded text-white font-semibold hover:bg-white hover:text-black cursor-pointer transition-colors border duration-300 active:text-black active:bg-white"
-          >
-            SIGN {type.slice(-2).toUpperCase()}
-          </button>
+         <Submit type={type}/>
         </form>
       </div>
     );

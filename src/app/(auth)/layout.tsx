@@ -1,4 +1,7 @@
 import "../globals.css";
+export const metadata = {
+  title:"Create or Log In Account"
+}
 export default function AuthLayout({ children }) {
   return (
     <html>

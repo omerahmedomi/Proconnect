@@ -10,6 +10,8 @@ import { ArrowRight, Globe, Network, Target, Zap } from "lucide-react";
 import WhyCard from "@/components/whycard";
 import CountUpData from "@/components/countupdata";
 
+
+
 export default async function Home() {
   const session = await auth.api.getSession({
     headers: await headers(),
