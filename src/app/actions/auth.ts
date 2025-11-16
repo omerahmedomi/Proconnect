@@ -15,9 +15,9 @@ export const signUpAction = async (prevState:any,formData: FormData) => {
 
   
     try {
-      // if (confirmPassword !== password) {
-      //   throw new Error("Passwords do not match");
-      // }
+      if (confirmPassword !== password) {
+        throw new Error("Passwords do not match");
+      }
       await auth.api.signUpEmail({
         body: {
           email,
