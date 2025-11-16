@@ -15,32 +15,33 @@ export const signUpAction = async (prevState:any,formData: FormData) => {
 
   
     try {
-      if (confirmPassword !== password) {
-        throw new Error("Passwords do not match");
-      }
+      // if (confirmPassword !== password) {
+      //   throw new Error("Passwords do not match");
+      // }
       await auth.api.signUpEmail({
         body: {
           email,
           password,
           name,
-          callbackURL: "/",
+          callbackURL:'/',
         },
       });
       
-      redirect("/");
     } catch (error) {
       // if (error instanceof APIError) {
-        return {
-          error: error.message,
-          values: {
-            name,
-            email,
-            password,
-            confirmPassword,
-          },
+        
+      return {
+        error: error.message,
+        values: {
+          name,
+          email,
+          password,
+          confirmPassword,
+        },
         // };
       }
     }
+    redirect('/')
 };
 
 export const signInAction = async (prevState:any,formData: FormData) => {
@@ -59,19 +60,20 @@ export const signInAction = async (prevState:any,formData: FormData) => {
       
      },
    });
- } catch (error) {
-  if(error instanceof APIError){
-    return {
-      
-      error: error.message,
-      values:{
-        email,
-        password
-      }
-      
-    };
+  
+  } catch (error) {
+    if(error instanceof APIError){
+      return {
+        
+        error: error.message,
+        values:{
+          email,
+          password
+        }
+        
+      };
+    }
   }
- }
   redirect("/");
 };
 

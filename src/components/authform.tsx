@@ -15,7 +15,7 @@ export default function AuthForm({ type }) {
 
   return (
     <>
-      {state.error && <p className="text-red-500 text-sm">{state.error}</p>}
+      {state?.error && <p className="text-red-500 text-sm">{state?.error}</p>}
 
       <form action={formAction} className="flex flex-col gap-5  w-full">
         {type === "signup" && (
