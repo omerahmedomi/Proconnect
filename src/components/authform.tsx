@@ -16,6 +16,7 @@ export default function AuthForm({ type }) {
   return (
     <>
       {state?.error && <p className="text-red-500 text-sm">{state?.error}</p>}
+      {state?.message && <p className="text-green-500 text-sm">{state?.message}</p>}
 
       <form action={formAction} className="flex flex-col gap-5  w-full">
         {type === "signup" && (
@@ -45,7 +46,12 @@ export default function AuthForm({ type }) {
           </Link>
         )}
 
-        {type === "signup" && <Password type="confirmPassword" defaultValue={state?.values?.confirmPassword} />}
+        {type === "signup" && (
+          <Password
+            type="confirmPassword"
+            defaultValue={state?.values?.confirmPassword}
+          />
+        )}
 
         <Submit type={type} />
       </form>

@@ -27,6 +27,10 @@ export const signUpAction = async (prevState: any, formData: FormData) => {
         
       },
     });
+    return {
+      sucess:true,
+      message:"A verification email is sent please go to your email and continue from the link."
+    }
   } catch (error) {
     // if (error instanceof APIError) {
 
@@ -38,10 +42,11 @@ export const signUpAction = async (prevState: any, formData: FormData) => {
         password,
         confirmPassword,
       },
+      
       // };
     };
   }
-  redirect("/");
+  // redirect("/");
 };
 
 export const signInAction = async (prevState: any, formData: FormData) => {
