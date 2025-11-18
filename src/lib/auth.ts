@@ -4,6 +4,7 @@ import { nextCookies } from "better-auth/next-js";
 
 import { MongoClient } from "mongodb";
 import { sendMail } from "./mail";
+import { redirect } from "next/navigation";
 console.log(process.env.MONGODB_URI)
 const client = new MongoClient(process.env.MONGODB_URI!)
 
@@ -16,7 +17,14 @@ export const auth = betterAuth({
   }),
   emailAndPassword: {
     enabled: true,
-    requireEmailVerification:true
+    requireEmailVerification: true,
+    sendResetPassword: async ({ user, url, token }, request) => {
+      await sendMail({
+        to: user.email,
+        subject: "Reset your password",
+        text: `Click the link to reset your password: ${url}`,
+      });
+    },
   },
   plugins: [nextCookies()],
   socialProviders: {
@@ -30,8 +38,8 @@ export const auth = betterAuth({
     },
   },
   emailVerification: {
-    expiresIn:3600,
-    sendOnSignIn:true,
+    expiresIn: 3600,
+    sendOnSignIn: true,
     sendOnSignUp: true,
     sendVerificationEmail: async ({ user, url, token }, request) => {
       await sendMail({
@@ -40,6 +48,6 @@ export const auth = betterAuth({
         text: `Click the link to verify your email: ${url}`,
       });
     },
-    autoSignInAfterVerification:true,
+    autoSignInAfterVerification: true,
   },
 });

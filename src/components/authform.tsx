@@ -1,5 +1,5 @@
 "use client";
-import { signInAction, signUpAction } from "@/app/actions/auth";
+import { requestPasswordResetPage, signInAction, signUpAction } from "@/app/actions/auth";
 import Password from "./password";
 import Link from "next/link";
 import Submit from "./submit";
@@ -41,9 +41,13 @@ export default function AuthForm({ type }) {
 
         <Password type="password" defaultValue={state?.values?.password} />
         {type == "signin" && (
-          <Link href="/" className="auth-link self-end">
+          <button type="button" className="auth-link self-end cursor-pointer"
+          onClick={
+            requestPasswordResetPage.bind(null,'umerahmedmoh@gmail.com')
+          }
+          >
             Forgot password?
-          </Link>
+          </button>
         )}
 
         {type === "signup" && (

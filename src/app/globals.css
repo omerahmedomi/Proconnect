@@ -96,7 +96,7 @@
   
 }
 .auth-input{
-  @apply border rounded p-3  focus:outline-none border-gray-200 focus:ring-1 ring-cyan-600 w-full  text-sm transition-all duration-100
+  @apply border rounded p-3 pr-10 focus:outline-none border-gray-200 focus:ring-1 ring-cyan-600 w-full  text-sm transition-all duration-100
 }
 .auth-link{
   @apply underline underline-offset-4 ml-1 text-sm  text-blue-500 

@@ -3,7 +3,7 @@
 import { Eye, EyeOff } from "lucide-react";
 import { useState } from "react";
 
-export default function Password({ type,defaultValue }: { type: string,defultValue:any}) {
+export default function Password({ type,defaultValue }: { type: string,defaultValue:any}) {
   const [isVisible, setIsVisible] = useState<boolean>(false);
 
   return (
@@ -13,7 +13,11 @@ export default function Password({ type,defaultValue }: { type: string,defultVal
         type={isVisible ? "text" : "password"}
         className="auth-input"
         placeholder={
-          type === "confirmPassword" ? "Confirm Password" : "Password"
+          type === "confirmPassword"
+            ? "Confirm Password"
+            : type === "newPassword"
+            ? "New Password"
+            : "Password"
         }
         defaultValue={defaultValue}
         required
@@ -25,7 +29,7 @@ export default function Password({ type,defaultValue }: { type: string,defultVal
         onClick={() => setIsVisible((prev) => !prev)}
         className="absolute right-3 top-1/2 -translate-y-1/2 cursor-pointer text-gray-600"
       >
-        {isVisible ? <EyeOff  size={16} /> : <Eye size={16} />}
+        {isVisible ? <EyeOff size={16} /> : <Eye size={16} />}
       </button>
     </div>
   );
