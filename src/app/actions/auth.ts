@@ -29,7 +29,7 @@ export const signUpAction = async (prevState: any, formData: FormData) => {
     });
     return {
       sucess:true,
-      message:"A verification email is sent please go to your email and continue from the link."
+      message:"A verification link has been sent to your specified email. Please go to your email and continue from the link."
     }
   } catch (error) {
     // if (error instanceof APIError) {
@@ -65,7 +65,7 @@ export const signInAction = async (prevState: any, formData: FormData) => {
   } catch (error) {
     if (error instanceof APIError) {
       return {
-        error: error.message,
+        error:error.message == 'Email not verified'? error.message+'. Check your email for a verification link.':error.message,
         values: {
           email,
           password,
@@ -85,14 +85,15 @@ export const signOutAction = async () => {
 };
 
 export const signInGoogleAction = async () => {
-  console.log("hi")
+ 
  const {url} = await auth.api.signInSocial({
     body:{
       provider:'google',
       callbackURL:'/',
      
      
-    }
+    },
+    
   });
 if (url) redirect(url)
 

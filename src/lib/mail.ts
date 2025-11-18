@@ -11,6 +11,7 @@ export const transporter = nodemailer.createTransport({
 export const sendMail =async({to,subject,text}:{to:string,subject:string,text:string})=>{
 
     await transporter.sendMail({
+        from:"ProConnect",
         to,
         subject,
         text
