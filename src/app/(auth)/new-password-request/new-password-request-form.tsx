@@ -1,4 +1,4 @@
-"use clinet"
+"use client"
 import Submit from "@/components/submit";
 import { requestPasswordResetPage } from "@/app/actions/auth";
 import { useActionState } from "react";
@@ -11,7 +11,7 @@ export default function NewPasswordRequestForm() {
     })
   return (
     <form action={formAction} className="space-y-6">
-        <p className='sucess-message'>{state?.sucess && state?.message}</p>
+        <p className='success-message'>{state?.sucess && state?.message}</p>
         <p className="error-message">{!state?.sucess && state?.error}</p>
       <input
         type="text"

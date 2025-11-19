@@ -95,7 +95,7 @@ export const signInGoogleAction = async () => {
   if (url) redirect(url);
 };
 
-export const requestPasswordResetPage = async (formData:FormData) => {
+export const requestPasswordResetPage = async (prevState:any,formData:FormData) => {
 
   const email = formData.get('email') as string
   try {

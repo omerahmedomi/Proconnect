@@ -1,6 +1,7 @@
 import { ArrowLeft } from "lucide-react";
 
 import Link from 'next/link'
+import NewPasswordRequestForm from "./new-password-request-form";
 
 
 export default function NewPasswordRequestPage() {
@@ -14,9 +15,7 @@ export default function NewPasswordRequestPage() {
         </p>
       </div>
 
-      <div className=''>
-        
-      </div>
+      <NewPasswordRequestForm/>
       <Link href='/signin' className=" flex gap-1 text-sm items-center auth-link">
         {" "}
         <span>
