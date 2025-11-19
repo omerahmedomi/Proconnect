@@ -3,7 +3,6 @@ import { auth } from "@/lib/auth";
 import { headers } from "next/headers";
 import { redirect } from "next/navigation";
 import { APIError } from "better-auth";
-import { NextResponse } from "next/server";
 
 export const signUpAction = async (prevState: any, formData: FormData) => {
   const email = formData.get("email") as string;
@@ -32,9 +31,9 @@ export const signUpAction = async (prevState: any, formData: FormData) => {
         "A verification link has been sent to your specified email. Please go to your email and continue from the link.",
     };
   } catch (error) {
-    // if (error instanceof APIError) {
-
+   
     return {
+      sucess:false,
       error: error.message,
       values: {
         name,
@@ -43,10 +42,8 @@ export const signUpAction = async (prevState: any, formData: FormData) => {
         confirmPassword,
       },
 
-      // };
     };
   }
-  // redirect("/");
 };
 
 export const signInAction = async (prevState: any, formData: FormData) => {
@@ -63,8 +60,9 @@ export const signInAction = async (prevState: any, formData: FormData) => {
       },
     });
   } catch (error) {
-    if (error instanceof APIError) {
+  
       return {
+        sucess:false,
         error:
           error.message == "Email not verified"
             ? error.message + ". Check your email for a verification link."
@@ -74,7 +72,7 @@ export const signInAction = async (prevState: any, formData: FormData) => {
           password,
         },
       };
-    }
+
   }
   redirect("/");
 };
@@ -97,8 +95,9 @@ export const signInGoogleAction = async () => {
   if (url) redirect(url);
 };
 
-export const requestPasswordResetPage = async (email: string) => {
-  console.log("hi");
+export const requestPasswordResetPage = async (formData:FormData) => {
+
+  const email = formData.get('email') as string
   try {
     await auth.api.requestPasswordReset({
       body: {
@@ -109,6 +108,7 @@ export const requestPasswordResetPage = async (email: string) => {
 
     return {
       message: "Password reset link has been sent to your email.",
+      sucess:true,
     };
   } catch (error) {
     return {
@@ -142,13 +142,11 @@ export const resetUserPassword = async (prevState:any,formData: FormData) => {
         token,
       },
     });
-     redirect("/signin");
-    return {
-      success:true,
-      message:"Your password has been successfully reset"
-    }
+     
+  
   } catch (error) {
     return{
+      sucess:false,
       error:error.message,
       values:{
         newPassword,
@@ -157,5 +155,5 @@ export const resetUserPassword = async (prevState:any,formData: FormData) => {
     }
   }
  
- 
+ redirect("/signin");
 };

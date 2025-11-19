@@ -116,6 +116,15 @@
 
     @apply text-xl text-gray-500
   }
+  .auth-button{
+    @apply w-full p-3 bg-black rounded text-white font-semibold hover:bg-white hover:text-black cursor-pointer transition-colors border duration-300 active:text-black active:bg-white disabled:bg-gray-300 disabled:hover:bg-gray-300 disabled:text-black disabled:border-gray-200 disabled:cursor-not-allowed
+  }
+  .error-message{
+    @apply text-red-500 text-sm
+  }
+  .success-message{
+    @apply text-green-500 text-sm
+  }
   
 }
 
@@ -138,6 +147,9 @@
 .ready h2,p {
   @apply text-center
 }
+
+
+
 
 /* :root {
   --background: #ffffff;

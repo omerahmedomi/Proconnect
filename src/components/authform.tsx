@@ -15,8 +15,8 @@ export default function AuthForm({ type }) {
 
   return (
     <>
-      {state?.error && <p className="text-red-500 text-sm">{state?.error}</p>}
-      {state?.message && <p className="text-green-500 text-sm">{state?.message}</p>}
+      <p className="sucess-message">{state?.sucess && state?.message}</p>
+      <p className="error-message">{!state?.sucess && state?.error}</p>
 
       <form action={formAction} className="flex flex-col gap-5  w-full">
         {type === "signup" && (
@@ -41,13 +41,13 @@ export default function AuthForm({ type }) {
 
         <Password type="password" defaultValue={state?.values?.password} />
         {type == "signin" && (
-          <button type="button" className="auth-link self-end cursor-pointer"
-          onClick={
-            requestPasswordResetPage.bind(null,'umerahmedmoh@gmail.com')
-          }
+          <Link
+            href="/new-password-request"
+            type="button"
+            className="auth-link self-end cursor-pointer"
           >
             Forgot password?
-          </button>
+          </Link>
         )}
 
         {type === "signup" && (
@@ -57,7 +57,7 @@ export default function AuthForm({ type }) {
           />
         )}
 
-        <Submit type={type} />
+        <Submit text={type == "signin" ? "SIGN IN" : "SIGN UP"} />
       </form>
     </>
   );
