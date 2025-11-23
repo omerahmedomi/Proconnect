@@ -5,9 +5,9 @@ export default function WhyCard({title,description,icon}:{title:string,descripti
       
       {icon}
        <h4 className="text-xl font-semibold mb-1">{title}</h4>
-       <p className="text-gray-500">
+       <h5 className="text-gray-500">
          {description}
-       </p>
+       </h5>
      </div>
     )
 }
