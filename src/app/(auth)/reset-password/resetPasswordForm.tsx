@@ -15,7 +15,7 @@ export default function ResetPasswordForm() {
     })
     return (
       <form action={formAction} className="flex flex-col gap-3 sm:min-w-xs">
-        <p className="error-message">{!state?.sucess && state?.error}</p>
+       {!state?.sucess && state?.error && <p className="error-message">{state?.error}</p>}
         <input type="hidden" name="token" value={token || ""} />
         <Password
           type="newPassword"

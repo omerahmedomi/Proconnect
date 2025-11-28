@@ -11,8 +11,8 @@ export default function NewPasswordRequestForm() {
     })
   return (
     <form action={formAction} className="space-y-6">
-        <p className='success-message'>{state?.sucess && state?.message}</p>
-        <p className="error-message">{!state?.sucess && state?.error}</p>
+       {state?.sucess && state?.message && <p className='success-message'>{ state?.message}</p>}
+        {!state?.sucess && state?.error && <p className="error-message">{state?.error}</p>}
       <input
         type="text"
         name="email"
