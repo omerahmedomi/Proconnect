@@ -41,14 +41,14 @@ export default function HeroSection(){
 
         <div className="hero-2-wrapper ">
           <div className="hero-2-card">
-            <Users className="bg-cyan-400 rounded-full p-3" size={50} />
+            <Users className="bg-cyan-400 rounded-full p-3 text-white" size={50} />
             <div className="hero-card-texts">
               <h3>Professional Network</h3>
               <p>Connect with industry experts</p>
             </div>
           </div>
           <div className="hero-2-card">
-            <span className="rounded-full bg-cyan-400 ">
+            <span className="rounded-full bg-cyan-400 text-white">
               <MessageSquare className="w-full h-full p-3" size={27} />
             </span>
 
@@ -58,7 +58,7 @@ export default function HeroSection(){
             </div>
           </div>
           <div className="hero-2-card">
-            <TrendingUp className="bg-cyan-400 rounded-full p-3" size={50} />
+            <TrendingUp className="bg-cyan-400 rounded-full p-3 text-white" size={50} />
             <div className="hero-card-texts">
               <h3>Grow Your Career</h3>
               <p>Discover new opportunities</p>

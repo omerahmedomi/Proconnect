@@ -120,10 +120,10 @@
     @apply w-full p-3 bg-black rounded text-white font-semibold hover:bg-white hover:text-black cursor-pointer transition-colors border duration-300 active:text-black active:bg-white disabled:bg-gray-300 disabled:hover:bg-gray-300 disabled:text-black disabled:border-gray-200 disabled:cursor-not-allowed
   }
   .error-message{
-    @apply text-red-500 text-sm
+    @apply text-red-500  border w-full text-center bg-red-50 p-2 rounded
   }
   .success-message{
-    @apply text-green-500 text-sm
+    @apply text-green-500 border w-full text-center bg-green-50 p-2 rounded
   }
   
 }

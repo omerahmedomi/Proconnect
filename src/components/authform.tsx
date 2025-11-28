@@ -15,9 +15,11 @@ export default function AuthForm({ type }) {
 
   return (
     <>
-      <p className="success-message">{state?.sucess && state?.message}</p>
-      <p className="error-message">{!state?.sucess && state?.error}</p>
-
+      {state?.sucess && state?.message && (
+        <p className="success-message">{state?.message}</p>
+      )}
+     { !state?.sucess && state?.error &&
+      <p className="error-message">{state?.error}</p>}
       <form action={formAction} className="flex flex-col gap-5  w-full">
         {type === "signup" && (
           <input
