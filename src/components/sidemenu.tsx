@@ -2,15 +2,21 @@
 import { MenuIcon, X } from "lucide-react";
 import { useEffect, useState } from "react";
 import Link from "next/link";
+import { authClient } from "@/lib/auth-clients";
 export default function SideMenu() {
   const [isMenuOpen, setIsMenuOpen] = useState<boolean>(false);
-
+  
+  const {
+    data: session,
+    isPending, //loading state
+    error, //error object
+    refetch, //refetch the session
+  } = authClient.useSession(); 
  
   return (
-
     <div className="lg:hidden overflow-hidden!">
       <MenuIcon
-        className="menu-icon w-"
+        className="menu-icon"
         size={40}
         onClick={() => setIsMenuOpen((prev) => !prev)}
       />
@@ -23,7 +29,7 @@ export default function SideMenu() {
       )}
 
       <div
-        className={`menu-container  ${
+        className={`menu-container w-1/2 ${
           isMenuOpen ? "translate-x-0" : " translate-x-full"
         }`}
       >
@@ -38,12 +44,41 @@ export default function SideMenu() {
           />
         </div>
 
-        <div className="btn-auth-side-container">
+        {session ? (
+          <div className="">
+            <div className="profile-wrapper w-full flex items-center  gap-2 bg-cyan-50 p-4">
+              <div className="image bg-white rounded-full p-1">
+                {session?.user?.image ? <img
+                  src={session?.user?.image || `/header-image.png`}
+                  className="w-20"
+                >
+                 
+                </img>: <h5 className="bg-cyan-500  rounded-full size-20 flex justify-center items-center text-2xl text-white"> {session?.user?.name.split('')[0].toUpperCase()+""+session?.user?.name?.split(' ')[1].split('')[0].toUpperCase()}</h5>}
+                
+              </div>
+              <div className="info-wrapper">
+                <h2 className="font-semibold text-lg">Umer Ahmed</h2>
+                <h4 className="text-sm text-gray-500">Professional</h4>
+                <Link
+                  href={`/profile/${session?.user?.id}`}
+                  className="text-semibold text-cyan-600 text-sm hover:text-cyan-700"
+                >
+                  View Profile
+                </Link>
+              </div>
+            </div>
+          </div>
+        ) : (
+          <div className="btn-auth-side-container">
+            <Link href="/signin" className="btn-lg-sign-in">
+              Sign In
+            </Link>
 
-          <Link href="/signin" className="btn-lg-sign-in">Sign In</Link>
-
-          <Link href="/signup" className="btn-lg-register">Join Now</Link>
-        </div>
+            <Link href="/signup" className="btn-lg-register">
+              Join Now
+            </Link>
+          </div>
+        )}
       </div>
     </div>
   );

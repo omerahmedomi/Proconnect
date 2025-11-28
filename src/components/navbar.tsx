@@ -2,10 +2,13 @@ import Image from "next/image";
 import Link from "next/link";
 import Search from "./search";
 import SideMenu from "./sidemenu";
+import { auth } from "@/lib/auth";
+import { headers } from "next/headers";
 
 
 
-export default function NavigationBar(){
+export default async function NavigationBar(){
+  const session = await auth.api.getSession({headers: await headers()});
 
     return (
       <nav className="nav-bar">
@@ -26,6 +29,7 @@ export default function NavigationBar(){
             Join Now
           </Link>
         </div>
+        
       </nav>
     );
 }
