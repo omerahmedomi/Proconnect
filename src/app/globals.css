@@ -13,7 +13,7 @@
 
 @layer components  {
   .nav-bar {
-@apply flex items-center sticky top-0 z-30 w-full justify-between px-4 py-3 gap-12 lg:gap-16 shadow bg-white 
+@apply flex items-center sticky top-0 z-30 w-full justify-between px-4 py-3 gap-12  lg:gap-16 shadow bg-white 
   }
   .nav-logo-link {
     @apply flex items-center shrink-0 cursor-pointer
@@ -31,10 +31,10 @@
     @apply hover:bg-cyan-100 hover:text-cyan-900 transition-all duration-300  p-1  text-gray-800  rounded-2xl  cursor-pointer
   }
   .search-input {
-    @apply shadow bg-gray-50  w-full  rounded-full h-full px-11 text-sm focus:outline-cyan-500 focus:bg-white
+    @apply shadow bg-gray-50  w-full  rounded-full h-full px-11 py-3 text-sm focus:outline-cyan-500 focus:bg-white
   }
   .search-container {
-    @apply relative  self-stretch grow
+    @apply relative   grow
   }
   .search-icon {
     @apply absolute top-1/2 -translate-y-1/2 pl-3.5 shrink-0 text-gray-400 peer-focus:text-cyan-500
@@ -100,6 +100,8 @@
 }
 .auth-link{
   @apply underline underline-offset-4 ml-1 text-sm  text-blue-500 
+}.side-menu-links{
+  @apply *:hover:bg-blue-50 *:px-5 *:py-3 *:flex *:gap-3 *:items-center *:cursor-pointer space-y-1 mt-1
 }
   
 }
