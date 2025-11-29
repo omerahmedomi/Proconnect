@@ -83,43 +83,41 @@ export default function SideMenu() {
                 </Link>
               </div>
             </div>
-            <ul className="side-menu-links">
+            <ul className="side-menu-links text-sm">
               <li>
-                <Home />
+                <Home size={20} />
                 <span>Home</span>
               </li>
               <li>
-                <Users />
+                <Users size={20} />
                 <span>My Network</span>
               </li>
               <li>
-                <Briefcase />
+                <Briefcase size={20} />
 
                 <span>Jobs</span>
               </li>
               <li>
                 <span className="relative">
-                  <MessageSquare />
+                  <MessageSquare size={20} />
                 </span>
                 <span>Messaging</span>
               </li>
               <li>
                 <span className="relative">
-                  <Bell />
+                  <Bell size={20} />
                   <Noty count={4} />
                 </span>
                 <span>Notifications</span>
               </li>
               <li>
-               
-                  <Settings />
+                <Settings size={20} />
 
                 <span>Settings & Privacy</span>
               </li>
               <li className="text-red-500">
-               
-                 <LogOut/>
-                
+                <LogOut size={20} />
+
                 <span>Logout</span>
               </li>
             </ul>

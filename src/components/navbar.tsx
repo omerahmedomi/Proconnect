@@ -32,7 +32,7 @@ export default async function NavigationBar(){
 
         <SideMenu />
         {session ? (
-          <div className="side-menu-links flex text-xs max-lg:hidden gap-0">
+          <div className="side-menu-links flex text-xs max-lg:hidden gap-0 items-center text-nowrap">
             <li>
               <Home size={20} />
               <span>Home</span>
@@ -59,6 +59,19 @@ export default async function NavigationBar(){
               </span>
               <span>Notifications</span>
             </li>
+            {session?.user?.image ? (
+              <img
+                src={session?.user?.image || `/header-image.png`}
+                className="w-20"
+              ></img>
+            ) : (
+              <h5 className="bg-cyan-500  rounded-full size-10 flex justify-center items-center text text-white">
+                {" "}
+                {session?.user?.name.split("")[0].toUpperCase() +
+                  "" +
+                  session?.user?.name?.split(" ")[1].split("")[0].toUpperCase()}
+              </h5>
+            )}
           </div>
         ) : (
           <div className="btn-auth-container">
