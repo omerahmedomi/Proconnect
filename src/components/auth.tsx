@@ -11,8 +11,8 @@ import GoogleIcon from "./icons/google";
 
 export default function AuthComponent({ type }: { type: string }) {
   return (
-    <div className="flex flex-col items-center  justify-center  gap-4 px-22  py-10 w-full max-w-[555px] border mx-4 rounded-lg shadow-2xl border-blue-200">
-      <h1 className="text-3xl font-semibold text-center  text-gray-700">
+    <div className="flex flex-col items-center  justify-center  gap-4 px-10 sm:px-22  py-10 w-full max-w-[555px] border mx-4 rounded-lg shadow-2xl border-blue-200">
+      <h1 className="text-2xl sm:text-3xl font-semibold text-center  text-gray-700">
         {type == "signup" ? "Create a free account" : "Sign in to your account"}
       </h1>
       <p>

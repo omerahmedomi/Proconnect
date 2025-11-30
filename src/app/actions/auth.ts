@@ -3,6 +3,7 @@ import { auth } from "@/lib/auth";
 import { headers } from "next/headers";
 import { redirect } from "next/navigation";
 import { APIError } from "better-auth";
+import { revalidatePath } from "next/cache";
 
 export const signUpAction = async (prevState: any, formData: FormData) => {
   const email = formData.get("email") as string;
@@ -81,7 +82,8 @@ export const signOutAction = async () => {
   await auth.api.signOut({
     headers: await headers(),
   });
-
+  
+ 
   redirect("/");
 };
 

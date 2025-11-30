@@ -1,20 +1,15 @@
 import '../globals.css'
 import type { Metadata } from "next";
-import { Geist, Geist_Mono ,Roboto} from "next/font/google";
+import {Roboto,Dancing_Script} from "next/font/google";
 import NavigationBar from "@/components/navbar";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
-  subsets: ["latin"],
-});
-
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
-});
 
 const roboto = Roboto({
   variable:'--font-roboto',
+  subsets:['latin']
+})
+const dancing =Dancing_Script({
+  variable:'--font-dancing',
   subsets:['latin']
 })
 
@@ -31,7 +26,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${roboto.className} antialiased scroll-smooth`}
+        className={`${roboto.className} antialiased scroll-smooth ${dancing.variable}`}
       >
        <NavigationBar/>
         {children}

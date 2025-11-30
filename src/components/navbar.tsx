@@ -16,11 +16,13 @@ import {
   LogOut,
 } from "lucide-react";
 import Noty from "./icons/noty";
+import Profile from "./profile";
 
 
 
 export default async function NavigationBar(){
   const session = await auth.api.getSession({headers: await headers()});
+  
 
     return (
       <nav className="nav-bar">
@@ -32,46 +34,36 @@ export default async function NavigationBar(){
 
         <SideMenu />
         {session ? (
-          <div className="side-menu-links flex text-xs max-lg:hidden gap-0 items-center text-nowrap">
-            <li>
-              <Home size={20} />
-              <span>Home</span>
-            </li>
-            <li>
-              <Users size={20} />
-              <span>My Network</span>
-            </li>
-            <li>
-              <Briefcase size={20} />
+          <div className=" flex text-xs max-lg:hidden items-center text-nowrap gap-2 ">
+            <ul className="side-menu-links flex text-xs  gap-2 items-center text-nowrap *:p-2 *:gap-1.5 *:rounded">
+              <li>
+                <Home size={20} />
+                <span>Home</span>
+              </li>
+              <li>
+                <Users size={20} />
+                <span>My Network</span>
+              </li>
+              <li>
+                <Briefcase size={20} />
 
-              <span>Jobs</span>
-            </li>
-            <li>
-              <span className="relative">
-                <MessageSquare size={20} />
-              </span>
-              <span>Messaging</span>
-            </li>
-            <li>
-              <span className="relative">
-                <Bell size={20} />
-                <Noty count={4} />
-              </span>
-              <span>Notifications</span>
-            </li>
-            {session?.user?.image ? (
-              <img
-                src={session?.user?.image || `/header-image.png`}
-                className="w-20"
-              ></img>
-            ) : (
-              <h5 className="bg-cyan-500  rounded-full size-10 flex justify-center items-center text text-white">
-                {" "}
-                {session?.user?.name.split("")[0].toUpperCase() +
-                  "" +
-                  session?.user?.name?.split(" ")[1].split("")[0].toUpperCase()}
-              </h5>
-            )}
+                <span>Jobs</span>
+              </li>
+              <li>
+                <span className="relative">
+                  <MessageSquare size={20} />
+                </span>
+                <span>Messaging</span>
+              </li>
+              <li>
+                <span className="relative">
+                  <Bell size={20} />
+                  <Noty count={4} />
+                </span>
+                <span>Notifications</span>
+              </li>
+            </ul>
+            <Profile session={session}/>
           </div>
         ) : (
           <div className="btn-auth-container">

@@ -1,7 +1,8 @@
 @import "tailwindcss";
 
 @theme{
-  --font-roboto:var(--font-roboto)
+  --font-roboto:var(--font-roboto);
+  --font-dancing:var(--font-dancing);
 }
 
 @layer base{
@@ -13,7 +14,7 @@
 
 @layer components  {
   .nav-bar {
-@apply flex items-center sticky top-0 z-30 w-full justify-between px-4 py-3 gap-12  lg:gap-16 shadow bg-white 
+@apply flex items-center sticky top-0 z-30 w-full justify-between px-4 py-3  shadow bg-white gap-5 sm:gap-10 md:gap-15 lg:gap-5
   }
   .nav-logo-link {
     @apply flex items-center shrink-0 cursor-pointer
@@ -108,7 +109,7 @@
 
 @layer utilities{
   .nav-text-link{
-   @apply text-2xl hidden sm:block
+   @apply text-2xl hidden sm:block font-dancing font-extrabold
   }
   .text-48-bold{
     @apply text-5xl font-bold leading-14 lg:text-6xl
