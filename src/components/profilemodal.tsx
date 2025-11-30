@@ -1,10 +1,11 @@
 import { Settings, LogOut, User } from "lucide-react";
 import { signOutAction } from "@/app/actions/auth";
 import UserProfile from "./userprofile";
-export default function ProfileModal() {
+import { authClient } from "@/lib/auth-clients";
+export default function ProfileModal({session}) {
   return (
     <div className="absolute top-full right-2 border rounded border-cyan-300 shadow w-80">
-    
+        <UserProfile session={session} showViewProfile={false}/>
 
       <ul className="side-menu-links text-sm">
         <li>
@@ -18,7 +19,8 @@ export default function ProfileModal() {
         </li>
         <li
           onClick={() => {
-              signOutAction();
+            signOutAction();
+              authClient.signOut();
               
            
           }}

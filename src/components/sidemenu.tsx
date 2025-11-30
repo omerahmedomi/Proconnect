@@ -55,7 +55,7 @@ export default function SideMenu() {
 
         {session ? (
           <div className="">
-            <UserProfile session={session}/>
+            <UserProfile session={session} showViewProfile={true}/>
             <ul className="side-menu-links text-sm">
               <li>
                 <Home size={20} />

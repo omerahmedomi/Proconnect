@@ -1,5 +1,5 @@
 import Link from "next/link"
-export default function UserProfile({session}){
+export default function UserProfile({session,showViewProfile}){
     return(
         <div className="profile-wrapper w-full flex items-center  gap-2 bg-cyan-50 p-4">
                       <div className="image bg-white rounded-full p-1 border border-cyan-200">
@@ -22,13 +22,13 @@ export default function UserProfile({session}){
                       </div>
                       <div className="info-wrapper">
                         <h2 className="font-semibold text-lg">{session?.user?.name}</h2>
-                        <h4 className="text-sm text-gray-500">Professional</h4>
-                        <Link
+                       <h4 className="text-sm text-gray-500">Professional</h4>
+                       { showViewProfile && <Link
                           href={`/profile/${session?.user?.id}`}
                           className="text-semibold text-cyan-600 text-sm hover:text-cyan-700"
                         >
                           View Profile
-                        </Link>
+                        </Link>}
                       </div>
                     </div>
     )

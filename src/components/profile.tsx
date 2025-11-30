@@ -47,7 +47,7 @@ export default function Profile({
             session?.user?.name?.split(" ")[1].split("")[0].toUpperCase()}
         </h5>
       )}
-      {isProfileModalOpen && <ProfileModal  />
+      {isProfileModalOpen && <ProfileModal session={session}  />
       }
     </div>
   );
