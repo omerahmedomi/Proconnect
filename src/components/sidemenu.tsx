@@ -6,6 +6,10 @@ import { authClient } from "@/lib/auth-clients";
 import Noty from "./icons/noty";
 import { signOutAction } from "@/app/actions/auth";
 import UserProfile from "./userprofile";
+import { usePathname } from "next/navigation";
+import { active } from "./navlinks";
+
+
 export default function SideMenu() {
   const [isMenuOpen, setIsMenuOpen] = useState<boolean>(false);
   
@@ -15,6 +19,8 @@ export default function SideMenu() {
     error, //error object
     refetch, //refetch the session
   } = authClient.useSession(); 
+
+  const pathname = usePathname();
 
    useEffect(() => {
     if(isMenuOpen)
@@ -55,45 +61,59 @@ export default function SideMenu() {
 
         {session ? (
           <div className="">
-            <UserProfile session={session} showViewProfile={true}/>
+            <UserProfile session={session} showViewProfile={true} />
             <ul className="side-menu-links text-sm">
-              <li>
+              <Link href={"/"} className={`${pathname == "/" && active}`}>
                 <Home size={20} />
                 <span>Home</span>
-              </li>
-              <li>
+              </Link>
+              <Link
+                href={"/my-network"}
+                className={`${pathname == "/my-network" && active}`}
+              >
                 <Users size={20} />
                 <span>My Network</span>
-              </li>
-              <li>
+              </Link>
+              <Link
+                href={"/jobs"}
+                className={`${pathname == "/jobs" && active}`}
+              >
                 <Briefcase size={20} />
 
                 <span>Jobs</span>
-              </li>
-              <li>
+              </Link>
+              <Link
+                href={"/messages"}
+                className={`${pathname == "/messages" && active}`}
+              >
                 <span className="relative">
                   <MessageSquare size={20} />
                 </span>
                 <span>Messaging</span>
-              </li>
-              <li>
+              </Link>
+              <Link
+                href={"/notfifications"}
+                className={`${pathname == "/notfifications" && active}`}
+              >
                 <span className="relative">
                   <Bell size={20} />
                   <Noty count={4} />
                 </span>
                 <span>Notifications</span>
-              </li>
-              <li>
+              </Link >
+              <Link href='/settings'>
                 <Settings size={20} />
 
                 <span>Settings & Privacy</span>
-              </li>
-              <li onClick={()=>{
-                signOutAction();
-                refetch();
-                setIsMenuOpen(false);
-              }} className="text-red-500">
-                
+              </Link>
+              <li
+                onClick={() => {
+                  signOutAction();
+                  refetch();
+                  setIsMenuOpen(false);
+                }}
+                className="text-red-500"
+              >
                 <LogOut size={20} />
 
                 <span>Logout</span>
