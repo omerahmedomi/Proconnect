@@ -6,11 +6,10 @@ import { auth } from "@/lib/auth";
 import { signOutAction } from "../actions/auth";
 import NavigationBar from "@/components/navbar";
 import HeroSection from "@/components/herosection";
-import { ArrowRight, Globe, Network, Target, Zap } from "lucide-react";
+import { ArrowRight, Bookmark, Globe, Mails, Network, Target, Users, Zap, CalendarDays } from "lucide-react";
 import WhyCard from "@/components/whycard";
 import CountUpData from "@/components/countupdata";
-
-
+import Profile from "@/components/profile";
 
 export default async function Home() {
   const session = await auth.api.getSession({
@@ -80,12 +79,46 @@ export default async function Home() {
             </Link>
           </div>
         </div>
-       
       </>
     );
   }
 
   return (
-   <div>Home</div>
+    <div className="  ">
+      <div className="relative max-w-xl rounded  mx-auto">
+        <div className="profile-view w-full bg-green-500 h-40 flex-col flex items-start mt-3">
+          <div className="cover-image h-14 bg-yellow-400 self-stretch"></div>
+          <div className="profile rounded-full  p-0.5 w-17 absolute top-7 left-2 ">
+            <img
+              src={session?.user?.image || `/empty-profile.jpg`}
+              className="w-full rounded-full"
+            ></img>
+          </div>
+          <div className="info text-black mt-10 px-2">
+            <h5>{session?.user?.name}</h5>
+            <h5 className="text-[13px]">Professional</h5>
+            <h5 className="text-xs">Addis Ababa</h5>
+          </div>
+        </div>
+        <div className="links bg-pink-500 mt-3 px-2 text-sm space-y-3">
+          <div className="saved-items flex gap-x-2">
+            <Bookmark size={20} />
+            <p>Saved items</p>
+          </div>
+          <div className="saved-items flex gap-x-2">
+            <Users size={20} />
+            <p>Groups</p>
+          </div>
+          <div className="saved-items flex gap-x-2">
+            <Mails size={20} />
+            <p>Newsletters</p>
+          </div>
+          <div className="saved-items flex gap-x-2">
+            <CalendarDays size={20} />
+            <p>Events</p>
+          </div>
+        </div>
+      </div>
+    </div>
   );
 }
