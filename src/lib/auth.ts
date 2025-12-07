@@ -5,7 +5,7 @@ import { nextCookies } from "better-auth/next-js";
 import { MongoClient } from "mongodb";
 import { sendMail } from "./mail";
 import { redirect } from "next/navigation";
-console.log(process.env.MONGODB_URI)
+
 const client = new MongoClient(process.env.MONGODB_URI!)
 
 const db= client.db()
