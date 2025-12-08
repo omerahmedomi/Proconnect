@@ -129,7 +129,7 @@
     @apply text-green-500 border w-full text-center bg-green-50 p-2 rounded
   }
   .border-gray-rounded{
-    @apply border-gray-400
+    @apply border-gray-200 rounded-lg
   }
   
 }

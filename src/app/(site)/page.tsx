@@ -1,6 +1,7 @@
 import { headers } from "next/headers";
 import Link from "next/link";
 import React from "react";
+import { cache } from "react";
 
 import { auth } from "@/lib/auth";
 
@@ -10,12 +11,13 @@ import WhyCard from "@/components/whycard";
 import CountUpData from "@/components/countupdata";
 
 import ProfileImage from "@/components/profileimage";
+import Profile from "@/components/profile";
 
 
  async function Home() {
-  const session = await auth.api.getSession({
-    headers: await headers(),
-  });
+ const session = await auth.api.getSession({
+  headers:await headers()
+ })
 
   if (!session) {
     return (
@@ -85,54 +87,67 @@ import ProfileImage from "@/components/profileimage";
   }
 
   return (
-    <div className="md:px-6 max-w-xl  mx-auto  md:mx-0 md:flex md:gap-x-10  md:max-w-full! min-[1200px]:justify-center">
+    <div className="md:px-6 max-w-xl  mx-auto  md:mx-0 md:flex md:gap-x-10  md:max-w-full! min-[1200px]:justify-center bg-slate-50 ">
       <div className="relative md:min-w-50">
-        <div className="profile-view w-full  h-40 flex-col flex items-start mt-3 border sm:rounded-lg border-gray-400">
-          <div className="cover-image h-14 bg-yellow-400 self-stretch sm:rounded-t-lg border-gray-400"></div>
+        <div className="profile-view w-full  h-40 flex-col flex items-start mt-3 border sm:rounded-lg border-gray-200 bg-white">
+          <div className="cover-image h-14 bg-yellow-400 self-stretch sm:rounded-t-lg border-gray-200"></div>
           <ProfileImage
             session={session}
             styles={"w-17 absolute top-7 left-2"}
           />
           <div className="info text-black mt-10 px-2 ">
             <h5>{session?.user?.name}</h5>
-            <h5 className="text-[13px]">Professional</h5>
-            <h5 className="text-xs">Addis Ababa</h5>
+            <h5 className="text-[13px] text-gray-800 font-light">
+              Professional
+            </h5>
+            <h5 className="text-xs text-gray-500">Addis Ababa</h5>
           </div>
         </div>
-        <div className="links  mt-3 px-2 text-xs space-y-3 font-bold border sm:rounded-lg p-2 border-gray-400">
-          <div className="saved-items flex gap-x-2 ">
+        <div className="links  mt-3 px-2 text-xs space-y-3 font-bold border sm:rounded-lg p-2 border-gray-200 bg-white">
+          <div className="saved-items flex gap-x-2 group cursor-pointer ">
             <Bookmark size={15} strokeWidth={2.5} />
-            <p>Saved items</p>
+            <p className="group-hover:underline">Saved items</p>
           </div>
-          <div className="saved-items flex gap-x-2">
+          <div className="saved-items flex gap-x-2 group cursor-pointer">
             <Users size={15} strokeWidth={2.5} />
-            <p>Groups</p>
+            <p className="group-hover:underline">Groups</p>
           </div>
-          <div className="saved-items flex gap-x-2">
+          <div className="saved-items flex gap-x-2 group cursor-pointer">
             <Mails size={15} strokeWidth={2.5} />
-            <p>Newsletters</p>
+            <p className="group-hover:underline">Newsletters</p>
           </div>
-          <div className="saved-items flex gap-x-2">
+          <div className="saved-items flex gap-x-2 group cursor-pointer">
             <CalendarDays size={15} strokeWidth={2.5} />
-            <p>Events</p>
+            <p className="group-hover:underline">Events</p>
           </div>
         </div>
       </div>
       <div className="mt-3  rounded-lg lg:flex-2 md:min-w-[500px] lg:max-w-xl space-y-2">
-        <div className="post px-2 flex items-center gap-2 border p-2 sm:rounded-lg">
+        <div className="post px-2 flex items-center gap-2 border p-2 sm:rounded-lg border-gray-200 bg-white">
           <ProfileImage session={session} styles={"w-13"} />
           <input
-            className="border text-sm rounded-full p-2 focus:outline-none w-full"
+            className="border border-gray-300 text-sm rounded-full p-2 focus:outline-none w-full"
             placeholder="Start a Post "
           />
         </div>
-        <div className="sm:rounded-lg border border-gray-400">Posts</div>
+        <div className="sm:rounded-lg border border-gray-200 p-2 bg-white">
+          <div className="flex items-center gap-2">
+            <ProfileImage session={session} styles={'w-12'}/>
+            <div className="text-left! -space-y-0.5">
+              <h5 className='text-sm font-semibold'>Jhon Doe</h5>
+              <h5 className="text-xs line-clamp-1">Professional</h5>
+              <h5 className="text-xs font-light">4d</h5>
+
+
+            </div>
+          </div>
+        </div>
       </div>
-      <div className="hidden lg:block mt-3 rounded-lg border-gray-400 border">
+      <div className="hidden lg:block mt-3 rounded-lg border-gray-200 border p-2 bg-white ">
         <h1>Add the following to your feed</h1>
       </div>
     </div>
   );
 }
-const Homes=React.memo(Home);
-export default Homes;
+;
+export default Home;
