@@ -85,7 +85,7 @@ import ProfileImage from "@/components/profileimage";
   }
 
   return (
-    <div className="md:px-6 max-w-xl  mx-auto  md:mx-0 md:flex ">
+    <div className="md:px-6 max-w-xl  mx-auto  md:mx-0 md:flex md:gap-x-10  md:max-w-full! min-[1200px]:justify-center">
       <div className="relative md:min-w-50">
         <div className="profile-view w-full  h-40 flex-col flex items-start mt-3 border sm:rounded-lg border-gray-400">
           <div className="cover-image h-14 bg-yellow-400 self-stretch sm:rounded-t-lg border-gray-400"></div>
@@ -118,17 +118,18 @@ import ProfileImage from "@/components/profileimage";
           </div>
         </div>
       </div>
-      <div className="mt-3 min-w-full bg-green-50 ">
-        <div className="post px-2 flex items-center gap-2 border p-2">
+      <div className="mt-3  rounded-lg lg:flex-2 md:min-w-[500px] lg:max-w-xl space-y-2">
+        <div className="post px-2 flex items-center gap-2 border p-2 sm:rounded-lg">
           <ProfileImage session={session} styles={"w-13"} />
           <input
             className="border text-sm rounded-full p-2 focus:outline-none w-full"
             placeholder="Start a Post "
           />
         </div>
+        <div className="sm:rounded-lg border border-gray-400">Posts</div>
       </div>
-      <div className="hidden lg:block">
-        <h1>Add ti ur feed</h1>
+      <div className="hidden lg:block mt-3 rounded-lg border-gray-400 border">
+        <h1>Add the following to your feed</h1>
       </div>
     </div>
   );
