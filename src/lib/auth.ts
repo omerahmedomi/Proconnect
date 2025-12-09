@@ -50,4 +50,13 @@ export const auth = betterAuth({
     },
     autoSignInAfterVerification: true,
   },
+  session:{
+    updateAge:60*60*24,
+    expiresIn:60*60*24*7,
+    cookieCache:{
+      enabled:true,
+      maxAge:60*60*5,
+      
+    }
+  }
 });

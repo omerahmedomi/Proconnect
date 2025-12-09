@@ -6,18 +6,34 @@ import { cache } from "react";
 import { auth } from "@/lib/auth";
 
 import HeroSection from "@/components/herosection";
-import { ArrowRight, Bookmark, Globe, Mails, Network, Target, Users, Zap, CalendarDays } from "lucide-react";
+import {
+  ArrowRight,
+  Bookmark,
+  Globe,
+  Mails,
+  Network,
+  Target,
+  Users,
+  Zap,
+  CalendarDays,
+  UserPlus,
+  Ellipsis,
+  X,
+  ThumbsUp,
+  MessageCircleMore,
+  Repeat2,
+  Send,
+} from "lucide-react";
 import WhyCard from "@/components/whycard";
 import CountUpData from "@/components/countupdata";
 
 import ProfileImage from "@/components/profileimage";
 import Profile from "@/components/profile";
 
-
- async function Home() {
- const session = await auth.api.getSession({
-  headers:await headers()
- })
+async function Home() {
+  const session = await auth.api.getSession({
+    headers: await headers(),
+  });
 
   if (!session) {
     return (
@@ -30,7 +46,7 @@ import Profile from "@/components/profile";
             </h3>
             <p className="text-xl max-w-200">
               Discover why professionals choose our platform to build meaningful
-              connections and advance ther careers 
+              connections and advance ther careers
             </p>
           </div>
           <div className="flex flex-col sm:grid gap-6 grid-cols-2 lg:grid-cols-4">
@@ -130,15 +146,79 @@ import Profile from "@/components/profile";
             placeholder="Start a Post "
           />
         </div>
-        <div className="sm:rounded-lg border border-gray-200 p-2 bg-white">
-          <div className="flex items-center gap-2">
-            <ProfileImage session={session} styles={'w-12'}/>
-            <div className="text-left! -space-y-0.5">
-              <h5 className='text-sm font-semibold'>Jhon Doe</h5>
-              <h5 className="text-xs line-clamp-1">Professional</h5>
-              <h5 className="text-xs font-light">4d</h5>
+        <div className="sm:rounded-lg border border-gray-200 *:px-3 py-3  w-full ">
+          <div className="header-post flex justify-between text-xs ">
+            <p className="">
+              <span className="font-bold">Umer</span> likes this
+            </p>
+            <div className="flex gap-2 text-gray-600 hover:text-gray-500 *:cursor-pointer">
+              <Ellipsis />
+              <X />
+            </div>
+          </div>
 
-
+          <div className="flex justify-between items-center">
+            <div className="flex items-center gap-2">
+              <ProfileImage session={session} styles={"w-14"} />
+              <div className="text-left! -space-y-0.5 ">
+                <h5 className="text-sm font-semibold">Jhon Doe</h5>
+                <h5 className="text-xs line-clamp-1">Professional</h5>
+                <h5 className="text-xs font-light">4d</h5>
+              </div>
+            </div>
+            <p className="connect flex items-center text-cyan-600 hover:text-cyan-500 transition-colors duration-300 cursor-pointer gap-1">
+              <UserPlus size={14} />
+              Connect
+            </p>
+          </div>
+          <div className="mt-2 text-sm">
+            Lorem ipsum dolor, sit amet consectetur adipisicing elit. Tenetur
+            culpa omnis alias facilis voluptas quasi ducimus animi similique
+            fuga beatae sint, delectus sequi odio modi, ipsa molestiae in minus
+            perspiciatis. Dolore nihil magnam aut dolores animi suscipit
+            corrupti quis nemo natus quam quidem repellat assumenda sequi rerum
+            atque libero illum unde nobis consectetur, praesentium ducimus
+            necessitatibus, placeat ab? Nobis, reprehenderit! Delectus odio
+            culpa esse laboriosam sint maiores, et incidunt vel harum sequi!
+            Pariatur, quae quo! Architecto, quo voluptatibus. Dolores, nihil.
+            Quod dolorum facilis illum alias ullam impedit ex eaque recusandae?
+          </div>
+          <div className="post-image mt-3 p-0!">
+            <img
+              src="/sample-image.jfif"
+              alt="post-img "
+              className="w-full h-full max-w-full"
+            />
+          </div>
+          <div className="flex flex-col mt-2 space-y-1">
+            <div className="flex justify-between text-sm text-gray-500">
+              <p>Liked by Umer and 5000 others </p>
+              <div className="flex gap-1 items-center">
+                <p>212 comments</p>
+                <div className="rounded-full size-1 bg-gray-500"></div>
+                <p>310 repost</p>
+              </div>
+            </div>
+            <div className="w-full">
+              <div className="h-px px-3  w-full bg-gray-400" />
+            </div>
+            <div className="flex justify-between text-sm text-gray-500 *:flex *:items-center *:gap-x-2 *:p-2 *:hover:bg-gray-200 *:cursor-pointer *:rounded transition-all duration-500">
+              <span>
+                <ThumbsUp size={17} />
+                Like
+              </span>
+              <span>
+                <MessageCircleMore size={17} />
+                Comment
+              </span>
+              <span>
+                <Repeat2 size={17} />
+                Repost
+              </span>
+              <span>
+                <Send size={17} />
+                Share
+              </span>
             </div>
           </div>
         </div>
@@ -149,5 +229,4 @@ import Profile from "@/components/profile";
     </div>
   );
 }
-;
 export default Home;
