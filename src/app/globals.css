@@ -104,6 +104,9 @@
 }.side-menu-links{
   @apply *:hover:bg-blue-50 *:px-5 *:py-3 *:flex *:gap-3 *:items-center *:cursor-pointer space-y-1 mt-1
 }
+.profile-div{
+  @apply max-w-xl mx-auto my-5 sm:rounded-lg border border-gray-200 relative shadow;
+}
   
 }
 
@@ -154,7 +157,9 @@
   @apply text-center
 }
 
-
+body{
+  @apply bg-slate-50
+}
 
 
 

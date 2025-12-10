@@ -103,19 +103,23 @@ async function Home() {
   }
 
   return (
-    <div className="md:px-6 max-w-xl  mx-auto  md:mx-0 md:flex md:gap-x-10  md:max-w-full! min-[1200px]:justify-center bg-slate-50 ">
+    <div className="md:px-6 max-w-xl  mx-auto  md:mx-0 md:flex md:gap-x-10  md:max-w-full! min-[1200px]:justify-center  ">
       <div className="relative md:min-w-50">
         <div className="profile-view w-full  h-40 flex-col flex items-start mt-3 border sm:rounded-lg border-gray-200 bg-white">
-          <div className="cover-image h-14 bg-yellow-400 self-stretch sm:rounded-t-lg border-gray-200"></div>
+          <div className="cover-image h-14 bg-yellow-400 self-stretch sm:rounded-t-lg border-gray-200">
+            <img
+              src="/sample-cover.jpg"
+              alt="cover-image"
+              className="w-full h-full object-cover sm:rounded-t-lg"
+            />
+          </div>
           <ProfileImage
             session={session}
             styles={"w-17 absolute top-7 left-2"}
           />
           <div className="info text-black mt-10 px-2 ">
-            <h5>{session?.user?.name}</h5>
-            <h5 className="text-[13px] text-gray-800 font-light">
-              Professional
-            </h5>
+            <h5 className="font-semibold">{session?.user?.name}</h5>
+            <h5 className=" text-gray-800 text-sm">Professional</h5>
             <h5 className="text-xs text-gray-500">Addis Ababa</h5>
           </div>
         </div>
