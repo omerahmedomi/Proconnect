@@ -30,7 +30,7 @@ const PersonalProfile = async () => {
           <h5 className="text-2xl">{session?.user?.name}</h5>
           <h5 className="  ">Professional</h5>
           <h5 className=" text-gray-500">Addis Ababa</h5>
-          <div className="companies  text-gray-500 flex items-center gap-1">
+          <div className="companies  text-gray-500 flex items-center gap-1 text-xs sm:text-sm">
             <p>Addis Ababa University</p>
             <div className="rounded-full size-1 bg-gray-500"></div>
             <p className="">Addis Ababa University</p>
@@ -58,7 +58,7 @@ const PersonalProfile = async () => {
             <h3>Activity</h3>
             <h6 className="text-sm text-cyan-700">799 followers</h6>
           </div>
-          <div className="px-2 py-1 border border-cyan-500 text-cyan-500 rounded-full self-start  hover:bg-cyan-50 cursor-pointer transition sm:mr-10 w-fit">
+          <div className="px-2 py-1 border border-cyan-500 text-cyan-500 rounded-full self-start  hover:bg-cyan-50 cursor-pointer transition sm:mr-15 w-fit">
             Create a post
           </div>
         </div>
@@ -66,6 +66,36 @@ const PersonalProfile = async () => {
           <h5 className="font-semibold">You haven’t posted yet.</h5>
 
           <h6>Posts you share will be displayed here.</h6>
+        </div>
+      </div>
+      <div className="profile-div p-6">
+        <div className="flex justify-between">
+          {" "}
+          <h4 className="font-semibold  text-lg">Experience</h4>
+          <div>
+            <PlusIcon styles="mr-15" />
+            <EditIcon />
+          </div>
+        </div>
+      </div>
+      <div className="profile-div p-6">
+        <div className="flex justify-between">
+          {" "}
+          <h4 className="font-semibold  text-lg">Education</h4>
+          <div>
+            <PlusIcon styles="mr-15" />
+            <EditIcon />
+          </div>
+        </div>
+      </div>
+      <div className="profile-div p-6">
+        <div className="flex justify-between">
+          {" "}
+          <h4 className="font-semibold  text-lg">Skills</h4>
+          <div>
+            <PlusIcon styles="mr-15" />
+            <EditIcon />
+          </div>
         </div>
       </div>
     </div>
