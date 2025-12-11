@@ -29,6 +29,7 @@ import CountUpData from "@/components/countupdata";
 
 import ProfileImage from "@/components/profileimage";
 import Profile from "@/components/profile";
+import PostInput from "@/components/postinput";
 
 async function Home() {
   const session = await auth.api.getSession({
@@ -103,7 +104,7 @@ async function Home() {
   }
 
   return (
-    <div className="md:px-6 max-w-xl  mx-auto  md:mx-0 md:flex md:gap-x-10  md:max-w-full! min-[1200px]:justify-center  ">
+    <div className="md:px-6 max-w-xl  mx-auto  md:mx-0 md:flex md:gap-x-10  md:max-w-full! min-[1200px]:justify-center relative">
       <div className="relative md:min-w-50">
         <div className="profile-view w-full  h-40 flex-col flex items-start mt-3 border sm:rounded-lg border-gray-200 bg-white">
           <div className="cover-image h-14 bg-yellow-400 self-stretch sm:rounded-t-lg border-gray-200">
@@ -145,10 +146,7 @@ async function Home() {
       <div className="mt-3  rounded-lg lg:flex-2 md:min-w-[500px] lg:max-w-xl space-y-2">
         <div className="post px-2 flex items-center gap-2 border p-2 sm:rounded-lg border-gray-200 bg-white">
           <ProfileImage session={session} styles={"w-13"} />
-          <input
-            className="border border-gray-300 text-sm rounded-full p-2 focus:outline-none w-full"
-            placeholder="Start a Post "
-          />
+          <PostInput/>
         </div>
         <div className="sm:rounded-lg border border-gray-200 *:px-3 py-3  w-full ">
           <div className="header-post flex justify-between text-xs ">
