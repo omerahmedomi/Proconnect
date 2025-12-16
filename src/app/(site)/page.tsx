@@ -105,7 +105,7 @@ async function Home() {
   }
 
   return (
-    <div className="md:px-6 max-w-xl  mx-auto  md:mx-0 md:flex md:gap-x-10  md:max-w-full! min-[1200px]:justify-center relative">
+    <div className="md:px-6 max-w-xl  mx-auto  md:mx-0 md:flex md:gap-x-10  md:max-w-full! min-[1200px]:justify-center  ">
       <div className="relative md:min-w-50">
         <div className="profile-view w-full  h-40 flex-col flex items-start mt-3 border sm:rounded-lg border-gray-200 bg-white">
           <div className="cover-image h-14 bg-yellow-400 self-stretch sm:rounded-t-lg border-gray-200">
