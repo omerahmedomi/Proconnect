@@ -30,6 +30,7 @@ import CountUpData from "@/components/countupdata";
 import ProfileImage from "@/components/profileimage";
 import Profile from "@/components/profile";
 import PostInput from "@/components/postinput";
+import Connect from "@/components/connect";
 
 async function Home() {
   const session = await auth.api.getSession({
@@ -168,10 +169,7 @@ async function Home() {
                 <h5 className="text-xs font-light">4d</h5>
               </div>
             </div>
-            <p className="connect flex items-center text-cyan-600 hover:text-cyan-500 transition-colors duration-300 cursor-pointer gap-1">
-              <UserPlus size={14} />
-              Connect
-            </p>
+            <Connect/>
           </div>
           <div className="mt-2 text-sm">
             Lorem ipsum dolor, sit amet consectetur adipisicing elit. Tenetur
