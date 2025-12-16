@@ -149,7 +149,7 @@ async function Home() {
           <ProfileImage session={session} styles={"w-13"} />
           <PostInput/>
         </div>
-        <div className="sm:rounded-lg border border-gray-200 *:px-3 py-3  w-full ">
+        <div className="sm:rounded-lg border border-gray-200 *:px-3 py-3  w-full bg-white ">
           <div className="header-post flex justify-between text-xs ">
             <p className="">
               <span className="font-bold">Umer</span> likes this
