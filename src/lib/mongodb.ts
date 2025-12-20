@@ -1,16 +1,33 @@
-// // lib/mongodb.tsx
-// import {MongoClient}  from 'mongodb'
+import mongoose from "mongoose";
 
-// if (!process.env.MONGODB_URI) {
-//   throw new Error("Please define the MONGODB_URI environment variable");
-// }
+const MONGODB_URI = process.env.MONGODB_URI!;
 
-// const uri = process.env.MONGODB_URI;
-// const client = new MongoClient(uri);
+if (!MONGODB_URI) {
+  throw new Error("Please define the MONGODB_URI environment variable");
+}
 
-// const clientPromise = client.connect();
+/**
+ * Cached connection for MongoDB.
+ */
+let cached = global.mongoose;
 
-// export const getDb = async () => {
-// //   const c = await clientPromise;
-//   return c.db(); // defaults to the DB name in the URI
-// };
+if (!cached) {
+  cached = global.mongoose = { conn: null, promise: null };
+}
+
+
+async function dbConnect() {
+  if (cached.conn) {
+    return cached.conn;
+  }
+
+  if (!cached.promise) {
+    cached.promise = mongoose.connect(MONGODB_URI).then((mongoose) => {
+      return mongoose;
+    });
+  }
+  cached.conn = await cached.promise;
+  return cached.conn;
+}
+
+export default dbConnect;

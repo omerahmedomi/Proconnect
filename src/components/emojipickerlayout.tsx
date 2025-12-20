@@ -1,4 +1,5 @@
 "use client";
+import axios from "axios";
 import EmojiPicker from "emoji-picker-react";
 import { LucideImage, LucideSmile } from "lucide-react";
 import { useRef, useState, useEffect } from "react";
@@ -10,9 +11,10 @@ export default function EmojiPickerLayout() {
     { url: string; name: string; size: number }[]
   >([]);
   const [files, setFiles] = useState<File[]>([]);
+  const [isUploading,setIsUploading] = useState<boolean>(false);
 
-  const handleFileChange = (e) => {
-    const selectedFiles:File [] = Array.from(e.target.files);
+  const handleFileChange = (e:React.ChangeEvent<HTMLInputElement>) => {
+    const selectedFiles:File [] = Array.from(e?.target?.files ?? []);
 
     // Combine existing files with new files
     const updatedFiles = [...files, ...selectedFiles];
@@ -46,15 +48,35 @@ export default function EmojiPickerLayout() {
     setFiles(updatedFiles);
   };
 
-  const handleUploadClick = () => {
+  const handleUploadClick = async () => {
     // You can now upload all files in the `files` array
     const formData = new FormData();
-    files.forEach((file) => {
-      formData.append("images[]", file);
-    });
+    files.forEach((file)=>{
+      formData.append('images', file)
+    })
+    // setIsUploading(true);
+
 
     // Upload logic here
     console.log("Files to upload:", files);
+    console.log([...formData.entries()]);
+
+     try {
+       setIsUploading(true);
+
+       const res = await axios.post("/api/files", formData, {
+         headers: {
+           "Content-Type": "multipart/form-data",
+         },
+       });
+
+       console.log("Uploaded:", res.data);
+       // res.data.urls → save in post later
+     } catch (err) {
+       console.error(err);
+     } finally {
+       setIsUploading(false);
+     }
   };
   // useEffect(() => {
   //   return () => {
@@ -64,11 +86,11 @@ export default function EmojiPickerLayout() {
   //   };
   // }, [preview]);
   return (
-    <div className="w-full overflow-y-scroll">
+    <div className="w-full">
       <div className="self-start flex flex-col">
         <textarea
           value={postText}
-          className="text-lg focus:outline-none w-full  resize-none "
+          className="text-lg focus:outline-none w-full  resize-none field-sizing-content "
           placeholder="What do you want to talk about?"
           onChange={(e) => setPostText(e.target.value)}
         />
@@ -116,7 +138,7 @@ export default function EmojiPickerLayout() {
           }  gap-4 mt-4`}
         >
           {previews.map((preview, index) => (
-            <div key={index} className="relative border rounded p-2">
+            <div key={index} className="relative border rounded p-2 hover:bg-gray-50">
               <img
                 src={preview.url}
                 alt={`Preview ${index + 1}`}
@@ -133,7 +155,7 @@ export default function EmojiPickerLayout() {
           ))}
         </div>
       </div>
-      <button onClick={handleUploadClick}>Post</button>
+      <button onClick={handleUploadClick} disabled={isUploading} className={`mt-1 px-5 py-1 cursor-pointer rounded-full bg-blue-700 text-white hover:bg-blue-500 transition disabled:hover:bg-none disabled:bg-gray-400 disabled:cursor-not-allowed`}>{isUploading ? 'Posting...' :'Post'}</button>
     </div>
   );
 }
