@@ -1,8 +1,12 @@
+import { requireAuth } from "@/lib/auth-middleware";
+import Post from "@/models/post";
 import { pinata } from "@/utils/config";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function POST(request: NextRequest) {
   try {
+    const user = await requireAuth(request);
+    console.log('User for auth', user)
     const formData = await request.formData();
     const images = formData.getAll("images") as File[];
 
@@ -28,6 +32,8 @@ export async function POST(request: NextRequest) {
         return url
       }
     ),
+
+   const toDtb = await Post.create({user?.user?.id,})
 );
 
     return NextResponse.json( {urls, status: 200 });
