@@ -1,4 +1,5 @@
 import { requireAuth } from "@/lib/auth-middleware";
+import dbConnect from "@/lib/mongodb";
 import Post from "@/models/post";
 import { pinata } from "@/utils/config";
 import { NextRequest, NextResponse } from "next/server";
@@ -32,9 +33,15 @@ export async function POST(request: NextRequest) {
         return url
       }
     ),
+);    
+    await  dbConnect();
 
-   const toDtb = await Post.create({user?.user?.id,})
-);
+   const addURLstoDB = await Post.create({
+     user: user?.user?.id,
+     images: urls,
+   });
+   console.log("Add to db",addURLstoDB);
+
 
     return NextResponse.json( {urls, status: 200 });
   } catch (error) {
