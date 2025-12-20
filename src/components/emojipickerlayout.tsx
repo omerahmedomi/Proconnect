@@ -70,7 +70,7 @@ export default function EmojiPickerLayout() {
          },
        });
 
-       console.log("Uploaded:", res.data);
+       console.log("Uploaded:", res);
        // res.data.urls → save in post later
      } catch (err) {
        console.error(err);

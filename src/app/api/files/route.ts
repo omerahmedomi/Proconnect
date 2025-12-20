@@ -22,11 +22,15 @@ export async function POST(request: NextRequest) {
     );
 
     // depending on SDK response shape
-    // const urls = uploaded.map(
-    //   (item) => item.gatewayUrl ?? item.ipfsUrl ?? item.cid
-    // );
+    const urls = await Promise.all(uploaded.map(
+      async (item) => {
+        const url = await pinata.gateways.public.convert(item.cid);
+        return url
+      }
+    ),
+);
 
-    return NextResponse.json( { status: 200 });
+    return NextResponse.json( {urls, status: 200 });
   } catch (error) {
     console.error("Upload error:", error);
     return NextResponse.json(
