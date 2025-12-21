@@ -3,6 +3,7 @@
 import { useState } from "react";
 import ProfileModal from "./profilemodal";
 
+
 export default function Profile({
   session
 }: {
@@ -29,6 +30,7 @@ export default function Profile({
   } | null>;
 }) {
     const [isProfileModalOpen,setIsProfileModalOpne]= useState<bool>(false);
+   
   return (
     <div
       className="profile rounded-full hover:bg-cyan-100 p-0.5 cursor-pointer"

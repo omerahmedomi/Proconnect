@@ -6,5 +6,4 @@ export function timeAgo(date: Date | string) {
 
   return formatDistanceToNow(d, {
     addSuffix: true,
-    roundingMethod: "floor",
   }).replace(/^about /, "");}
