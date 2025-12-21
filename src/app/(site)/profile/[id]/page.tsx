@@ -2,6 +2,7 @@ import Connect from "@/components/connect";
 import PlusIcon from "@/components/icons/addicon";
 import EditIcon from "@/components/icons/editicon";
 import MayKnowPerson from "@/components/mayknowperson";
+import MyProfile from "@/components/myprofile";
 import ProfileImage from "@/components/profileimage";
 import { auth } from "@/lib/auth";
 import { Edit2 } from "lucide-react";
@@ -25,10 +26,7 @@ const PersonalProfile = async () => {
               className="w-full h-full object-cover max-w-full sm:rounded-t-lg"
             />
           </div>
-          <ProfileImage
-            session={session}
-            styles={"w-25 absolute top-15 left-6 bg-cyan-50"}
-          />
+          <MyProfile session={session}/>
           <div className="info mt-13 text-sm px-6 flex flex-col">
             <h5 className="text-2xl">{session?.user?.name}</h5>
             <h5 className="  ">Professional</h5>

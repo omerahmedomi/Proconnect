@@ -1,6 +1,7 @@
 import { Ellipsis,X,ThumbsUp,MessageCircleMore,Repeat2,Send } from "lucide-react";
 import ProfileImage from "./profileimage";
 import Connect from "./connect";
+import { timeAgo } from './../utils/dateformat';
 export default async function Post({sesiion,post}){
    
     return (
@@ -21,7 +22,9 @@ export default async function Post({sesiion,post}){
             <div className="text-left! -space-y-0.5 ">
               <h5 className="text-sm font-semibold">{post.user.name}</h5>
               <h5 className="text-xs line-clamp-1">Professional</h5>
-              <h5 className="text-xs font-light">{post?.user?.createdAt.toLocaleString()}</h5>
+              <h5 className="text-xs font-light">
+                {timeAgo(post.createdAt)}
+              </h5>
             </div>
           </div>
           <Connect />
