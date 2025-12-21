@@ -2,6 +2,7 @@ import { requireAuth } from "@/lib/auth-middleware";
 import dbConnect from "@/lib/mongodb";
 import Post from "@/models/post";
 import { pinata } from "@/utils/config";
+import mongoose from "mongoose";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function POST(request: NextRequest) {
@@ -32,9 +33,9 @@ export async function POST(request: NextRequest) {
     await  dbConnect();
 
    const addURLstoDB = await Post.create({
-     user: user?.user?.id,
+     user: new mongoose.Types.ObjectId(user.user.id),
      images: urls,
-     text:postText,
+     text: postText,
    });
    console.log("Add to db",addURLstoDB);
 

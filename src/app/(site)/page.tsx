@@ -1,10 +1,8 @@
 import { headers } from "next/headers";
 import Link from "next/link";
-import React from "react";
-import { cache } from "react";
-
 import { auth } from "@/lib/auth";
-
+import '@/models/user'
+import post from "@/models/post";
 import HeroSection from "@/components/herosection";
 import {
   ArrowRight,
@@ -31,6 +29,8 @@ import ProfileImage from "@/components/profileimage";
 import Profile from "@/components/profile";
 import PostInput from "@/components/postinput";
 import Connect from "@/components/connect";
+import Post from "@/components/post";
+import dbConnect from "@/lib/mongodb";
 
 async function Home() {
   const session = await auth.api.getSession({
@@ -103,6 +103,10 @@ async function Home() {
       </>
     );
   }
+     await dbConnect();
+  
+  const userPost = await post.find().populate('user').lean();
+  console.log(userPost[0].createdAt)
 
   return (
     <div className="md:px-6 max-w-xl  mx-auto  md:mx-0 md:flex md:gap-x-10  md:max-w-full! min-[1200px]:justify-center  ">
@@ -147,81 +151,12 @@ async function Home() {
       <div className="mt-3  rounded-lg lg:flex-2 md:min-w-[500px] lg:max-w-xl space-y-2">
         <div className="post px-2 flex items-center gap-2 border p-2 sm:rounded-lg border-gray-200 bg-white">
           <ProfileImage session={session} styles={"w-13"} />
-          <PostInput/>
+          <PostInput />
         </div>
-        <div className="sm:rounded-lg border border-gray-200 *:px-3 py-3  w-full bg-white ">
-          <div className="header-post flex justify-between text-xs ">
-            <p className="">
-              <span className="font-bold">Umer</span> likes this
-            </p>
-            <div className="flex gap-2 text-gray-600 hover:text-gray-500 *:cursor-pointer">
-              <Ellipsis />
-              <X />
-            </div>
-          </div>
-
-          <div className="flex justify-between items-center">
-            <div className="flex items-center gap-2">
-              <ProfileImage session={session} styles={"w-14"} />
-              <div className="text-left! -space-y-0.5 ">
-                <h5 className="text-sm font-semibold">Jhon Doe</h5>
-                <h5 className="text-xs line-clamp-1">Professional</h5>
-                <h5 className="text-xs font-light">4d</h5>
-              </div>
-            </div>
-            <Connect/>
-          </div>
-          <div className="mt-2 text-sm">
-            Lorem ipsum dolor, sit amet consectetur adipisicing elit. Tenetur
-            culpa omnis alias facilis voluptas quasi ducimus animi similique
-            fuga beatae sint, delectus sequi odio modi, ipsa molestiae in minus
-            perspiciatis. Dolore nihil magnam aut dolores animi suscipit
-            corrupti quis nemo natus quam quidem repellat assumenda sequi rerum
-            atque libero illum unde nobis consectetur, praesentium ducimus
-            necessitatibus, placeat ab? Nobis, reprehenderit! Delectus odio
-            culpa esse laboriosam sint maiores, et incidunt vel harum sequi!
-            Pariatur, quae quo! Architecto, quo voluptatibus. Dolores, nihil.
-            Quod dolorum facilis illum alias ullam impedit ex eaque recusandae?
-          </div>
-          <div className="post-image mt-3 p-0!">
-            <img
-              src="/sample-image.jfif"
-              alt="post-img "
-              className="w-full h-full max-w-full"
-            />
-          </div>
-          <div className="flex flex-col mt-2 space-y-1">
-            <div className="flex justify-between text-sm text-gray-500">
-              <p>Liked by Umer and 5000 others </p>
-              <div className="flex gap-1 items-center">
-                <p>212 comments</p>
-                <div className="rounded-full size-1 bg-gray-500"></div>
-                <p>310 repost</p>
-              </div>
-            </div>
-            <div className="w-full">
-              <div className="h-px px-3  w-full bg-gray-400" />
-            </div>
-            <div className="flex justify-between text-sm text-gray-500 *:flex *:items-center *:gap-x-2 *:p-2 *:hover:bg-gray-200 *:cursor-pointer *:rounded transition-all duration-500">
-              <span>
-                <ThumbsUp size={17} />
-                Like
-              </span>
-              <span>
-                <MessageCircleMore size={17} />
-                Comment
-              </span>
-              <span>
-                <Repeat2 size={17} />
-                Repost
-              </span>
-              <span>
-                <Send size={17} />
-                Share
-              </span>
-            </div>
-          </div>
-        </div>
+        {userPost.length > 0 &&
+          userPost.map((post,i) => (
+            <Post key={i} session={session} post={post} />
+          ))}
       </div>
       <div className="hidden lg:block mt-3 rounded-lg border-gray-200 border p-2 bg-white ">
         <h1>Add the following to your feed</h1>
