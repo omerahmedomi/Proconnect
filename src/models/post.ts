@@ -5,7 +5,7 @@ const postSchema = new mongoose.Schema({
     type: Schema.Types.ObjectId,
     ref:'User',
     required: true,
-    unique: true,
+  
   },
   text: {
     type: String,
@@ -25,6 +25,5 @@ const postSchema = new mongoose.Schema({
 //   ],
 });
 
-const Post = mongoose.model("Post", postSchema);
 
-export default mongoose.models.Post || Post;
+export default mongoose.models.Post ||  mongoose.model("Post", postSchema);

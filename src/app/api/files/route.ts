@@ -10,13 +10,8 @@ export async function POST(request: NextRequest) {
     console.log('User for auth', user)
     const formData = await request.formData();
     const images = formData.getAll("images") as File[];
+    const postText = formData.get('text') as string;
 
-    if (!images.length) {
-      return NextResponse.json(
-        { error: "No images provided" },
-        { status: 400 }
-      );
-    }
 
     // ✅ upload all images properly
     const uploaded = await Promise.all(
@@ -39,6 +34,7 @@ export async function POST(request: NextRequest) {
    const addURLstoDB = await Post.create({
      user: user?.user?.id,
      images: urls,
+     text:postText,
    });
    console.log("Add to db",addURLstoDB);
 

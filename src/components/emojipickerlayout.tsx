@@ -12,8 +12,10 @@ export default function EmojiPickerLayout() {
   >([]);
   const [files, setFiles] = useState<File[]>([]);
   const [isUploading,setIsUploading] = useState<boolean>(false);
+  const [errorMessage,setErrorMessage] = useState('');
 
   const handleFileChange = (e:React.ChangeEvent<HTMLInputElement>) => {
+    setErrorMessage('')
     const selectedFiles:File [] = Array.from(e?.target?.files ?? []);
 
     // Combine existing files with new files
@@ -50,18 +52,28 @@ export default function EmojiPickerLayout() {
 
   const handleUploadClick = async () => {
     // You can now upload all files in the `files` array
+   
     const formData = new FormData();
     files.forEach((file)=>{
       formData.append('images', file)
     })
+    formData.set('text',postText);
     // setIsUploading(true);
 
 
     // Upload logic here
     console.log("Files to upload:", files);
+    console.log(postText.trim().length,files.length)
     console.log([...formData.entries()]);
 
      try {
+       if (postText.trim().length == 0 && files.length == 0)
+         {
+          setErrorMessage(
+            "Please write post text or get atleast one image to post"
+          );
+         return
+         ;}
        setIsUploading(true);
 
        const res = await axios.post("/api/files", formData, {
@@ -74,6 +86,7 @@ export default function EmojiPickerLayout() {
        // res.data.urls → save in post later
      } catch (err) {
        console.error(err);
+       setErrorMessage(err?.response?.data?.error || err.message)
      } finally {
        setIsUploading(false);
      }
@@ -87,12 +100,16 @@ export default function EmojiPickerLayout() {
   // }, [preview]);
   return (
     <div className="w-full">
+    {errorMessage && <h6 className='text-red-400 text-sm'>{errorMessage}</h6>}
       <div className="self-start flex flex-col">
         <textarea
           value={postText}
           className="text-lg focus:outline-none w-full  resize-none field-sizing-content "
           placeholder="What do you want to talk about?"
-          onChange={(e) => setPostText(e.target.value)}
+          onChange={(e) => {
+            setErrorMessage('');
+            setPostText(e.target.value)
+          }}
         />
       </div>
       <div className="flex items-center gap-1">
