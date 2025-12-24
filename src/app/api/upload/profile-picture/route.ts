@@ -10,7 +10,7 @@ export async function POST(request:NextRequest){
       const user2 = await requireAuth(request);
       const formData = await request.formData();
       const image = formData.get('profileImage') as File;
-      console.log(image)
+      console.log("FormData",formData)
   
       const {cid} = await pinata.upload.public.file(image);
       const url = await pinata.gateways.public.convert(cid);

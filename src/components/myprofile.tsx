@@ -5,11 +5,12 @@ import axios from "axios";
 export default function MyProfile({session}){
 
     const fileInputRef = useRef<HTMLInputElement>(null);
-    const [selectedFile,setSelectedFile] = useState<File | null>(null);
+    
 
-    async function uploadProfilePicture(){
+    async function uploadProfilePicture(image:File){
+        if(!image) return;
            const formData = new FormData();
-           formData.set('profileImage',selectedFile!);
+           formData.set('profileImage',image);
            try {
             const uploadedImage = await axios.post('/api/upload/profile-picture',formData, {
                 headers:{
@@ -29,9 +30,8 @@ export default function MyProfile({session}){
 
         }}>
             <input type='file' accept='image/*' ref={fileInputRef} className='absolute right-[99999px]' onChange={ async (e)=>{
-               setSelectedFile(e.target.files[0]);
-               console.log(e.target.files)
-               await uploadProfilePicture()
+               const imageFile = e.target.files[0]!;
+               await uploadProfilePicture(imageFile);
             }}/>
         <ProfileImage
             session={session}
