@@ -106,7 +106,7 @@ async function Home() {
      await dbConnect();
   
   const userPost = await post.find().populate('user').lean();
-  console.log(userPost[0].createdAt)
+  // console.log(userPost[0].createdAt)
 
   return (
     <div className="md:px-6 max-w-xl  mx-auto  md:mx-0 md:flex md:gap-x-10  md:max-w-full! min-[1200px]:justify-center  ">
@@ -153,8 +153,8 @@ async function Home() {
           <ProfileImage session={session} styles={"w-13"} />
           <PostInput />
         </div>
-        {userPost.length > 0 &&
-          userPost.map((post,i) => (
+        {userPost?.length > 0 &&
+          userPost?.map((post,i) => (
             <Post key={i} session={session} post={post} />
           ))}
       </div>

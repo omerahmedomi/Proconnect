@@ -3,6 +3,8 @@ import dbConnect from "@/lib/mongodb";
 import Post from "@/models/post";
 import { pinata } from "@/utils/config";
 import mongoose from "mongoose";
+import { revalidatePath } from "next/cache";
+import { redirect } from "next/navigation";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function POST(request: NextRequest) {
@@ -39,8 +41,11 @@ export async function POST(request: NextRequest) {
    });
    console.log("Add to db",addURLstoDB);
 
+   revalidatePath('/');
 
+    
     return NextResponse.json( {urls, status: 200 });
+   
   } catch (error) {
     console.error("Upload error:", error);
     return NextResponse.json(
@@ -48,4 +53,6 @@ export async function POST(request: NextRequest) {
       { status: 500 }
     );
   }
+
+  
 }

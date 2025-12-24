@@ -23,7 +23,7 @@ export default async function Post({sesiion,post}){
               <h5 className="text-sm font-semibold">{post.user.name}</h5>
               <h5 className="text-xs line-clamp-1">Professional</h5>
               <h5 className="text-xs font-light">
-                {timeAgo(post.createdAt)}
+                {timeAgo(post?.createdAt)}
               </h5>
             </div>
           </div>

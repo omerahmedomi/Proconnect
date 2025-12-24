@@ -2,8 +2,9 @@
 import axios from "axios";
 import EmojiPicker from "emoji-picker-react";
 import { LucideImage, LucideSmile } from "lucide-react";
+import { useRouter } from "next/navigation";
 import { useRef, useState, useEffect } from "react";
-export default function EmojiPickerLayout() {
+export default function EmojiPickerLayout({clearFunction}) {
   const [isPickerVisible, setIsPickerVisivle] = useState<boolean>(false);
   const [postText, setPostText] = useState<string>("");
   const fileInputRef = useRef<HTMLInputElement | null>(null);
@@ -13,6 +14,8 @@ export default function EmojiPickerLayout() {
   const [files, setFiles] = useState<File[]>([]);
   const [isUploading,setIsUploading] = useState<boolean>(false);
   const [errorMessage,setErrorMessage] = useState('');
+
+  const router = useRouter();
 
   const handleFileChange = (e:React.ChangeEvent<HTMLInputElement>) => {
     setErrorMessage('')
@@ -81,8 +84,9 @@ export default function EmojiPickerLayout() {
            "Content-Type": "multipart/form-data",
          },
        });
+         clearFunction();
+       router.refresh();
 
-       console.log("Uploaded:", res);
        // res.data.urls → save in post later
      } catch (err) {
        console.error(err);
