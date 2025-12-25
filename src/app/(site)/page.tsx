@@ -33,11 +33,13 @@ import Post from "@/components/post";
 import dbConnect from "@/lib/mongodb";
 import profile from "@/models/profile";
 import UserProfile from './../../components/userprofile';
+import MyCover from "@/components/mycover";
 
 async function Home() {
   const session = await auth.api.getSession({
     headers: await headers(),
   });
+  await dbConnect();
   const userProfile = await profile.findById(session?.user.id)
 
   if (!session) {
@@ -110,21 +112,17 @@ async function Home() {
   
   const userPost = await post.find().populate('user').lean();
   // console.log(userPost[0].createdAt)
-
+  //  setTimeout(async(resolve)=>{resolve('hi')},10000)
   return (
     <div className="md:px-6 max-w-xl  mx-auto  md:mx-0 md:flex md:gap-x-10  md:max-w-full! min-[1200px]:justify-center  ">
       <div className="relative md:min-w-50">
         <div className="profile-view w-full  h-40 flex-col flex items-start mt-3 border sm:rounded-lg border-gray-200 bg-white">
-          <div className="cover-image h-14 bg-yellow-400 self-stretch sm:rounded-t-lg border-gray-200">
-            <img
-              src="/sample-cover.jpg"
-              alt="cover-image"
-              className="w-full h-full object-cover sm:rounded-t-lg"
-            />
-          </div>
+          <MyCover styles="cover-image h-14 bg-yellow-400 self-stretch sm:rounded-t-lg border-gray-200" showEdit={false} profile={userProfile}/>
           <ProfileImage
             session={session}
-            styles={"w-17 h-17 border bg-cyan-500 border-gray-300 absolute top-7 left-2"}
+            styles={
+              "w-17 h-17 border bg-cyan-500 border-gray-300 absolute top-7 left-2"
+            }
             image={userProfile.profile_picture}
           />
           <div className="info text-black mt-10 px-2 ">
@@ -158,7 +156,7 @@ async function Home() {
           <PostInput />
         </div>
         {userPost?.length > 0 &&
-          userPost?.map((post,i) => (
+          userPost?.map((post, i) => (
             <Post key={i} session={session} post={post} />
           ))}
       </div>

@@ -32,15 +32,15 @@ export async function POST(request:NextRequest){
 
 }
 
-export async function GET(request:NextRequest) {
-  try {
-    const user = await requireAuth(request);
-    const profilePicture = await profile.findById(user.user.id).populate('profile_picture');
-    console.log("Profile picture", profilePicture);
-    return NextResponse.json({pp:profilePicture});
-  } catch (error) {
-    console.log(error);
-    NextResponse.json({"Pp fetch error":error});
-  }
+// export async function GET(request:NextRequest) {
+//   try {
+//     const user = await requireAuth(request);
+//     const profilePicture = await profile.findById(user.user.id).populate('profile_picture');
+//     console.log("Profile picture", profilePicture);
+//     return NextResponse.json({pp:profilePicture});
+//   } catch (error) {
+//     console.log(error);
+//     NextResponse.json({"Pp fetch error":error});
+//   }
   
-}
+// }

@@ -2,6 +2,7 @@ import Connect from "@/components/connect";
 import PlusIcon from "@/components/icons/addicon";
 import EditIcon from "@/components/icons/editicon";
 import MayKnowPerson from "@/components/mayknowperson";
+import MyCover from "@/components/mycover";
 import MyProfile from "@/components/myprofile";
 import ProfileImage from "@/components/profileimage";
 import { auth } from "@/lib/auth";
@@ -14,22 +15,16 @@ const PersonalProfile = async () => {
     headers: await headers(),
   }); 
   await dbConnect();
-  
+  const userProfile = await profile.findById(session?.user.id);
   console.log(userProfile)
   return (
     <div className="flex flex-col md:flex-row md:justify-end md:gap-x-5 mx-auto w-fit md:px-5">
       <div className=" ">
         <div className="profile-view sm:rounded-lg w-full flex-col flex items-start profile-div ">
           <div className="cover-image h-30 self-stretch sm:rounded-lg sm:rounded-t-lg border-gray-200 relative ">
-            <div className="rounded-full bg-cyan-200 absolute right-3 top-3 hover:bg-cyan-400 transition-colors duration-500 cursor-pointer p-2">
-              <Edit2 size={17} />
-            </div>
+            
             <EditIcon styles="right-3 top-full mt-2" />
-            <img
-              src="/sample-cover.jpg"
-              alt="cover-image"
-              className="w-full h-full object-cover max-w-full sm:rounded-t-lg"
-            />
+            <MyCover styles={'h-30'} profile={userProfile} showEdit={true}/>
           </div>
           <MyProfile session={session} profile={userProfile}/>
           <div className="info mt-13 text-sm px-6 flex flex-col">

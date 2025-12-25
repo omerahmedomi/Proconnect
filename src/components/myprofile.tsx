@@ -38,7 +38,7 @@ export default function MyProfile({session,profile}){
                await uploadProfilePicture(imageFile);
             }}/>
         <ProfileImage
-            image = {profile.profile_picture}
+            image = {profile?.profile_picture}
             session={session}
             styles={"w-25 h-25 border border-gray-300 absolute top-15 left-6 bg-cyan-50"}
           />
