@@ -31,11 +31,14 @@ import PostInput from "@/components/postinput";
 import Connect from "@/components/connect";
 import Post from "@/components/post";
 import dbConnect from "@/lib/mongodb";
+import profile from "@/models/profile";
+import UserProfile from './../../components/userprofile';
 
 async function Home() {
   const session = await auth.api.getSession({
     headers: await headers(),
   });
+  const userProfile = await profile.findById(session?.user.id)
 
   if (!session) {
     return (
@@ -121,7 +124,8 @@ async function Home() {
           </div>
           <ProfileImage
             session={session}
-            styles={"w-17 absolute top-7 left-2"}
+            styles={"w-17 h-17 border bg-cyan-500 border-gray-300 absolute top-7 left-2"}
+            image={userProfile.profile_picture}
           />
           <div className="info text-black mt-10 px-2 ">
             <h5 className="font-semibold">{session?.user?.name}</h5>

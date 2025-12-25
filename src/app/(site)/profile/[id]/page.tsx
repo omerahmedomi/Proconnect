@@ -14,7 +14,7 @@ const PersonalProfile = async () => {
     headers: await headers(),
   }); 
   await dbConnect();
-  const userProfile = await profile.findById(session?.user.id);
+  
   console.log(userProfile)
   return (
     <div className="flex flex-col md:flex-row md:justify-end md:gap-x-5 mx-auto w-fit md:px-5">
