@@ -2,10 +2,11 @@
 import { useRef,useState} from "react";
 import ProfileImage from "./profileimage";
 import axios from "axios";
-export default function MyProfile({session}){
+import { useRouter } from "next/navigation";
+export default function MyProfile({session,profile}){
 
     const fileInputRef = useRef<HTMLInputElement>(null);
-    
+    const router = useRouter();
 
     async function uploadProfilePicture(image:File){
         if(!image) return;
@@ -17,6 +18,7 @@ export default function MyProfile({session}){
                     "Content-Type":"multipart/form-data"
                 }
             })
+            router.refresh();
            } catch (error) {
             console.log(error)
             
@@ -24,6 +26,8 @@ export default function MyProfile({session}){
            
 
     }
+
+    
     return(
         <div className="hover:cursor-pointer" onClick={()=>{
             fileInputRef.current?.click()
@@ -34,8 +38,9 @@ export default function MyProfile({session}){
                await uploadProfilePicture(imageFile);
             }}/>
         <ProfileImage
+            image = {profile.profile_picture}
             session={session}
-            styles={"w-25 absolute top-15 left-6 bg-cyan-50"}
+            styles={"w-25 h-25 border border-gray-300 absolute top-15 left-6 bg-cyan-50"}
           />
         </div>
     );

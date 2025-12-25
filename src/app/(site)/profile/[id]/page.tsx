@@ -5,12 +5,17 @@ import MayKnowPerson from "@/components/mayknowperson";
 import MyProfile from "@/components/myprofile";
 import ProfileImage from "@/components/profileimage";
 import { auth } from "@/lib/auth";
+import dbConnect from "@/lib/mongodb";
+import profile from "@/models/profile";
 import { Edit2 } from "lucide-react";
 import { headers } from "next/headers";
 const PersonalProfile = async () => {
   const session = await auth.api.getSession({
     headers: await headers(),
-  });
+  }); 
+  await dbConnect();
+  const userProfile = await profile.findById(session?.user.id);
+  console.log(userProfile)
   return (
     <div className="flex flex-col md:flex-row md:justify-end md:gap-x-5 mx-auto w-fit md:px-5">
       <div className=" ">
@@ -26,7 +31,7 @@ const PersonalProfile = async () => {
               className="w-full h-full object-cover max-w-full sm:rounded-t-lg"
             />
           </div>
-          <MyProfile session={session}/>
+          <MyProfile session={session} profile={userProfile}/>
           <div className="info mt-13 text-sm px-6 flex flex-col">
             <h5 className="text-2xl">{session?.user?.name}</h5>
             <h5 className="  ">Professional</h5>

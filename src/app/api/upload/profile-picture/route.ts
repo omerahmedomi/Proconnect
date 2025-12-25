@@ -15,11 +15,11 @@ export async function POST(request:NextRequest){
       const {cid} = await pinata.upload.public.file(image);
       const url = await pinata.gateways.public.convert(cid);
       await dbConnect();
-      await profile.findOneAndUpdate(new mongoose.Types.ObjectId(user2.user.id),{profile_picture:url},{new:true,upsert:true});
-      
+     const picture = await profile.findOneAndUpdate(new mongoose.Types.ObjectId(user2.user.id),{profile_picture:url},{new:true,upsert:true});
+      // console.log("Picture")
       return NextResponse.json({
         sucess:"true",
-        imagePath:url,
+        imagePath:picture,
 
       })
   } catch (error) {
@@ -30,4 +30,17 @@ export async function POST(request:NextRequest){
     
   }
 
+}
+
+export async function GET(request:NextRequest) {
+  try {
+    const user = await requireAuth(request);
+    const profilePicture = await profile.findById(user.user.id).populate('profile_picture');
+    console.log("Profile picture", profilePicture);
+    return NextResponse.json({pp:profilePicture});
+  } catch (error) {
+    console.log(error);
+    NextResponse.json({"Pp fetch error":error});
+  }
+  
 }
