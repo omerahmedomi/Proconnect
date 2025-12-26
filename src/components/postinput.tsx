@@ -1,8 +1,8 @@
 "use client"
 import { useEffect } from "react";
-
+import EmojiPickerLayout from "./emojipickerlayout";
 import { useState } from "react";
-import PostModal from "./postmodal";
+import Modal from "./modal";
 
 export default function PostInput(){
     const [isModalOpen,setIsModalOpen] = useState<boolean>(false);
@@ -21,8 +21,18 @@ export default function PostInput(){
         >
           Start a post
         </button>
-        {isModalOpen && <PostModal clearFunction={()=>setIsModalOpen(false)} />}
-        {isModalOpen && <div className=" absolute inset-0 bg-black/20 z-45 cursor-pointer" onClick={()=>setIsModalOpen(false)} />}
+        {isModalOpen && (
+          <Modal
+            clearFunction={() => setIsModalOpen(false)}
+            content={<EmojiPickerLayout clearFunction={()=> setIsModalOpen(false)} />}
+          />
+        )}
+        {isModalOpen && (
+          <div
+            className=" absolute inset-0 bg-black/20 z-45 cursor-pointer"
+            onClick={() => setIsModalOpen(false)}
+          />
+        )}
       </>
     );
 }

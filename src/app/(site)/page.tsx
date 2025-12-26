@@ -121,7 +121,7 @@ async function Home() {
           <ProfileImage
             session={session}
             styles={
-              "w-17 h-17 border bg-cyan-500 border-gray-300 absolute top-7 left-2"
+              "w-17 h-17 border bg-cyan-50 border-gray-300 absolute top-7 left-2"
             }
             image={userProfile.profile_picture}
           />
@@ -152,7 +152,7 @@ async function Home() {
       </div>
       <div className="mt-3  rounded-lg lg:flex-2 md:min-w-[500px] lg:max-w-xl space-y-2">
         <div className="post px-2 flex items-center gap-2 border p-2 sm:rounded-lg border-gray-200 bg-white">
-          <ProfileImage session={session} styles={"w-13"} />
+          <ProfileImage session={session} styles={"size-12 shrink-0"} image={userProfile.profile_picture} />
           <PostInput />
         </div>
         {userPost?.length > 0 &&

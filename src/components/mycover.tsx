@@ -2,15 +2,17 @@
 import axios from "axios";
 import { Edit2 } from "lucide-react";
 import { useRouter } from "next/navigation";
-import { useRef } from "react";
+import { useRef,useState } from "react";
 export default function MyCover({ styles, profile, showEdit }) {
   const fileInputRef = useRef<HTMLInputElement>(null);
   const router = useRouter();
+  const [isUploading,setIsUploading] = useState(false)
   async function uploadCoverPicture(image: File) {
     if (!image) return;
     const formData = new FormData();
     formData.set("coverImage", image);
     try {
+      setIsUploading(true);
       const uploadedImage = await axios.post(
         "/api/upload/cover-picture",
         formData,
@@ -23,6 +25,8 @@ export default function MyCover({ styles, profile, showEdit }) {
       router.refresh();
     } catch (error) {
       console.log(error);
+    }finally{
+      setIsUploading(false);
     }
   }
   return (
@@ -40,16 +44,17 @@ export default function MyCover({ styles, profile, showEdit }) {
         accept="image/*"
         className="absolute right-[999999px]"
         ref={fileInputRef}
+        disabled={isUploading}
         onChange={async (e) => {
           const imageFile = e.target.files[0];
           await uploadCoverPicture(imageFile);
         }}
       />
-      <div className={`${styles}`}>
+      <div className={`${styles} border-b border-gray-300 `}>
         <img
           src={profile?.cover_picture || "./sample-cover.jpg"}
           alt="cover-image"
-          className="w-full h-full object-cover sm:rounded-t-lg"
+          className={`w-full h-full object-cover sm:rounded-t-lg ${isUploading && 'blur-[1px]'}`}
         />
       </div>
     </>

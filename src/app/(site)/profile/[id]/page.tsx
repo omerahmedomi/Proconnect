@@ -5,6 +5,7 @@ import MayKnowPerson from "@/components/mayknowperson";
 import MyCover from "@/components/mycover";
 import MyProfile from "@/components/myprofile";
 import ProfileImage from "@/components/profileimage";
+import ProfileInfo from "@/components/profileinfo";
 import { auth } from "@/lib/auth";
 import dbConnect from "@/lib/mongodb";
 import profile from "@/models/profile";
@@ -23,23 +24,11 @@ const PersonalProfile = async () => {
         <div className="profile-view sm:rounded-lg w-full flex-col flex items-start profile-div ">
           <div className="cover-image h-30 self-stretch sm:rounded-lg sm:rounded-t-lg border-gray-200 relative ">
             
-            <EditIcon styles="right-3 top-full mt-2" />
+            
             <MyCover styles={'h-30'} profile={userProfile} showEdit={true}/>
           </div>
           <MyProfile session={session} profile={userProfile}/>
-          <div className="info mt-13 text-sm px-6 flex flex-col">
-            <h5 className="text-2xl">{session?.user?.name}</h5>
-            <h5 className="  ">Professional</h5>
-            <h5 className=" text-gray-500">Addis Ababa</h5>
-            <div className="companies  text-gray-500 flex items-center gap-1 text-xs sm:text-sm">
-              <p>Addis Ababa University</p>
-              <div className="rounded-full size-1 bg-gray-500"></div>
-              <p className="">Addis Ababa University</p>
-            </div>
-            <h4 className="text-cyan-600 hover:underline cursor-pointer">
-              500 + connections
-            </h4>
-          </div>
+          <ProfileInfo session={session}/>
         </div>
         <div className="profile-div p-6 flex flex-col gap-y-5 ">
           <EditIcon />
