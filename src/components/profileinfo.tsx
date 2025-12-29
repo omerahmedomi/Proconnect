@@ -2,18 +2,26 @@
 import EditIcon from "./icons/editicon";
 import { useState, useEffect } from "react";
 import Modal from "./modal";
-export default function ProfileInfo({ session }) {
+export default function ProfileInfo({ session,profile }) {
   const [isModalOpen, setIsModalOpen] = useState(false);
   useEffect(() => {
     if (isModalOpen) document.body.style.overflow = "hidden";
     return () => (document.body.style.overflow = "unset");
   }, [isModalOpen]);
+   console.log("Client",profile)
+  async function fetchUserProfileDetails(){
+    try {
+      
+    } catch (error) {
+      
+    }
+  }
   return (
     <div className="info mt-11 text-sm px-6 flex flex-col">
       <span onClick={() => setIsModalOpen((prev) => !prev)}>
         <EditIcon styles="right-3 top-35 " />
       </span>{" "}
-      <h5 className="text-2xl font-semibold">{session?.user?.name}</h5>
+      <h5 className="text-2xl font-semibold">{profile?.name?.firstName +" "+ profile?.name?.lastName}</h5>
       <h5 className="  ">Professional</h5>
       <h5 className=" text-gray-500">Addis Ababa</h5>
       <div className="companies  text-gray-500 flex items-center gap-1 text-xs sm:text-sm">
@@ -27,16 +35,16 @@ export default function ProfileInfo({ session }) {
       {isModalOpen && (
         <Modal
           content={
-            <form className="bg-pink-50 w-full  space-y-7 overflow-y-scroll">
+            <form className="bg-pink-50 w-full  space-y-7 overflow-y-scroll flex flex-col">
               <div className="space-y-3">
                 <h6 className="text-xs"> * indicates required</h6>
                 <div className=" modal-input-container">
-                  <span>First Name*</span>
-                  <input className="mt-0" />
+                  <span>First Name* {profile?.name?.lastName}</span>
+                  <input className="mt-0" name="firstName" value={profile?.name?.firstName || ''} />
                 </div>
                 <div className="modal-input-container">
                   <span>Last Name*</span>
-                  <input className="input  " />
+                  <input className="input" name="lastName" value={profile?.name?.lastName} />
                 </div>
               </div>
               <div className="modal-input-container">
@@ -72,6 +80,7 @@ export default function ProfileInfo({ session }) {
                 <span>City*</span>
                 <input className="input  border" />
               </div>
+              <button className="final-action-button self-end mt-0" type='submit'>Save</button>
             </form>
           }
           clearFunction={() => setIsModalOpen(false)}

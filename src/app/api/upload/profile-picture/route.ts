@@ -15,7 +15,7 @@ export async function POST(request:NextRequest){
       const {cid} = await pinata.upload.public.file(image);
       const url = await pinata.gateways.public.convert(cid);
       await dbConnect();
-     const picture = await profile.findOneAndUpdate(new mongoose.Types.ObjectId(user2.user.id),{profile_picture:url},{new:true,upsert:true});
+     const picture = await profile.findOneAndUpdate({user:user2.user.id},{profile_picture:url},{new:true});
       // console.log("Picture")
       return NextResponse.json({
         sucess:"true",

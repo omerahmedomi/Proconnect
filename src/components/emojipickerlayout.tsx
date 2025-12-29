@@ -108,7 +108,7 @@ export default function EmojiPickerLayout({clearFunction}) {
       <div className="self-start flex flex-col">
         <textarea
           value={postText}
-          className="text-lg focus:outline-none w-full  resize-none field-sizing-content "
+          className="text-lg focus:outline-none! w-full border-0   resize-none field-sizing-content "
           placeholder="What do you want to talk about?"
           onChange={(e) => {
             setErrorMessage('');
@@ -176,7 +176,7 @@ export default function EmojiPickerLayout({clearFunction}) {
           ))}
         </div>
       </div>
-      <button onClick={handleUploadClick} disabled={isUploading} className={`mt-1 px-5 py-1 cursor-pointer rounded-full bg-blue-700 text-white hover:bg-blue-500 transition disabled:hover:bg-none disabled:bg-gray-400 disabled:cursor-not-allowed`}>{isUploading ? 'Posting...' :'Post'}</button>
+      <button onClick={handleUploadClick} disabled={isUploading} className={`final-action-button`}>{isUploading ? 'Posting...' :'Post'}</button>
     </div>
   );
 }

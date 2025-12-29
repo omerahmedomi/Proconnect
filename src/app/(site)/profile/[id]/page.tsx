@@ -1,23 +1,28 @@
-import Connect from "@/components/connect";
 import PlusIcon from "@/components/icons/addicon";
 import EditIcon from "@/components/icons/editicon";
 import MayKnowPerson from "@/components/mayknowperson";
 import MyCover from "@/components/mycover";
 import MyProfile from "@/components/myprofile";
-import ProfileImage from "@/components/profileimage";
-import ProfileInfo from "@/components/profileinfo";
 import { auth } from "@/lib/auth";
 import dbConnect from "@/lib/mongodb";
 import profile from "@/models/profile";
-import { Edit2 } from "lucide-react";
 import { headers } from "next/headers";
+import ProfileInfo from "@/components/profileinfo";
+
 const PersonalProfile = async () => {
   const session = await auth.api.getSession({
     headers: await headers(),
   }); 
   await dbConnect();
-  const userProfile = await profile.findById(session?.user.id);
-  console.log(userProfile)
+  const userProfile = await profile
+    .findOne({
+      user: session?.user?.id,
+    })
+    .lean();
+
+  console.log("Server",userProfile)
+  console.log("SESSION USER ID:", session?.user.id);
+
   return (
     <div className="flex flex-col md:flex-row md:justify-end md:gap-x-5 mx-auto w-fit md:px-5">
       <div className=" ">
@@ -28,7 +33,7 @@ const PersonalProfile = async () => {
             <MyCover styles={'h-30'} profile={userProfile} showEdit={true}/>
           </div>
           <MyProfile session={session} profile={userProfile}/>
-          <ProfileInfo session={session}/>
+          <ProfileInfo session={session} profile={userProfile}/>
         </div>
         <div className="profile-div p-6 flex flex-col gap-y-5 ">
           <EditIcon />

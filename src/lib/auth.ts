@@ -4,6 +4,7 @@ import { nextCookies } from "better-auth/next-js";
 import { MongoClient } from "mongodb";
 import { sendMail } from "./mail";
 import profile  from "@/models/profile"
+import dbConnect from "./mongodb";
 
 
 const client = new MongoClient(process.env.MONGODB_URI!)
@@ -49,6 +50,7 @@ export const auth = betterAuth({
       });
     },
     async afterEmailVerification(user, request) {
+      await dbConnect();
       await profile.create({
         user: user.id,
         name: { firstName: user.name.split(" ")[0], lastName: user.name.split(" ")[1] },
