@@ -2,13 +2,11 @@ import mongoose, { Schema } from "mongoose";import { headers } from "next/header
 
 
 const ProfileSchema = new mongoose.Schema({
-    userId:{
+    user:{
         type:Schema.Types.ObjectId,
         ref:'User',
         required:true,
         unique:true,
-
-        
     },
     name:{
         firstName:{

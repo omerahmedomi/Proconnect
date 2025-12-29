@@ -1,14 +1,13 @@
-"use client"
+"use client";
 import EditIcon from "./icons/editicon";
-import { useState ,useEffect} from "react";
+import { useState, useEffect } from "react";
 import Modal from "./modal";
 export default function ProfileInfo({ session }) {
-    const [isModalOpen,setIsModalOpen] = useState(false);
-     useEffect(() => {
-            if(isModalOpen)
-             document.body.style.overflow = 'hidden';
-             return ()=> document.body.style.overflow = 'unset';
-          }, [isModalOpen]);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  useEffect(() => {
+    if (isModalOpen) document.body.style.overflow = "hidden";
+    return () => (document.body.style.overflow = "unset");
+  }, [isModalOpen]);
   return (
     <div className="info mt-11 text-sm px-6 flex flex-col">
       <span onClick={() => setIsModalOpen((prev) => !prev)}>
@@ -27,10 +26,56 @@ export default function ProfileInfo({ session }) {
       </h4>
       {isModalOpen && (
         <Modal
-          content={<div>
-            <input className="input"/>
-          </div>}
+          content={
+            <form className="bg-pink-50 w-full  space-y-7 overflow-y-scroll">
+              <div className="space-y-3">
+                <h6 className="text-xs"> * indicates required</h6>
+                <div className=" modal-input-container">
+                  <span>First Name*</span>
+                  <input className="mt-0" />
+                </div>
+                <div className="modal-input-container">
+                  <span>Last Name*</span>
+                  <input className="input  " />
+                </div>
+              </div>
+              <div className="modal-input-container">
+                <span> Headline*</span>
+                <textarea className="" placeholder="e.g Designer | Developer" />
+              </div>
+              <div className="modal-input-container">
+                <h4 className="text-base font-semibold">Current Position</h4>
+                <span>Position*</span>
+                <select className="">
+                  <option value="" className="bg-white text-black">
+                    a
+                  </option>
+                </select>
+              </div>
+              <div className="modal-input-container">
+                <span>Industry*</span>
+                <input className="input  border" />
+              </div>
+              <div className="modal-input-container">
+                <h4 className="text-base font-semibold">Education</h4>
+                <span>School*</span>
+                <select className="">
+                  <option value="" className="bg-white text-black">
+                    a
+                  </option>
+                </select>
+              </div>
+              <div className="modal-input-container">
+                <h4 className="text-base font-semibold">Location</h4>
+                <span>Country/Region*</span>
+                <input className="input  border" />
+                <span>City*</span>
+                <input className="input  border" />
+              </div>
+            </form>
+          }
           clearFunction={() => setIsModalOpen(false)}
+          styles="my-10 max-w-150 text-xs text-gray-600"
         />
       )}
       {isModalOpen && (

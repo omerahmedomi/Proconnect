@@ -108,7 +108,9 @@
   @apply max-w-xl mx-auto my-5 sm:rounded-lg border border-gray-200 relative shadow;
 }
 .modal{
-  @apply fixed top-0 bottom-0 flex flex-col items-start z-100   rounded-lg shadow border border-cyan-500  mx-auto  bg-white right-1/2 w-full max-w-180 translate-x-1/2 p-4
+  @apply fixed top-0 bottom-0  flex flex-col items-start z-100   rounded-lg shadow border border-cyan-500  mx-auto  bg-white right-1/2 w-full max-w-180 translate-x-1/2 p-4
+}.modal-input-container{
+  @apply flex flex-col gap-y-1
 }
   
 }
@@ -158,6 +160,9 @@
 }
 .ready h2,p {
   @apply text-center
+}
+.modal input,textarea{
+  @apply border py-1 rounded focus:outline-none px-2 focus:ring-1 transition-all duration-500
 }
 
 body{

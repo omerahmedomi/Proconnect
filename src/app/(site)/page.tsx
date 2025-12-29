@@ -123,7 +123,7 @@ async function Home() {
             styles={
               "w-17 h-17 border bg-cyan-50 border-gray-300 absolute top-7 left-2"
             }
-            image={userProfile.profile_picture}
+            image={userProfile?.profile_picture}
           />
           <div className="info text-black mt-10 px-2 ">
             <h5 className="font-semibold">{session?.user?.name}</h5>
@@ -152,7 +152,7 @@ async function Home() {
       </div>
       <div className="mt-3  rounded-lg lg:flex-2 md:min-w-[500px] lg:max-w-xl space-y-2">
         <div className="post px-2 flex items-center gap-2 border p-2 sm:rounded-lg border-gray-200 bg-white">
-          <ProfileImage session={session} styles={"size-12 shrink-0"} image={userProfile.profile_picture} />
+          <ProfileImage session={session} styles={"size-12 shrink-0"} image={userProfile?.profile_picture} />
           <PostInput />
         </div>
         {userPost?.length > 0 &&
@@ -160,7 +160,7 @@ async function Home() {
             <Post key={i} session={session} post={post} />
           ))}
       </div>
-      <div className="hidden lg:block mt-3 rounded-lg border-gray-200 border p-2 bg-white ">
+      <div className="hidden lg:block mt-3 rounded-lg border-gray-200 border p-2 bg-white self-start">
         <h1>Add the following to your feed</h1>
       </div>
     </div>

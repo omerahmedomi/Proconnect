@@ -1,10 +1,10 @@
 import { betterAuth } from "better-auth";
 import { mongodbAdapter } from "better-auth/adapters/mongodb";
 import { nextCookies } from "better-auth/next-js";
-
 import { MongoClient } from "mongodb";
 import { sendMail } from "./mail";
-import { redirect } from "next/navigation";
+import profile  from "@/models/profile"
+
 
 const client = new MongoClient(process.env.MONGODB_URI!)
 
@@ -48,15 +48,20 @@ export const auth = betterAuth({
         text: `Click the link to verify your email: ${url}`,
       });
     },
+    async afterEmailVerification(user, request) {
+      await profile.create({
+        user: user.id,
+        name: { firstName: user.name.split(" ")[0], lastName: user.name.split(" ")[1] },
+      });
+    },
     autoSignInAfterVerification: true,
   },
-  session:{
-    updateAge:60*60*24,
-    expiresIn:60*60*24*7,
-    cookieCache:{
-      enabled:true,
-      maxAge:60*60*5,
-      
-    }
-  }
+  session: {
+    updateAge: 60 * 60 * 24,
+    expiresIn: 60 * 60 * 24 * 7,
+    cookieCache: {
+      enabled: true,
+      maxAge: 60 * 60 * 5,
+    },
+  },
 });
