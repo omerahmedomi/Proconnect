@@ -12,14 +12,19 @@ const ProfileSchema = new mongoose.Schema({
         firstName:{
             type:String,
             default:null,
+            trim:true,
         },
         lastName:{
             type:String,
             default:null,
+            trim:true,
         }
     },
     industry:[String],
-    headline:String,
+    headline:{
+        type:String,
+        trim:true,
+    },
     school:String,
     position:String,
     profile_picture:{

@@ -22,6 +22,8 @@ export default function ProfileInfo({ session, profile }) {
 
   const [state, formAction, isPending] = useActionState<ProfileFormState,FormData>(saveProfile,initialState);
 
+  
+
   return (
     <div className="info mt-11 text-sm px-6 flex flex-col">
       <span onClick={() => setIsModalOpen((prev) => !prev)}>
@@ -54,10 +56,17 @@ export default function ProfileInfo({ session, profile }) {
                   <input
                     className="mt-0"
                     name="firstName"
-                    defaultValue={state?.values?.firstName ||state?.values?.firstName != 0 && profile?.name?.firstName || ""}
+                    defaultValue={
+                      state?.values?.firstName ||
+                      (state?.values?.firstName != 0 &&
+                        profile?.name?.firstName) ||
+                      ""
+                    }
                   />
                   {state?.errors?.firstName && (
-                    <h6 className="text-red-500 text-[11px] ">{state?.errors?.firstName}</h6>
+                    <h6 className="text-red-500 text-[11px] ">
+                      {state?.errors?.firstName}
+                    </h6>
                   )}
                 </div>
                 <div className="modal-input-container">
@@ -65,18 +74,37 @@ export default function ProfileInfo({ session, profile }) {
                   <input
                     className="input"
                     name="lastName"
-                    defaultValue={profile?.name?.lastName}
+                    defaultValue={
+                      state?.values?.lastName ||
+                      (state?.values?.lastName != 0 &&
+                        profile?.name?.lastName) ||
+                      ""
+                    }
                   />
+                  {state?.errors?.lastName && (
+                    <h6 className="text-red-500 text-[11px] ">
+                      {state?.errors?.lastName}
+                    </h6>
+                  )}
                 </div>
               </div>
               <div className="modal-input-container">
                 <span> Headline*</span>
                 <textarea
-                  className="px-2 py-1"
+                  className="px-2 py-1 "
                   placeholder="e.g Designer | Developer"
                   name="headline"
-                  defaultValue={profile?.headline}
+                  defaultValue={
+                    state?.values?.headline ||
+                    (state?.values?.headline != 0 && profile?.headline) ||
+                    ""
+                  }
                 />
+                {state?.errors?.headline && (
+                  <h6 className="text-red-500 text-[11px] ">
+                    {state?.errors?.headline}
+                  </h6>
+                )}
               </div>
               <div className="modal-input-container">
                 <h4 className="text-base font-semibold">Current Position</h4>
@@ -89,7 +117,7 @@ export default function ProfileInfo({ session, profile }) {
               </div>
               <div className="modal-input-container">
                 <span>Industry*</span>
-                <input className="input  border" />
+                <input className="input" name="industry"/>
               </div>
               <div className="modal-input-container">
                 <h4 className="text-base font-semibold">Education</h4>
@@ -103,9 +131,36 @@ export default function ProfileInfo({ session, profile }) {
               <div className="modal-input-container">
                 <h4 className="text-base font-semibold">Location</h4>
                 <span>Country/Region*</span>
-                <input className="input" name="country" />
+                <input
+                  className="input"
+                  name="country"
+                  defaultValue={
+                    state?.values?.country ||
+                    (state?.values?.country != 0 &&
+                      profile?.location?.country) ||
+                    ""
+                  }
+                />
+                {state?.errors?.country && (
+                  <h6 className="text-red-500 text-[11px] ">
+                    {state?.errors?.country}
+                  </h6>
+                )}
                 <span>City*</span>
-                <input className="input" name="city" />
+                <input
+                  className="input"
+                  name="city"
+                  defaultValue={
+                    state?.values?.city ||
+                    (state?.values?.city != 0 && profile?.location?.city) ||
+                    ""
+                  }
+                />
+                {state?.errors?.city && (
+                  <h6 className="text-red-500 text-[11px] ">
+                    {state?.errors?.city}
+                  </h6>
+                )}
               </div>
               <button
                 className="final-action-button self-end mt-0"

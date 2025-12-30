@@ -163,7 +163,7 @@
 .ready h2,p {
   @apply text-center
 }
-.modal input, .modal textare{
+.modal input, .modal-input-container > textarea{
   @apply border py-1 rounded focus:outline-none px-2 focus:ring-1 transition-all duration-500
 }
 
