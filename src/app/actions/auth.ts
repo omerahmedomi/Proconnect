@@ -2,7 +2,7 @@
 import { auth } from "@/lib/auth";
 import { headers } from "next/headers";
 import { redirect } from "next/navigation";
-import profile from "@/models/profile";
+
 export const signUpAction = async (prevState: any, formData: FormData) => {
   const email = formData.get("email") as string;
 
