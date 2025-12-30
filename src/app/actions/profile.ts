@@ -1,34 +1,41 @@
-"use server"
+"use server";
 export type ProfileFormState = {
   success: boolean;
-  errors?: ProfileErrors,
-  values?: object
+  errors?: ProfileErrors;
+  values?: any;
 };
 
 export type ProfileErrors = {
-    firtsName?:string,
-    lastName?:string,
+  firstName?: string;
+  lastName?: string;
+};
 
+export async function saveProfile(
+  prevState: ProfileFormState,
+  formData: FormData
+): Promise<ProfileFormState> {
+  const firstName = formData.get("firstName") as string | null;
+  const errors: ProfileErrors = {};
 
-}
+  if (!firstName) {
+    errors.firstName = "First Name is required";
+  }
 
-export async function saveProfile(prevState:ProfileFormState,formData:FormData) {
-    const firstName = formData.get("firstName");
-    console.log("Hi");
+  if (Object.keys(errors).length > 0) {
+    return {
+      success: false,
+      errors,
+      values: {
+        firstName,
+      },
+    };
+  }
 
-    try {
-
-        
-      return {
-     success:true
-      
-      }
-    } catch (error) {
-        console.log(error)
-        return {
-            success:false
-           
-        }
-        
-    }
+  return {
+    success: true,
+    errors: {},
+    values: {
+      firstName,
+    },
+  };
 }

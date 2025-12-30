@@ -43,7 +43,10 @@ export default function ProfileInfo({ session, profile }) {
       {isModalOpen && (
         <Modal
           content={
-            <form className="bg-pink-5 w-full  space-y-7 overflow-y-scroll px-2 flex flex-col" action={formAction}>
+            <form
+              className="bg-pink-5 w-full  space-y-7 overflow-y-scroll px-2 flex flex-col"
+              action={formAction}
+            >
               <div className="space-y-3">
                 <h6 className="text-xs"> * indicates required</h6>
                 <div className=" modal-input-container">
@@ -51,8 +54,11 @@ export default function ProfileInfo({ session, profile }) {
                   <input
                     className="mt-0"
                     name="firstName"
-                    defaultValue={profile?.name?.firstName || ""}
+                    defaultValue={state?.values?.firstName ||state?.values?.firstName != 0 && profile?.name?.firstName || ""}
                   />
+                  {state?.errors?.firstName && (
+                    <h6 className="text-red-500 text-[11px] ">{state?.errors?.firstName}</h6>
+                  )}
                 </div>
                 <div className="modal-input-container">
                   <span>Last Name*</span>
@@ -66,8 +72,9 @@ export default function ProfileInfo({ session, profile }) {
               <div className="modal-input-container">
                 <span> Headline*</span>
                 <textarea
-                  className=""
+                  className="px-2 py-1"
                   placeholder="e.g Designer | Developer"
+                  name="headline"
                   defaultValue={profile?.headline}
                 />
               </div>
@@ -96,13 +103,13 @@ export default function ProfileInfo({ session, profile }) {
               <div className="modal-input-container">
                 <h4 className="text-base font-semibold">Location</h4>
                 <span>Country/Region*</span>
-                <input className="input  border" />
+                <input className="input" name="country" />
                 <span>City*</span>
-                <input className="input  border" />
+                <input className="input" name="city" />
               </div>
               <button
                 className="final-action-button self-end mt-0"
-               type="submit"
+                type="submit"
                 disabled={isPending}
               >
                 Save
