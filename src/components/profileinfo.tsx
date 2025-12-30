@@ -43,7 +43,7 @@ export default function ProfileInfo({ session, profile }) {
       {isModalOpen && (
         <Modal
           content={
-            <form className="bg-pink-5 w-full  space-y-7 overflow-y-scroll px-2 flex flex-col">
+            <form className="bg-pink-5 w-full  space-y-7 overflow-y-scroll px-2 flex flex-col" action={formAction}>
               <div className="space-y-3">
                 <h6 className="text-xs"> * indicates required</h6>
                 <div className=" modal-input-container">
@@ -102,7 +102,8 @@ export default function ProfileInfo({ session, profile }) {
               </div>
               <button
                 className="final-action-button self-end mt-0"
-                type="submit"
+               type="submit"
+                disabled={isPending}
               >
                 Save
               </button>
