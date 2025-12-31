@@ -5,6 +5,7 @@ import Modal from "./modal";
 import { useActionState } from "react";
 import { saveProfile } from "@/app/actions/profile";
 import { ProfileFormState } from "@/app/actions/profile";
+import SaveButton from "./savebutton";
 // import { useRouter } from "next/navigation";
 export default function ProfileInfo({ session, profile }) {
 
@@ -172,17 +173,11 @@ export default function ProfileInfo({ session, profile }) {
                   </h6>
                 )}
               </div>
-              <button
-                className="final-action-button self-end mt-0"
-                type="submit"
-                disabled={isPending}
-              >
-                Save
-              </button>
+              <SaveButton/>
             </form>
           }
           clearFunction={() => setIsModalOpen(false)}
-          styles="my-10 max-w-150 text-xs text-gray-600"
+          styles="profile-modal-styles"
         />
       )}
       {isModalOpen && (

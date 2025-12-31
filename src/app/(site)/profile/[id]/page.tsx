@@ -8,25 +8,29 @@ import dbConnect from "@/lib/mongodb";
 import profile from "@/models/profile";
 import { headers } from "next/headers";
 import ProfileInfo from "@/components/profileinfo";
+import AboutInfo from "@/components/aboutinfo";
 
 const PersonalProfile = async () => {
   const session = await auth.api.getSession({
     headers: await headers(),
   }); 
   await dbConnect();
-  const userProfile = await profile
-    .findOne({
-      user: session?.user?.id,
-    })
+  const userProfileDoc = await profile
+    .findOne({ user: session?.user?.id })
     .lean();
+
+  const userProfile = userProfileDoc
+    ? JSON.parse(JSON.stringify(userProfileDoc))
+    : null;
+
 
   console.log("Server",userProfile)
   console.log("SESSION USER ID:", session?.user.id);
 
   return (
-    <div className="flex flex-col md:flex-row md:justify-end md:gap-x-5 mx-auto w-fit md:px-5">
-      <div className=" ">
-        <div className="profile-view sm:rounded-lg w-full flex-col flex items-start profile-div ">
+    <div className="flex flex-col md:flex-row  md:gap-x-5 mx-auto w-full max-w-250 md:px-5 text-sm ">
+      <div className="w-full">
+        <div className="profile-view sm:rounded-lg w-full flex-col flex items-start profile-div bg-yellow-50">
           <div className="cover-image h-30 self-stretch sm:rounded-lg sm:rounded-t-lg border-gray-200 relative ">
             
             
@@ -35,17 +39,7 @@ const PersonalProfile = async () => {
           <MyProfile session={session} profile={userProfile}/>
           <ProfileInfo session={session} profile={userProfile}/>
         </div>
-        <div className="profile-div p-6 flex flex-col gap-y-5 ">
-          <EditIcon />
-
-          <h5 className="text-lg font-semibold">About</h5>
-          <h6>
-            Lorem ipsum dolor sit, amet consectetur adipisicing elit. Quidem
-            adipisci, autem provident earum molestiae maxime dicta repellat,
-            dolore et possimus est eum laboriosam deserunt ducimus mollitia.
-            Commodi repellat doloremque deserunt.
-          </h6>
-        </div>
+        <AboutInfo profile={userProfile}/>
         <div className="profile-div flex flex-col gap-5 p-6 ">
           <EditIcon />
           <div className="sm:flex sm:justify-between">

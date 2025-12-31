@@ -1,7 +1,7 @@
 import { headers } from "next/headers";
 import Link from "next/link";
 import { auth } from "@/lib/auth";
-import '@/models/user'
+import "@/models/user";
 import post from "@/models/post";
 import HeroSection from "@/components/herosection";
 import {
@@ -32,7 +32,7 @@ import Connect from "@/components/connect";
 import Post from "@/components/post";
 import dbConnect from "@/lib/mongodb";
 import profile from "@/models/profile";
-import UserProfile from './../../components/userprofile';
+import UserProfile from "./../../components/userprofile";
 import MyCover from "@/components/mycover";
 
 async function Home() {
@@ -40,7 +40,7 @@ async function Home() {
     headers: await headers(),
   });
   await dbConnect();
-  const userProfile = await profile.findOne({user:session?.user.id})
+  const userProfile = await profile.findOne({ user: session?.user.id }).lean();
 
   if (!session) {
     return (
@@ -108,16 +108,20 @@ async function Home() {
       </>
     );
   }
-     await dbConnect();
-  
-  const userPost = await post.find().populate('user').lean();
+  await dbConnect();
+
+  const userPost = await post.find().populate("user").lean();
   // console.log(userPost[0].createdAt)
   //  setTimeout(async(resolve)=>{resolve('hi')},10000)
   return (
     <div className="md:px-6 max-w-xl  mx-auto  md:mx-0 md:flex md:gap-x-10  md:max-w-full! min-[1200px]:justify-center  ">
       <div className="relative md:min-w-50">
         <div className="profile-view w-full  h-40 flex-col flex items-start mt-3 border sm:rounded-lg border-gray-200 bg-white">
-          <MyCover styles="cover-image h-14 bg-yellow-400 self-stretch sm:rounded-t-lg border-gray-200" showEdit={false} profile={userProfile}/>
+          <MyCover
+            styles="cover-image h-14 bg-yellow-400 self-stretch sm:rounded-t-lg border-gray-200"
+            showEdit={false}
+            profile={userProfile}
+          />
           <ProfileImage
             session={session}
             styles={
@@ -152,7 +156,11 @@ async function Home() {
       </div>
       <div className="mt-3  rounded-lg lg:flex-2 md:min-w-[500px] lg:max-w-xl space-y-2">
         <div className="post px-2 flex items-center gap-2 border p-2 sm:rounded-lg border-gray-200 bg-white">
-          <ProfileImage session={session} styles={"size-12 shrink-0"} image={userProfile?.profile_picture} />
+          <ProfileImage
+            session={session}
+            styles={"size-12 shrink-0"}
+            image={userProfile?.profile_picture}
+          />
           <PostInput />
         </div>
         {userPost?.length > 0 &&

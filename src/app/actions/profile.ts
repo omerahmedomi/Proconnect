@@ -84,3 +84,16 @@ export async function saveProfile(
   //   },
   // };
 }
+
+export async function updateAbout(formData: FormData) {
+  const session = await auth.api.getSession({
+    headers: await headers(),
+  });
+  if (!session?.user?.id) throw new Error("Not authenticated");
+
+  const about = formData.get("about");
+
+  await profile.findOneAndUpdate({ user: session.user.id }, { about });
+
+  redirect(`/profile/${session.user.id}`);
+}
