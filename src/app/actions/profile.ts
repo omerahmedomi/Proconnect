@@ -2,7 +2,9 @@
 
 import { auth } from "@/lib/auth";
 import profile from "@/models/profile";
+import { revalidatePath } from "next/cache";
 import { headers } from "next/headers";
+import { redirect } from "next/navigation";
 
 export type ProfileFormState = {
   success: boolean;
@@ -70,16 +72,15 @@ export async function saveProfile(
       name: { firstName, lastName },
       location: { city, country },
       headline,
-      headline,
     },
     { new: true }
   );
-  console.log("Uppp",updatedValue)
-  return {
-    success: true,
-    errors: {},
-    values: {
-      firstName,
-    },
-  };
+  redirect(`/profile/${session.user.id}`);
+  // return {
+  //   success: true,
+  //   errors: {},
+  //   values: {
+  //     firstName,
+  //   },
+  // };
 }

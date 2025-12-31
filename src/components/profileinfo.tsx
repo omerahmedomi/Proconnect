@@ -5,24 +5,34 @@ import Modal from "./modal";
 import { useActionState } from "react";
 import { saveProfile } from "@/app/actions/profile";
 import { ProfileFormState } from "@/app/actions/profile";
-
+// import { useRouter } from "next/navigation";
 export default function ProfileInfo({ session, profile }) {
+
+  // const router = useRouter();
   const [isModalOpen, setIsModalOpen] = useState(false);
   useEffect(() => {
+
     if (isModalOpen) document.body.style.overflow = "hidden";
     return () => (document.body.style.overflow = "unset");
   }, [isModalOpen]);
   console.log("Client", profile);
 
-  const initialState:ProfileFormState ={
-    success:false,
-    errors:{}
-
-  }
-
-  const [state, formAction, isPending] = useActionState<ProfileFormState,FormData>(saveProfile,initialState);
-
   
+  
+
+  const initialState: ProfileFormState = {
+    success: false,
+    errors: {},
+  };
+
+  const [state, formAction, isPending] = useActionState<
+    ProfileFormState,
+    FormData
+  >(saveProfile, initialState);
+
+  // const router = useRouter();
+
+ 
 
   return (
     <div className="info mt-11 text-sm px-6 flex flex-col">
@@ -32,8 +42,8 @@ export default function ProfileInfo({ session, profile }) {
       <h5 className="text-2xl font-semibold">
         {profile?.name?.firstName + " " + profile?.name?.lastName}
       </h5>
-      <h5 className="  ">Professional</h5>
-      <h5 className=" text-gray-500">Addis Ababa</h5>
+      <h5 className="  ">{profile?.headline}</h5>
+      <h5 className=" text-gray-500">{profile?.location?.city}</h5>
       <div className="companies  text-gray-500 flex items-center gap-1 text-xs sm:text-sm">
         <p>Addis Ababa University</p>
         <div className="rounded-full size-1 bg-gray-500"></div>
@@ -117,7 +127,7 @@ export default function ProfileInfo({ session, profile }) {
               </div>
               <div className="modal-input-container">
                 <span>Industry*</span>
-                <input className="input" name="industry"/>
+                <input className="input" name="industry" />
               </div>
               <div className="modal-input-container">
                 <h4 className="text-base font-semibold">Education</h4>
