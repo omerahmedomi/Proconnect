@@ -40,7 +40,7 @@ async function Home() {
     headers: await headers(),
   });
   await dbConnect();
-  const userProfile = await profile.findById(session?.user.id)
+  const userProfile = await profile.findOne({user:session?.user.id})
 
   if (!session) {
     return (
