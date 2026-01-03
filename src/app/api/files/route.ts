@@ -1,6 +1,7 @@
 import { requireAuth } from "@/lib/auth-middleware";
 import dbConnect from "@/lib/mongodb";
 import Post from "@/models/post";
+import profile from "@/models/profile";
 import { pinata } from "@/utils/config";
 import mongoose from "mongoose";
 import { revalidatePath } from "next/cache";
@@ -10,6 +11,7 @@ import { NextRequest, NextResponse } from "next/server";
 export async function POST(request: NextRequest) {
   try {
     const user = await requireAuth(request);
+    const userProfile = await profile.findOne({user:user.user.id})
     console.log('User for auth', user)
     const formData = await request.formData();
     const images = formData.getAll("images") as File[];
@@ -35,7 +37,7 @@ export async function POST(request: NextRequest) {
     await  dbConnect();
 
    const addURLstoDB = await Post.create({
-     user: new mongoose.Types.ObjectId(user.user.id),
+     profile: userProfile._id,
      images: urls,
      text: postText,
    });

@@ -111,7 +111,7 @@ async function Home() {
   }
   await dbConnect();
 
-  const userPost = await post.find().populate("user").lean();
+  const userPost = await post.find().populate("profile").lean();
  
   return (
     <div className="md:px-6 max-w-xl  mx-auto  md:mx-0 md:flex md:gap-x-10  md:max-w-full! min-[1200px]:justify-center  ">

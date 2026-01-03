@@ -64,7 +64,7 @@ export default function ProfileActivityPost({ post }) {
               <div className="flex flex-col items-center text-base gap-y-4">
                 <p>Are you sure you want to delete the selected post?</p>
                 <div className="flex gap-5">
-                  <form action={deletePost}>
+                  <form action={deletePost.bind(null,post?._id)}>
                   <DeleteButton/>
                   </form>
                   <button

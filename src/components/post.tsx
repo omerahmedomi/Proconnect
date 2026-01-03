@@ -2,7 +2,7 @@ import { Ellipsis,X,ThumbsUp,MessageCircleMore,Repeat2,Send } from "lucide-react
 import ProfileImage from "./profileimage";
 import Connect from "./connect";
 import { timeAgo } from './../utils/dateformat';
-export default async function Post({sesiion,post}){
+export default async function Post({post}){
    
     return (
       <div className="sm:rounded-lg border border-gray-200 *:px-3 py-3  w-full bg-white ">
@@ -18,9 +18,9 @@ export default async function Post({sesiion,post}){
 
         <div className="flex justify-between items-center">
           <div className="flex items-center gap-2">
-            <ProfileImage session={sesiion} styles={"w-14"} />
+            <ProfileImage styles={"w-14"} />
             <div className="text-left! -space-y-0.5 ">
-              <h5 className="text-sm font-semibold">{post.user.name}</h5>
+              <h5 className="text-sm font-semibold">{post.profile.name.firstName + " "+ post.profile.name.lastName}</h5>
               <h5 className="text-xs line-clamp-1">Professional</h5>
               <h5 className="text-xs font-light">
                 {timeAgo(post?.createdAt)}

@@ -2,12 +2,15 @@
 
 import { requireAuth } from "@/lib/auth-middleware"
 import post from "@/models/post";
+import profile from "@/models/profile";
 import { redirect } from "next/navigation";
 
-export const deletePost= async()=>{
+export const deletePost= async(id:any)=>{
     const user = await requireAuth();
-    await post.findOneAndDelete({user:user.user.id});
-    redirect(`/profile/${user.user.id}`)
+    const userProfile = await profile.findOne({user:user.user.id})
+    console.log(userProfile);
+    await post.findOneAndDelete({profile:userProfile._id,_id:id});
+    redirect(`/profile/${userProfile._id}`)
     
     
 }

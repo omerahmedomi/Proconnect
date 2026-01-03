@@ -34,13 +34,14 @@ const PersonalProfile = async ({params}) => {
     if(!userProfile) notFound();
 
     const userPosts = await post
-  .findById(profileID)
+  .find({profile:profileID})
   .sort({ createdAt: -1 })
   .lean();
 
 
 
     const posts = JSON.parse(JSON.stringify(userPosts));
+    console.log(posts)
 
 
 
