@@ -74,14 +74,7 @@ export default function SideMenu() {
                 <Users size={20} />
                 <span>My Network</span>
               </Link>
-              <Link
-                href={"/jobs"}
-                className={`${pathname == "/jobs" && active}`}
-              >
-                <Briefcase size={20} />
-
-                <span>Jobs</span>
-              </Link>
+              
               <Link
                 href={"/messages"}
                 className={`${pathname == "/messages" && active}`}

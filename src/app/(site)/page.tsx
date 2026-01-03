@@ -40,7 +40,8 @@ async function Home() {
     headers: await headers(),
   });
   await dbConnect();
-  const userProfile = await profile.findOne({ user: session?.user.id }).lean();
+  const userProfileDoc = await profile.findOne({ user: session?.user.id }).lean();
+  const userProfile = JSON.parse(JSON.stringify(userProfileDoc));
 
   if (!session) {
     return (
@@ -111,11 +112,10 @@ async function Home() {
   await dbConnect();
 
   const userPost = await post.find().populate("user").lean();
-  // console.log(userPost[0].createdAt)
-  //  setTimeout(async(resolve)=>{resolve('hi')},10000)
+ 
   return (
     <div className="md:px-6 max-w-xl  mx-auto  md:mx-0 md:flex md:gap-x-10  md:max-w-full! min-[1200px]:justify-center  ">
-      <div className="relative md:min-w-50">
+      <div className="relative md:sticky md:top-20 bg-pink-50 md:min-w-50 self-start ">
         <div className="profile-view w-full  h-40 flex-col flex items-start mt-3 border sm:rounded-lg border-gray-200 bg-white">
           <MyCover
             styles="cover-image h-14 bg-yellow-400 self-stretch sm:rounded-t-lg border-gray-200"
@@ -131,8 +131,8 @@ async function Home() {
           />
           <div className="info text-black mt-10 px-2 ">
             <h5 className="font-semibold">{session?.user?.name}</h5>
-            <h5 className=" text-gray-800 text-sm">Professional</h5>
-            <h5 className="text-xs text-gray-500">Addis Ababa</h5>
+            <h5 className=" text-gray-800 text-xs">{userProfile?.headline}</h5>
+            <h5 className="text-xs text-gray-500">{userProfile?.location?.city}</h5>
           </div>
         </div>
         <div className="links  mt-3 px-2 text-xs space-y-3 font-bold border sm:rounded-lg p-2 border-gray-200 bg-white">
@@ -144,14 +144,7 @@ async function Home() {
             <Users size={15} strokeWidth={2.5} />
             <p className="group-hover:underline">Groups</p>
           </div>
-          <div className="saved-items flex gap-x-2 group cursor-pointer">
-            <Mails size={15} strokeWidth={2.5} />
-            <p className="group-hover:underline">Newsletters</p>
-          </div>
-          <div className="saved-items flex gap-x-2 group cursor-pointer">
-            <CalendarDays size={15} strokeWidth={2.5} />
-            <p className="group-hover:underline">Events</p>
-          </div>
+          
         </div>
       </div>
       <div className="mt-3  rounded-lg lg:flex-2 md:min-w-[500px] lg:max-w-xl space-y-2">

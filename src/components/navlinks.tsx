@@ -28,11 +28,7 @@ return (
       <Users size={20} />
       <span>My Network</span>
     </Link>
-    <Link href={"/jobs"} className={`${pathname == "/jobs" && active}`}>
-      <Briefcase size={20} />
-
-      <span>Jobs</span>
-    </Link>
+    
     <Link href={"/messages"} className={`${pathname == "/messages" && active}`}>
       <span className="relative">
         <MessageSquare size={20} />

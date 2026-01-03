@@ -169,6 +169,7 @@
 .profile-modal-styles{
   @apply my-10 max-w-150 text-xs text-gray-600;
 }
+
 body{
   @apply bg-slate-50
 }

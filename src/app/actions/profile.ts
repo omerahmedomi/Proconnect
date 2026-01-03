@@ -1,6 +1,7 @@
 "use server";
 
 import { auth } from "@/lib/auth";
+import { requireAuth } from "@/lib/auth-middleware";
 import profile from "@/models/profile";
 import { revalidatePath } from "next/cache";
 import { headers } from "next/headers";
@@ -24,10 +25,7 @@ export async function saveProfile(
   prevState: ProfileFormState,
   formData: FormData
 ){
-  const session = await auth.api.getSession({
-    headers: await headers()
-  })
-   if (!session?.user?.id) throw new Error("Not authenticated");
+  const user = await requireAuth();
 
   const firstName = formData.get("firstName") as string | null;
   const lastName = formData.get("lastName") as string | null;
@@ -67,7 +65,7 @@ export async function saveProfile(
   }
 
   const updatedValue = await profile.findOneAndUpdate(
-    { user: session.user.id },
+    { user: user.user.id },
     {
       name: { firstName, lastName },
       location: { city, country },
@@ -75,7 +73,7 @@ export async function saveProfile(
     },
     { new: true }
   );
-  redirect(`/profile/${session.user.id}`);
+  redirect(`/profile/${user.user.id}`);
   // return {
   //   success: true,
   //   errors: {},
@@ -86,14 +84,11 @@ export async function saveProfile(
 }
 
 export async function updateAbout(formData: FormData) {
-  const session = await auth.api.getSession({
-    headers: await headers(),
-  });
-  if (!session?.user?.id) throw new Error("Not authenticated");
+const user = await requireAuth();
 
   const about = formData.get("about");
 
-  await profile.findOneAndUpdate({ user: session.user.id }, { about });
+  await profile.findOneAndUpdate({ user: user.user.id }, { about });
 
-  redirect(`/profile/${session.user.id}`);
+  redirect(`/profile/${user.user.id}`);
 }
