@@ -26,6 +26,7 @@ export async function saveProfile(
   formData: FormData
 ){
   const user = await requireAuth();
+  const userProfile = await profile.findOne({user:user.user.id})
 
   const firstName = formData.get("firstName") as string | null;
   const lastName = formData.get("lastName") as string | null;
@@ -65,7 +66,7 @@ export async function saveProfile(
   }
 
   const updatedValue = await profile.findOneAndUpdate(
-    { user: user.user.id },
+    { user:user.user.id},
     {
       name: { firstName, lastName },
       location: { city, country },
@@ -73,7 +74,7 @@ export async function saveProfile(
     },
     { new: true }
   );
-  redirect(`/profile/${user.user.id}`);
+  redirect(`/profile/${userProfile._id}`);
   // return {
   //   success: true,
   //   errors: {},
@@ -85,10 +86,12 @@ export async function saveProfile(
 
 export async function updateAbout(formData: FormData) {
 const user = await requireAuth();
+const userProfile = await profile.findOne({user:user.user.id});
+
 
   const about = formData.get("about");
 
-  await profile.findOneAndUpdate({ user: user.user.id }, { about });
+  await profile.findOneAndUpdate({ user:user.user.id }, { about });
 
-  redirect(`/profile/${user.user.id}`);
+  redirect(`/profile/${userProfile._id}`);
 }
