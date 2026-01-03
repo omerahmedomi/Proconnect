@@ -4,13 +4,13 @@ import { Trash2, Pencil, AlertTriangle } from "lucide-react";
 import Image from "next/image";
 import { useState, useEffect } from "react";
 import Modal from "./modal";
-import { deleetPost, deletePost } from "@/app/actions/post";
-import { useFormStatus } from "react-dom";
+import {  deletePost } from "@/app/actions/post";
+import DeleteButton from "./deletebutton";
 
 export default function ProfileActivityPost({ post }) {
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
-  const { pending, method, data, action } = useFormStatus();
+
   useEffect(() => {
     if (isEditModalOpen || isDeleteModalOpen)
       document.body.style.overflow = "hidden";
@@ -65,13 +65,7 @@ export default function ProfileActivityPost({ post }) {
                 <p>Are you sure you want to delete the selected post?</p>
                 <div className="flex gap-5">
                   <form action={deletePost}>
-                    <button
-                      type="submit"
-                      disabled={pending}
-                      className="btn-register rounded-sm disabled:bg-gray-400 disabled:cursor-not-allowed disabled:hover:bg-none"
-                    >
-                      Yes
-                    </button>
+                  <DeleteButton/>
                   </form>
                   <button
                     className="btn-register rounded-sm"
