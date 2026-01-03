@@ -1,4 +1,4 @@
-export default function ProfileImage({session,styles,image,imgStyles}){
+export default function ProfileImage({styles,image,imgStyles}){
 
     return (
       <div className={`profile rounded-full  p-0.5  ${styles}` }>

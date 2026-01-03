@@ -10,7 +10,7 @@ import { usePathname } from "next/navigation";
 import { active } from "./navlinks";
 
 
-export default function SideMenu() {
+export default function SideMenu({profile}) {
   const [isMenuOpen, setIsMenuOpen] = useState<boolean>(false);
   
   const {
@@ -61,7 +61,7 @@ export default function SideMenu() {
 
         {session ? (
           <div className="">
-            <UserProfile session={session} showViewProfile={true} />
+            <UserProfile profile={profile} showViewProfile={true} />
             <ul className="side-menu-links text-sm">
               <Link href={"/"} className={`${pathname == "/" && active}`}>
                 <Home size={20} />

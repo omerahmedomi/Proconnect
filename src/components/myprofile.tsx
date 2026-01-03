@@ -3,7 +3,7 @@ import { useRef, useState } from "react";
 import ProfileImage from "./profileimage";
 import axios from "axios";
 import { useRouter } from "next/navigation";
-export default function MyProfile({ session, profile }) {
+export default function MyProfile({profile }) {
   const fileInputRef = useRef<HTMLInputElement>(null);
   const router = useRouter();
   const [isUploading, setIsUploading] = useState(false);
@@ -51,7 +51,6 @@ export default function MyProfile({ session, profile }) {
       />
       <ProfileImage
         image={profile?.profile_picture}
-        session={session}
         styles={
           "w-25 h-25 border border-gray-300 absolute top-15 left-6 bg-cyan-50"
         }

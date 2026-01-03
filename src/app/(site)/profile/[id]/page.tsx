@@ -11,30 +11,41 @@ import ProfileInfo from "@/components/profileinfo";
 import AboutInfo from "@/components/aboutinfo";
 import ProfileActivityPost from "@/components/profile-activity-post";
 import post from "@/models/post";
+import { notFound, redirect } from "next/navigation";
+import mongoose from "mongoose";
 
-const PersonalProfile = async () => {
+const PersonalProfile = async ({params}) => {
   const session = await auth.api.getSession({
-    headers: await headers(),
-  }); 
+    headers: await headers()
+  })
+  if (!session) redirect('/')
+  const {id:profileID }= await params;
+  if (!mongoose.Types.ObjectId.isValid(profileID)) {
+    notFound();
+  }
+  
   await dbConnect();
   const userProfileDoc = await profile
-    .findOne({ user: session?.user?.id })
+    .findById(profileID)
     .lean();
+      const userProfile = userProfileDoc
+        ? JSON.parse(JSON.stringify(userProfileDoc))
+        : null;
+    if(!userProfile) notFound();
+
     const userPosts = await post
-  .find({ user: session?.user.id })
+  .findById(profileID)
   .sort({ createdAt: -1 })
   .lean();
 
 
-  const userProfile = userProfileDoc
-    ? JSON.parse(JSON.stringify(userProfileDoc))
-    : null;
+
     const posts = JSON.parse(JSON.stringify(userPosts));
 
 
 
   console.log("Server",userProfile)
-  console.log("SESSION USER ID:", session?.user.id);
+
 
   return (
     <div className="flex flex-col md:flex-row  md:gap-x-5 mx-auto w-full max-w-250 md:px-5 text-sm ">
@@ -43,8 +54,8 @@ const PersonalProfile = async () => {
           <div className="cover-image h-30 self-stretch sm:rounded-lg sm:rounded-t-lg border-gray-200 relative ">
             <MyCover styles={"h-30"} profile={userProfile} showEdit={true} />
           </div>
-          <MyProfile session={session} profile={userProfile} />
-          <ProfileInfo session={session} profile={userProfile} />
+          <MyProfile profile={userProfile} />
+          <ProfileInfo  profile={userProfile} />
         </div>
         <AboutInfo profile={userProfile} />
         <div className="profile-div flex flex-col gap-5 p-6 ">
@@ -55,7 +66,7 @@ const PersonalProfile = async () => {
             </div>
           </div>
           <div className="flex flex-col leading-tight">
-            {posts.length > 0 ? (
+            {posts?.length > 0 ? (
               <div className="flex flex-col gap-4">
                 <h6 className="text-sm text-cyan-700">{posts?.length} posts</h6>
                 <div className="grid grid-cols-[repeat(auto-fit,minmax(140px,1fr))] gap-3">

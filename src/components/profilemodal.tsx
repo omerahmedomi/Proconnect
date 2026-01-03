@@ -3,13 +3,13 @@ import { signOutAction } from "@/app/actions/auth";
 import UserProfile from "./userprofile";
 import { authClient } from "@/lib/auth-clients";
 import Link from "next/link";
-export default function ProfileModal({session}) {
+export default function ProfileModal({profile}) {
   return (
     <div className="absolute top-full right-2 border rounded border-cyan-300 shadow w-80 z-50 bg-white">
-        <UserProfile session={session} showViewProfile={false}/>
+        <UserProfile profile={profile} showViewProfile={false}/>
 
       <ul className="side-menu-links text-sm">
-        <Link href={`/profile/${session?.user?.id}`}>
+        <Link href={`/profile/${profile?._id}`}>
           <User />
           <span>View Profile</span>
         </Link>

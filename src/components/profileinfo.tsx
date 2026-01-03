@@ -7,7 +7,7 @@ import { saveProfile } from "@/app/actions/profile";
 import { ProfileFormState } from "@/app/actions/profile";
 import SaveButton from "./savebutton";
 // import { useRouter } from "next/navigation";
-export default function ProfileInfo({ session, profile }) {
+export default function ProfileInfo({profile }) {
 
   // const router = useRouter();
   const [isModalOpen, setIsModalOpen] = useState(false);

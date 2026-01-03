@@ -2,54 +2,30 @@
 
 import { useState } from "react";
 import ProfileModal from "./profilemodal";
+import ProfileImage from "./profileimage";
 
 
 export default function Profile({
-  session
-}: {
-  session: Promise<{
-    session: {
-      id: string;
-      createdAt: Date;
-      updatedAt: Date;
-      userId: string;
-      expiresAt: Date;
-      token: string;
-      ipAddress?: string | null | undefined;
-      userAgent?: string | null | undefined;
-    };
-    user: {
-      id: string;
-      createdAt: Date;
-      updatedAt: Date;
-      email: string;
-      emailVerified: boolean;
-      name: string;
-      image?: string | null | undefined;
-    };
-  } | null>;
+  profile
 }) {
-    const [isProfileModalOpen,setIsProfileModalOpne]= useState<bool>(false);
+    const [isProfileModalOpen,setIsProfileModalOpne]= useState(false);
    
   return (
     <div
       className="profile rounded-full hover:bg-cyan-100 p-0.5 cursor-pointer"
       onClick={() => setIsProfileModalOpne((prev) => !prev)}
     >
-      {session?.user?.image ? (
-        <img
-          src={session?.user?.image || `/header-image.png`}
-          className="w-20"
-        ></img>
+      {profile?.profile_picture ? (
+        <ProfileImage image={profile?.profile_picture} styles={'w-10 h-10'}/>
       ) : (
         <h5 className="bg-cyan-500  rounded-full size-10 flex justify-center items-center text text-white">
           {" "}
-          {session?.user?.name.split("")[0].toUpperCase() +
+          {profile.name.firstName[0].toUpperCase() +
             "" +
-            session?.user?.name?.split(" ")[1].split("")[0].toUpperCase()}
+            profile.name.lastName[0].split("")[0].toUpperCase()}
         </h5>
       )}
-      {isProfileModalOpen && <ProfileModal session={session}  />
+      {isProfileModalOpen && <ProfileModal profile={profile}  />
       }
     </div>
   );
