@@ -24,7 +24,7 @@ export default function AboutInfo({profile}) {
       {isModalOpen && (
         <Modal
           content={<form className="w-full modal-input-container" action={updateAbout}>
-            <textarea className="field-sizing-content " placeholder="Say something about yourself..." name="about" defaultValue={profile?.about} />
+            <textarea className="field-sizing-content " placeholder="Say something about yourself..." name="about" defaultValue={profile?.about} />a
             <SaveButton/>
           </form>}
           clearFunction={() => setIsModalOpen(false)}

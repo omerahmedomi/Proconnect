@@ -12,5 +12,15 @@ export const deletePost= async(id:any)=>{
     await post.findOneAndDelete({profile:userProfile._id,_id:id});
     redirect(`/profile/${userProfile._id}`)
     
-    
+
+}
+
+export const updatePost=async(formData:FormData)=>{
+    const user = await requireAuth();
+     const userProfile = await profile.findOne({user:user.user.id})
+    const text= formData.get("text");
+
+    await post.findOneAndUpdate({profile:userProfile._id},{text});
+    redirect(`/profile/${userProfile._id}`);
+
 }

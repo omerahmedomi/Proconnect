@@ -4,8 +4,9 @@ import { Trash2, Pencil, AlertTriangle } from "lucide-react";
 import Image from "next/image";
 import { useState, useEffect } from "react";
 import Modal from "./modal";
-import {  deletePost } from "@/app/actions/post";
+import {  deletePost, updatePost } from "@/app/actions/post";
 import DeleteButton from "./deletebutton";
+import SaveButton from "./savebutton";
 
 export default function ProfileActivityPost({ post }) {
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
@@ -47,7 +48,11 @@ export default function ProfileActivityPost({ post }) {
       )}
       {isEditModalOpen && (
         <Modal
-          content={<div>Edit</div>}
+        title="Edit Post"
+          content={<form className="w-full flex flex-col gap-y-2" action={updatePost}>
+            <input type="text" placeholder="Update post text" name="text" className="w-full" defaultValue={post?.text}/>
+            <SaveButton/>
+          </form>}
           clearFunction={() => setIsEditModalOpen(false)}
           styles={"profile-modal-styles"}
         />
