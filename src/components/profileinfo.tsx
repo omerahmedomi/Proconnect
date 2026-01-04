@@ -57,7 +57,7 @@ export default function ProfileInfo({profile }) {
         <Modal
           content={
             <form
-              className="bg-pink-5 w-full  space-y-7 overflow-y-scroll px-2 flex flex-col"
+              className="w-full  space-y-7 overflow-y-scroll px-2 flex flex-col"
               action={formAction}
             >
               <div className="space-y-3">
