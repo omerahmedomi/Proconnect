@@ -16,7 +16,10 @@ export default function Profile({
       onClick={() => setIsProfileModalOpne((prev) => !prev)}
     >
       {profile?.profile_picture ? (
-        <ProfileImage image={profile?.profile_picture} styles={'w-10 h-10'}/>
+        <ProfileImage
+          image={profile?.profile_picture}
+          styles={"w-10 h-10 border border-gray-300 bg-cyan-50"}
+        />
       ) : (
         <h5 className="bg-cyan-500  rounded-full size-10 flex justify-center items-center text text-white">
           {" "}
@@ -25,8 +28,7 @@ export default function Profile({
             profile.name.lastName[0].split("")[0].toUpperCase()}
         </h5>
       )}
-      {isProfileModalOpen && <ProfileModal profile={profile}  />
-      }
+      {isProfileModalOpen && <ProfileModal profile={profile} />}
     </div>
   );
 }

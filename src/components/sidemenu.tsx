@@ -61,7 +61,7 @@ export default function SideMenu({profile}) {
 
         {session ? (
           <div className="">
-            <UserProfile profile={profile} showViewProfile={true} />
+            <UserProfile profile={profile} showViewProfile={true}   />
             <ul className="side-menu-links text-sm">
               <Link href={"/"} className={`${pathname == "/" && active}`}>
                 <Home size={20} />

@@ -5,7 +5,7 @@ export default function UserProfile({profile,showViewProfile}){
         <div className="profile-wrapper w-full flex items-center  gap-2 bg-cyan-50 p-4">
                       <div className="image  rounded-full  border border-cyan-200">
                         {profile?.profile_picture ? (
-                          <ProfileImage image={profile.profile_picture} styles={'w-20 h-20'}/>
+                          <ProfileImage image={profile.profile_picture} styles={'w-20 h-20 '}/>
                         ) : (
                           <h5 className="bg-cyan-500  rounded-full size-20 flex justify-center items-center text-2xl text-white">
                             {" "}

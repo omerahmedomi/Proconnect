@@ -13,6 +13,9 @@ import ProfileActivityPost from "@/components/profile-activity-post";
 import post from "@/models/post";
 import { notFound, redirect } from "next/navigation";
 import mongoose from "mongoose";
+import SkillsInfo from "@/components/skillsinfo";
+import EducationInfo from "@/components/educationinfo";
+import ExperienceInfo from "@/components/experienceinfo";
 
 const PersonalProfile = async ({params}) => {
   const session = await auth.api.getSession({
@@ -84,36 +87,9 @@ const PersonalProfile = async ({params}) => {
             )}
           </div>
         </div>
-        <div className="profile-div p-6">
-          <div className="flex justify-between">
-            {" "}
-            <h4 className="font-semibold  text-lg">Experience</h4>
-            <div>
-              <PlusIcon styles="mr-15" />
-              <EditIcon />
-            </div>
-          </div>
-        </div>
-        <div className="profile-div p-6">
-          <div className="flex justify-between">
-            {" "}
-            <h4 className="font-semibold  text-lg">Education</h4>
-            <div>
-              <PlusIcon styles="mr-15" />
-              <EditIcon />
-            </div>
-          </div>
-        </div>
-        <div className="profile-div p-6">
-          <div className="flex justify-between">
-            {" "}
-            <h4 className="font-semibold  text-lg">Skills</h4>
-            <div>
-              <PlusIcon styles="mr-15" />
-              <EditIcon />
-            </div>
-          </div>
-        </div>
+        <ExperienceInfo/>
+        <EducationInfo/>
+        <SkillsInfo/>
       </div>
       <div className="self-start profile-div p-6 max-md:mt-0 max-md:w-full md:w-100 ">
         <div className="">
