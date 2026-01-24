@@ -1,12 +1,13 @@
 "use client";
-import { useState } from "react";
+import { useState,useEffect } from "react";
 import PlusIcon from "./icons/addicon";
 import EditIcon from "./icons/editicon";
 import Modal from "./modal";
 import SaveButton from "./savebutton";
 export default function EducationInfo() {
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
-  const [isAddModalOpen, setIsAddModalOpen] = useState(false);const months = [
+  const [isAddModalOpen, setIsAddModalOpen] = useState(false);
+  const months = [
     "January",
     "February",
     "March",
@@ -26,6 +27,10 @@ export default function EducationInfo() {
     (_, i) => new Date().getFullYear() - i
   );
 
+  useEffect(()=>{
+    if (isAddModalOpen || isEditModalOpen) document.body.style.overflow = "hidden";
+    return () => (document.body.style.overflow = "unset");
+  },[isEditModalOpen,isAddModalOpen]);
 
   return (
     <div className="profile-div p-6">
@@ -58,15 +63,20 @@ export default function EducationInfo() {
               <h6 className="text-xs"> * indicates required</h6>
               <div className=" modal-input-container">
                 <span>School* </span>
-                <input />
+                <input type="text" name="school" />
               </div>
               <div className=" modal-input-container">
                 <span>Degree </span>
-                <input className="mt-0" />
+                <input className="mt-0" list="degreelist" name="degree" />
+                <datalist id="degreelist">
+                  <option>BSc</option>
+                  <option>MSc</option>
+                  <option>Phd</option>
+                </datalist>
               </div>
               <div className=" modal-input-container">
                 <span>Field of study </span>
-                <input className="mt-0" />
+                <input className="mt-0" name="field" />
               </div>
               <div className="modal-input-container">
                 <span>Start date</span>
@@ -142,7 +152,7 @@ export default function EducationInfo() {
 
               <div className="modal-input-container">
                 <span>Description</span>
-                <textarea maxLength={1000} />
+                <textarea maxLength={1000} name="description" />
               </div>
               <SaveButton />
             </form>

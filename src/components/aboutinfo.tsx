@@ -1,5 +1,5 @@
 "use client"
-import { useState } from "react";
+import { useState,useEffect } from "react";
 import EditIcon from "./icons/editicon";
 import Modal from "./modal";
 import { updateAbout } from "@/app/actions/profile";
@@ -7,6 +7,11 @@ import SaveButton from "./savebutton";
 export default function AboutInfo({profile}) {
 
   const [isModalOpen,setIsModalOpen] = useState(false);
+  const [aboutLength,setAboutLength] = useState(profile?.about?.length||0)
+  useEffect(()=>{
+    if (isModalOpen) document.body.style.overflow = "hidden";
+    return () => (document.body.style.overflow = "unset");
+  },[isModalOpen])
   return (
     <div className="profile-div p-6 flex flex-col gap-y-5 ">
       <span
@@ -18,17 +23,33 @@ export default function AboutInfo({profile}) {
       </span>
 
       <h5 className="text-lg font-semibold">About</h5>
-      <h6>
-        {profile?.about}
-      </h6>
+      <h6>{profile?.about}</h6>
       {isModalOpen && (
         <Modal
-          content={<form className="w-full modal-input-container" action={updateAbout}>
-            <textarea className="field-sizing-content " placeholder="Say something about yourself..." name="about" defaultValue={profile?.about} />
-            <SaveButton/>
-          </form>}
-          clearFunction={() => setIsModalOpen(false)}
-          styles={"profile-modal-styles"}
+          content={
+            <form
+              className="w-full modal-input-container overflow-y-scroll "
+              action={updateAbout}
+            >
+              <textarea
+                className="field-sizing-content min-h-30 selection:bg-cyan-600 selection:text-white"
+                placeholder="Say something about yourself..."
+                name="about"
+                defaultValue={profile?.about}
+                onChange={(e) => setAboutLength(e.target.value.length)}
+              />
+              <span className="self-end text-gray-500 text-[10px]">
+                {aboutLength}/2600
+              </span>
+
+              <SaveButton disabled={aboutLength > 2600} />
+            </form>
+          }
+          clearFunction={() => {
+            setIsModalOpen(false);
+            setAboutLength(profile?.about?.length);
+          }}
+          styles={"profile-modal-styles "}
         />
       )}
       {isModalOpen && (

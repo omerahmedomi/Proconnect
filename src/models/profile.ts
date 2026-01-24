@@ -51,6 +51,7 @@ const ProfileSchema = new mongoose.Schema({
         trim:true,
         default:null,
     },
+    
    connections:[{ type: Schema.Types.ObjectId, ref: 'User' }],
 
 },{
