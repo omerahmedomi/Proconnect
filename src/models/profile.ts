@@ -1,4 +1,4 @@
-import mongoose, { Schema } from "mongoose";import { headers } from "next/headers";
+import mongoose, { Schema } from "mongoose";
 
 
 const ProfileSchema = new mongoose.Schema({

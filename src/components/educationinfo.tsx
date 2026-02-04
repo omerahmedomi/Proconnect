@@ -4,9 +4,13 @@ import PlusIcon from "./icons/addicon";
 import EditIcon from "./icons/editicon";
 import Modal from "./modal";
 import SaveButton from "./savebutton";
+import { addEducation, EducationState, fetchEducation} from "@/app/actions/profile";
+import { useActionState } from "react";
+import { format } from "date-fns";
 export default function EducationInfo() {
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
+  const [education,setEducation] =  useState([]);
   const months = [
     "January",
     "February",
@@ -27,10 +31,39 @@ export default function EducationInfo() {
     (_, i) => new Date().getFullYear() - i
   );
 
+ 
   useEffect(()=>{
     if (isAddModalOpen || isEditModalOpen) document.body.style.overflow = "hidden";
     return () => (document.body.style.overflow = "unset");
   },[isEditModalOpen,isAddModalOpen]);
+
+useEffect(() => {
+  if (!isEditModalOpen) {
+    setEducation([]); // reset when closed
+    return;
+  }
+
+  let alive = true;
+
+  (async () => {
+    const edu = await fetchEducation();
+    if (alive) {
+      setEducation((JSON.parse(JSON.stringify(edu))));
+    }
+  })();
+
+  return () => {
+    alive = false;
+  };
+}, [isEditModalOpen]);
+
+
+  const initialState: EducationState = {
+      success: false,
+      errors: {},
+    };
+
+  const [state,formAction] = useActionState(addEducation,initialState)
 
   return (
     <div className="profile-div p-6">
@@ -51,28 +84,71 @@ export default function EducationInfo() {
           title="Edit Educaton"
           clearFunction={() => setIsEditModalOpen(false)}
           styles={"profile-modal-styles"}
+          content={
+            <div className=" text-black w-full space-y-2 ">
+              {education?.map((e, i) => (
+                <div key={i} className="flex justify-between rounded border-gray-300 shadow  px-3 py-1 items-start border-px">
+                  <div >
+                    <p className="font-semibold text-sm">{e?.school}</p>
+                    <p className="text-xs">
+                      {e?.degree} {e?.field && ", " + e?.field}
+                    </p>
+                    <p className="text-[11px] text-gray-500">
+                      {months[e?.startMonth - 1]?.slice(0, 3)} {e?.startYear}{" "}
+                      {(e?.startMonth ||
+                        e?.endMonth ||
+                        e?.startYear ||
+                        e?.endYear) &&
+                        "-"}{" "}
+                      {months[e?.endMonth - 1]?.slice(0, 3)} {e?.endYear}
+                    </p>
+                    
+                    
+                  </div>
+                  <EditIcon styles="static "/>
+                </div>
+              ))}
+            </div>
+          }
         />
       )}
+
       {isAddModalOpen && (
         <Modal
           title="Add Educaton"
           clearFunction={() => setIsAddModalOpen(false)}
           styles={"profile-modal-styles"}
           content={
-            <form className="w-full  space-y-3 overflow-y-scroll px-2 flex flex-col">
+            <form
+              className="w-full  space-y-3 overflow-y-scroll px-2 flex flex-col"
+              action={formAction}
+            >
               <h6 className="text-xs"> * indicates required</h6>
               <div className=" modal-input-container">
                 <span>School* </span>
                 <input type="text" name="school" />
+                {state?.errors && (
+                  <span className="text-red-500 text-[10px]">
+                    {state?.errors?.school}
+                  </span>
+                )}
               </div>
-              <div className=" modal-input-container">
-                <span>Degree </span>
-                <input className="mt-0" list="degreelist" name="degree" />
-                <datalist id="degreelist">
-                  <option>BSc</option>
-                  <option>MSc</option>
-                  <option>Phd</option>
-                </datalist>
+              <div className=" modal-input-container flex flex-row gap-x-4 items-center">
+                <span className="">Degree </span>
+
+                <select
+                  name="degree"
+                  className="border px-2 py-1 rounded"
+                  defaultValue={state?.values?.degree || ""}
+                >
+                  <option value={""} disabled>
+                    Select your degree
+                  </option>
+                  <option value="Bachelors">Bachelors</option>
+                  <option value="Masters">Masters</option>
+                  <option value="Phd">Phd</option>
+                  <option value="Phd">Diploma</option>
+                </select>
               </div>
               <div className=" modal-input-container">
                 <span>Field of study </span>
