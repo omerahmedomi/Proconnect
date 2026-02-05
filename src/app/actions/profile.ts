@@ -25,7 +25,7 @@ export type ProfileErrors = {
 export type EducationState = {
   success: boolean;
   errors?: EducationErrors;
-  value?: any;
+  values?: Record<string, FormDataEntryValue>;
 };
 
 export type EducationErrors = {
@@ -111,6 +111,7 @@ export async function addEducation(
   formData: FormData,
 ) {
   console.log(formData);
+  const educationId = formData.get("educationId")
   const user = await requireAuth();
   const educationData = Object.fromEntries(formData.entries());
   const userProfile = await profile.findOne({ user: user.user.id });
@@ -124,6 +125,10 @@ export async function addEducation(
     };
   }
 
+  if(educationId)
+
+    await education.findByIdAndUpdate(educationId, educationData)
+    else
 
   await education.create({ profile: userProfile.id, ...educationData });
     // redirect(`/profile/${userProfile.id}`);

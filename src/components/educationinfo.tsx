@@ -1,16 +1,23 @@
 "use client";
-import { useState,useEffect } from "react";
+import { useState, useEffect } from "react";
 import PlusIcon from "./icons/addicon";
 import EditIcon from "./icons/editicon";
 import Modal from "./modal";
 import SaveButton from "./savebutton";
-import { addEducation, EducationState, fetchEducation} from "@/app/actions/profile";
+import {
+  addEducation,
+  EducationState,
+  fetchEducation,
+} from "@/app/actions/profile";
 import { useActionState } from "react";
 import { format } from "date-fns";
 export default function EducationInfo() {
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
-  const [education,setEducation] =  useState([]);
+  const [isEducationEditModalOpen, setIsEducationEditModalOpen] =
+    useState(false);
+  const [selectedEducation, setSelectedEducaiton] = useState({});
+  const [education, setEducation] = useState([]);
   const months = [
     "January",
     "February",
@@ -28,42 +35,44 @@ export default function EducationInfo() {
 
   const years = Array.from(
     { length: 60 },
-    (_, i) => new Date().getFullYear() - i
+    (_, i) => new Date().getFullYear() - i,
   );
 
- 
-  useEffect(()=>{
-    if (isAddModalOpen || isEditModalOpen) document.body.style.overflow = "hidden";
+  useEffect(() => {
+    if (isAddModalOpen || isEditModalOpen || isEducationEditModalOpen)
+      document.body.style.overflow = "hidden";
     return () => (document.body.style.overflow = "unset");
-  },[isEditModalOpen,isAddModalOpen]);
+  }, [isEditModalOpen, isAddModalOpen, isEducationEditModalOpen]);
 
-useEffect(() => {
-  if (!isEditModalOpen) {
-    setEducation([]); // reset when closed
-    return;
-  }
-
-  let alive = true;
-
-  (async () => {
-    const edu = await fetchEducation();
-    if (alive) {
-      setEducation((JSON.parse(JSON.stringify(edu))));
+  useEffect(() => {
+    if (!isEditModalOpen) {
+      setEducation([]); // reset when closed
+      return;
     }
-  })();
 
-  return () => {
-    alive = false;
-  };
-}, [isEditModalOpen]);
+    let alive = true;
 
+    (async () => {
+      const edu = await fetchEducation();
+      if (alive) {
+        setEducation(JSON.parse(JSON.stringify(edu)));
+      }
+    })();
+
+    return () => {
+      alive = false;
+    };
+  }, [isEditModalOpen]);
+
+ 
 
   const initialState: EducationState = {
-      success: false,
-      errors: {},
-    };
+    success: false,
+    errors: {},
+  };
 
-  const [state,formAction] = useActionState(addEducation,initialState)
+  const [state, formAction] = useActionState(addEducation, initialState);
+
 
   return (
     <div className="profile-div p-6">
@@ -79,6 +88,145 @@ useEffect(() => {
           </button>
         </div>
       </div>
+      {isEducationEditModalOpen && (
+        <Modal
+          title={"Edit this"}
+          styles={"profile-modal-styles"}
+          clearFunction={() => setIsEducationEditModalOpen(false)}
+          content={
+            <form
+              className="w-full  space-y-3 overflow-y-scroll px-2 flex flex-col"
+              action={formAction}
+            >
+              <h6 className="text-xs"> * indicates required</h6>
+              <div className=" modal-input-container">
+                <span>School* </span>
+                <input
+                  type="hidden"
+                  name="educationId"
+                  value={selectedEducation?.id ?? ""}
+                />
+                <input
+                  type="text"
+                  name="school"
+                  defaultValue={selectedEducation?.school}
+                />
+                {state?.errors && (
+                  <span className="text-red-500 text-[10px]">
+                    {state?.errors?.school}
+                  </span>
+                )}
+              </div>
+              <div className=" modal-input-container flex flex-row gap-x-4 items-center">
+                <span className="">Degree </span>
+
+                <select
+                  name="degree"
+                  className="border px-2 py-1 rounded"
+                  defaultValue={selectedEducation.degree || ""}
+                >
+                  <option value={""} disabled>
+                    Select your degree
+                  </option>
+                  <option value="Bachelors">Bachelors</option>
+                  <option value="Masters">Masters</option>
+                  <option value="Phd">Phd</option>
+                  <option value="Phd">Diploma</option>
+                </select>
+              </div>
+              <div className=" modal-input-container">
+                <span>Field of study </span>
+                <input
+                  className="mt-0"
+                  name="field"
+                  defaultValue={selectedEducation?.field}
+                />
+              </div>
+              <div className="modal-input-container">
+                <span>Start date</span>
+
+                <div className="flex gap-2">
+                  <select
+                    name="startMonth"
+                    className="border rounded-md px-2  text-sm bg-white grow"
+                    defaultValue={selectedEducation?.startMonth || ""}
+                  >
+                    <option value="" disabled>
+                      Month
+                    </option>
+                    {months.map((m, i) => (
+                      <option key={m} value={i + 1}>
+                        {m}
+                      </option>
+                    ))}
+                  </select>
+
+                  <select
+                    name="startYear"
+                    className="border rounded-md px-2 py-2 text-sm bg-white grow"
+                    defaultValue={selectedEducation?.startYear || ""}
+                  >
+                    <option value="" disabled>
+                      Year
+                    </option>
+                    {years.map((y) => (
+                      <option key={y} value={y}>
+                        {y}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+              </div>
+
+              <div className="modal-input-container">
+                <span>End date (or expected)</span>
+
+                <div className="flex gap-2">
+                  <select
+                    name="endMonth"
+                    className="border rounded-md px-2 py-2 text-sm bg-white grow"
+                    defaultValue={selectedEducation?.endMonth || ""}
+                  >
+                    <option value="" disabled>
+                      Month
+                    </option>
+                    {months.map((m, i) => (
+                      <option key={m} value={i + 1}>
+                        {m}
+                      </option>
+                    ))}
+                  </select>
+
+                  <select
+                    name="endYear"
+                    className="border rounded-md px-2 py-2 text-sm bg-white grow"
+                    defaultValue={selectedEducation?.endYear || ""}
+                  >
+                    <option value="" disabled>
+                      Year
+                    </option>
+                    {years.map((y) => (
+                      <option key={y} value={y}>
+                        {y}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+              </div>
+
+              <div className="modal-input-container">
+                <span>Description</span>
+                <textarea
+                  maxLength={1000}
+                  name="description"
+                  defaultValue={selectedEducation?.description}
+                />
+              </div>
+              <SaveButton />
+            </form>
+          }
+        />
+      )}
       {isEditModalOpen && (
         <Modal
           title="Edit Educaton"
@@ -87,8 +235,11 @@ useEffect(() => {
           content={
             <div className=" text-black w-full space-y-2 ">
               {education?.map((e, i) => (
-                <div key={i} className="flex justify-between rounded border-gray-300 shadow  px-3 py-1 items-start border-px">
-                  <div >
+                <div
+                  key={i}
+                  className="flex justify-between rounded border-gray-300 shadow  px-3 py-1 items-start border-px"
+                >
+                  <div>
                     <p className="font-semibold text-sm">{e?.school}</p>
                     <p className="text-xs">
                       {e?.degree} {e?.field && ", " + e?.field}
@@ -102,10 +253,16 @@ useEffect(() => {
                         "-"}{" "}
                       {months[e?.endMonth - 1]?.slice(0, 3)} {e?.endYear}
                     </p>
-                    
-                    
                   </div>
-                  <EditIcon styles="static "/>
+                  <span
+                    onClick={() => {
+                      setIsEducationEditModalOpen(true);
+                      setIsEditModalOpen(false);
+                      setSelectedEducaiton(e);
+                    }}
+                  >
+                    <EditIcon styles="static" />
+                  </span>
                 </div>
               ))}
             </div>
@@ -115,7 +272,7 @@ useEffect(() => {
 
       {isAddModalOpen && (
         <Modal
-          title="Add Educaton"
+          title={isEditModalOpen ? "Edit Education" : "Add Educaton"}
           clearFunction={() => setIsAddModalOpen(false)}
           styles={"profile-modal-styles"}
           content={
@@ -139,7 +296,7 @@ useEffect(() => {
                 <select
                   name="degree"
                   className="border px-2 py-1 rounded"
-                  defaultValue={state?.values?.degree || ""}
+                  defaultValue={(state?.values?.degree as string) || ""}
                 >
                   <option value={""} disabled>
                     Select your degree
@@ -235,12 +392,13 @@ useEffect(() => {
           }
         />
       )}
-      {(isEditModalOpen || isAddModalOpen) && (
+      {(isEditModalOpen || isAddModalOpen || isEducationEditModalOpen) && (
         <div
           className=" fixed inset-0 bg-black/20 z-45 cursor-pointer"
           onClick={() => {
             setIsAddModalOpen(false);
             setIsEditModalOpen(false);
+            setIsEducationEditModalOpen(false);
           }}
         />
       )}

@@ -13,7 +13,7 @@ const educationSchema = new Schema({
   },
   degree: {
     type: String,
-    enum: ["Bachelors", "Masters", "Phd", "Diploma"],
+    // enum: ["Bachelors", "Masters", "Phd", "Diploma"],
     trim: true,
     // required: true,
   },
