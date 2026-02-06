@@ -111,7 +111,7 @@ export async function addEducation(
   formData: FormData,
 ) {
   console.log(formData);
-  const educationId = formData.get("educationId")
+  const educationId = formData.get("educationId");
   const user = await requireAuth();
   const educationData = Object.fromEntries(formData.entries());
   const userProfile = await profile.findOne({ user: user.user.id });
@@ -119,35 +119,27 @@ export async function addEducation(
   const school = formData.get("school");
   if (!school) {
     errors.school = "School is required";
+  }
+  if (Object.keys(errors).length > 0) {
     return {
       success: false,
       errors,
     };
   }
 
-  if(educationId)
-
-    await education.findByIdAndUpdate(educationId, educationData)
-    else
-
-  await education.create({ profile: userProfile.id, ...educationData });
-    // redirect(`/profile/${userProfile.id}`);
-  return {
-    success: true,
-    values: { ...educationData },
-  };
-
-  
- 
+  if (educationId)
+    await education.findByIdAndUpdate(educationId, educationData);
+  else await education.create({ profile: userProfile.id, ...educationData });
+  redirect(`/profile/${userProfile.id}`);
 }
 
- export const fetchEducation =async()=>{
+export const fetchEducation = async () => {
   try {
     const user = await requireAuth();
-    console.log("From edu",user)
-    const userProfile = await profile.findOne({user:user?.user?.id})
-    console.log(userProfile.id)
-    const data = await education.find({profile:userProfile?.id}).lean();
+    console.log("From edu", user);
+    const userProfile = await profile.findOne({ user: user?.user?.id });
+    console.log(userProfile.id);
+    const data = await education.find({ profile: userProfile?.id }).lean();
     console.log(data);
     return data.map((e) => ({
       id: e._id.toString(),
@@ -161,7 +153,6 @@ export async function addEducation(
       endYear: e.endYear,
     }));
   } catch (error) {
-    console.log(error)
-    
+    console.log(error);
   }
-}
+};

@@ -71,8 +71,8 @@ export default function EducationInfo() {
     errors: {},
   };
 
-  const [state, formAction] = useActionState(addEducation, initialState);
-
+  const [state, formAction] = useActionState<EducationState,FormData>(addEducation, initialState);
+ 
 
   return (
     <div className="profile-div p-6">
@@ -91,11 +91,11 @@ export default function EducationInfo() {
       {isEducationEditModalOpen && (
         <Modal
           title={"Edit this"}
-          styles={"profile-modal-styles"}
+          styles={"profile-modal-styles overflow-y-scroll"}
           clearFunction={() => setIsEducationEditModalOpen(false)}
           content={
             <form
-              className="w-full  space-y-3 overflow-y-scroll px-2 flex flex-col"
+              className="w-full  space-y-3  px-2 flex flex-col "
               action={formAction}
             >
               <h6 className="text-xs"> * indicates required</h6>
@@ -131,7 +131,7 @@ export default function EducationInfo() {
                   <option value="Bachelors">Bachelors</option>
                   <option value="Masters">Masters</option>
                   <option value="Phd">Phd</option>
-                  <option value="Phd">Diploma</option>
+                  <option value="Diploma">Diploma</option>
                 </select>
               </div>
               <div className=" modal-input-container">
@@ -231,7 +231,7 @@ export default function EducationInfo() {
         <Modal
           title="Edit Educaton"
           clearFunction={() => setIsEditModalOpen(false)}
-          styles={"profile-modal-styles"}
+          styles={"profile-modal-styles overflow-y-scroll"}
           content={
             <div className=" text-black w-full space-y-2 ">
               {education?.map((e, i) => (
