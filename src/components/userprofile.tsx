@@ -18,7 +18,7 @@ export default function UserProfile({profile,showViewProfile}){
                        <h4 className="text-sm text-gray-500">{profile?.headline}</h4>
                        { showViewProfile && <Link
                           // href={`/profile/${session?.user?.id}`}
-                          href={'/'}
+                          href={`/profile/${profile._id}`}
                           className="text-semibold text-cyan-600 text-sm hover:text-cyan-700"
                         >
                           View Profile

@@ -11,7 +11,8 @@ import {
   fetchEducation,
 } from "@/app/actions/profile";
 import { useActionState } from "react";
-import { format } from "date-fns";
+import { useRouter } from "next/navigation";
+import { Loader } from "lucide-react";
 export default function EducationInfo() {
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
@@ -19,6 +20,7 @@ export default function EducationInfo() {
     useState(false);
   const [selectedEducation, setSelectedEducaiton] = useState({});
   const [education, setEducation] = useState([]);
+  const [isLoading,setIsLoading] = useState(false)
   const months = [
     "January",
     "February",
@@ -33,7 +35,7 @@ export default function EducationInfo() {
     "November",
     "December",
   ];
-
+const router = useRouter();
   const years = Array.from(
     { length: 60 },
     (_, i) => new Date().getFullYear() - i,
@@ -54,10 +56,12 @@ export default function EducationInfo() {
     let alive = true;
 
     (async () => {
+      setIsLoading(true);
       const edu = await fetchEducation();
       if (alive) {
         setEducation(JSON.parse(JSON.stringify(edu)));
       }
+      setIsLoading(false);
     })();
 
     return () => {
@@ -92,7 +96,7 @@ export default function EducationInfo() {
       {isEducationEditModalOpen && (
         <Modal
           title={"Edit this"}
-          styles={"profile-modal-styles overflow-y-scroll"}
+          styles={"profile-modal-styles "}
           clearFunction={() => setIsEducationEditModalOpen(false)}
           content={
             <form
@@ -227,10 +231,18 @@ export default function EducationInfo() {
                 
                   <button 
                   type="button"
-                  className="final-action-button bg-red-500 hover:bg-red-400 transition"
-                  onClick={async()=> await deleteEducation(selectedEducation?.id)}
+                  disabled={isLoading}
+                  className="final-action-button disabled:bg-gray-400 disabled:text-white disabled:cursor-not-allowed bg-red-500 hover:bg-red-400 transition"
+                  onClick={async()=>{
+                    setIsLoading(true);
+                     await deleteEducation(selectedEducation?.id);
+                     setIsLoading(false)
+                     router.refresh();
+                     setIsEditModalOpen(true);
+                    
+                    }}
                   >
-                    Delete
+                    {isLoading ? "Deleting":"Delete"}
                   </button>
               
 
@@ -244,9 +256,10 @@ export default function EducationInfo() {
         <Modal
           title="Edit Educaton"
           clearFunction={() => setIsEditModalOpen(false)}
-          styles={"profile-modal-styles overflow-y-scroll"}
+          styles={"profile-modal-styles"}
           content={
-            <div className=" text-black w-full space-y-2 ">
+            isLoading ? <span className=" flex justify-center w-full"><Loader color="black" /></span>:
+            <div className=" text-black w-full space-y-2  overflow-y-auto">
               {education?.map((e, i) => (
                 <div
                   key={i}
@@ -290,7 +303,7 @@ export default function EducationInfo() {
           styles={"profile-modal-styles"}
           content={
             <form
-              className="w-full  space-y-3 overflow-y-scroll px-2 flex flex-col"
+              className="w-full  space-y-3 overflow-y-auto px-2 flex flex-col"
               action={formAction}
             >
               <h6 className="text-xs"> * indicates required</h6>
