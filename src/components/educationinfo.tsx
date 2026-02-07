@@ -6,6 +6,7 @@ import Modal from "./modal";
 import SaveButton from "./savebutton";
 import {
   addEducation,
+  deleteEducation,
   EducationState,
   fetchEducation,
 } from "@/app/actions/profile";
@@ -222,7 +223,19 @@ export default function EducationInfo() {
                   defaultValue={selectedEducation?.description}
                 />
               </div>
-              <SaveButton />
+              <span className="flex justify-between">
+                
+                  <button 
+                  type="button"
+                  className="final-action-button bg-red-500 hover:bg-red-400 transition"
+                  onClick={async()=> await deleteEducation(selectedEducation?.id)}
+                  >
+                    Delete
+                  </button>
+              
+
+                <SaveButton />
+              </span>
             </form>
           }
         />

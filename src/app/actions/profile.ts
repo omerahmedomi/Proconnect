@@ -156,3 +156,15 @@ export const fetchEducation = async () => {
     console.log(error);
   }
 };
+
+export async function deleteEducation(id:string){
+   try {
+    console.log("ID from ",id)
+    const user = await requireAuth();
+    await education.findByIdAndDelete(id);
+   } catch (error) {
+    console.log(error)
+    
+   }
+  
+}
