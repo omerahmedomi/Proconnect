@@ -1,5 +1,5 @@
 "use client";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import PlusIcon from "./icons/addicon";
 import EditIcon from "./icons/editicon";
 import Modal from "./modal";
@@ -21,6 +21,7 @@ export default function EducationInfo() {
   const [selectedEducation, setSelectedEducaiton] = useState({});
   const [education, setEducation] = useState([]);
   const [isLoading,setIsLoading] = useState(false)
+  const formRef = useRef<HTMLFormElement | null>(null);
   const months = [
     "January",
     "February",
@@ -100,6 +101,7 @@ const router = useRouter();
           clearFunction={() => setIsEducationEditModalOpen(false)}
           content={
             <form
+            ref={formRef}
               className="w-full  space-y-3  px-2 flex flex-col "
               action={formAction}
             >
@@ -117,7 +119,7 @@ const router = useRouter();
                   defaultValue={selectedEducation?.school}
                 />
                 {state?.errors && (
-                  <span className="text-red-500 text-[10px]">
+                  <span className="text-red-500 text-[11px]">
                     {state?.errors?.school}
                   </span>
                 )}
@@ -228,23 +230,20 @@ const router = useRouter();
                 />
               </div>
               <span className="flex justify-between">
-                
-                  <button 
+                <button
                   type="button"
                   disabled={isLoading}
                   className="final-action-button disabled:bg-gray-400 disabled:text-white disabled:cursor-not-allowed bg-red-500 hover:bg-red-400 transition"
-                  onClick={async()=>{
+                  onClick={async () => {
                     setIsLoading(true);
-                     await deleteEducation(selectedEducation?.id);
-                     setIsLoading(false)
-                     router.refresh();
-                     setIsEditModalOpen(true);
-                    
-                    }}
-                  >
-                    {isLoading ? "Deleting":"Delete"}
-                  </button>
-              
+                    await deleteEducation(selectedEducation?.id);
+                    setIsLoading(false);
+                    router.refresh();
+                    setIsEditModalOpen(true);
+                  }}
+                >
+                  {isLoading ? "Deleting" : "Delete"}
+                </button>
 
                 <SaveButton />
               </span>
@@ -258,51 +257,61 @@ const router = useRouter();
           clearFunction={() => setIsEditModalOpen(false)}
           styles={"profile-modal-styles"}
           content={
-            isLoading ? <span className=" flex justify-center w-full"><Loader color="black" /></span>:
-            <div className=" text-black w-full space-y-2  overflow-y-auto">
-              {education?.map((e, i) => (
-                <div
-                  key={i}
-                  className="flex justify-between rounded border-gray-300 shadow  px-3 py-1 items-start border-px"
-                >
-                  <div>
-                    <p className="font-semibold text-sm">{e?.school}</p>
-                    <p className="text-xs">
-                      {e?.degree} {e?.field && ", " + e?.field}
-                    </p>
-                    <p className="text-[11px] text-gray-500">
-                      {months[e?.startMonth - 1]?.slice(0, 3)} {e?.startYear}{" "}
-                      {(e?.startMonth ||
-                        e?.endMonth ||
-                        e?.startYear ||
-                        e?.endYear) &&
-                        "-"}{" "}
-                      {months[e?.endMonth - 1]?.slice(0, 3)} {e?.endYear}
-                    </p>
-                  </div>
-                  <span
-                    onClick={() => {
-                      setIsEducationEditModalOpen(true);
-                      setIsEditModalOpen(false);
-                      setSelectedEducaiton(e);
-                    }}
+            isLoading ? (
+              <span className=" flex justify-center w-full">
+                <Loader color="black" />
+              </span>
+            ) : (
+              <div className=" text-black w-full space-y-2  overflow-y-auto">
+                {education?.map((e, i) => (
+                  <div
+                    key={i}
+                    className="flex justify-between rounded border-gray-300 shadow  px-3 py-1 items-start border-px"
                   >
-                    <EditIcon styles="static" />
-                  </span>
-                </div>
-              ))}
-            </div>
+                    <div>
+                      <p className="font-semibold text-sm">{e?.school}</p>
+                      <p className="text-xs">
+                        {e?.degree} {e?.field && ", " + e?.field}
+                      </p>
+                      <p className="text-[11px] text-gray-500">
+                        {months[e?.startMonth - 1]?.slice(0, 3)} {e?.startYear}{" "}
+                        {(e?.startMonth ||
+                          e?.endMonth ||
+                          e?.startYear ||
+                          e?.endYear) &&
+                          "-"}{" "}
+                        {months[e?.endMonth - 1]?.slice(0, 3)} {e?.endYear}
+                      </p>
+                    </div>
+                    <span
+                      onClick={() => {
+                        setIsEducationEditModalOpen(true);
+                        setIsEditModalOpen(false);
+                        setSelectedEducaiton(e);
+                      }}
+                    >
+                      <EditIcon styles="static" />
+                    </span>
+                  </div>
+                ))}
+              </div>
+            )
           }
         />
       )}
 
       {isAddModalOpen && (
         <Modal
+          key={isAddModalOpen ? "add-modal-open" : "add-modal-closed"}
           title={isEditModalOpen ? "Edit Education" : "Add Educaton"}
-          clearFunction={() => setIsAddModalOpen(false)}
+          clearFunction={() => {
+            setIsAddModalOpen(false)
+          formRef.current.reset();
+          }}
           styles={"profile-modal-styles"}
           content={
             <form
+            ref={formRef}
               className="w-full  space-y-3 overflow-y-auto px-2 flex flex-col"
               action={formAction}
             >
@@ -310,8 +319,8 @@ const router = useRouter();
               <div className=" modal-input-container">
                 <span>School* </span>
                 <input type="text" name="school" />
-                {state?.errors && (
-                  <span className="text-red-500 text-[10px]">
+                {state?.errors?.school && (
+                  <span className="text-red-500 text-[11px]">
                     {state?.errors?.school}
                   </span>
                 )}
@@ -321,8 +330,9 @@ const router = useRouter();
 
                 <select
                   name="degree"
+                  key={state?.values?.degree || "initial"}
                   className="border px-2 py-1 rounded"
-                  defaultValue={(state?.values?.degree as string) || ""}
+                  defaultValue={state?.values?.degree || ""}
                 >
                   <option value={""} disabled>
                     Select your degree
@@ -330,21 +340,28 @@ const router = useRouter();
                   <option value="Bachelors">Bachelors</option>
                   <option value="Masters">Masters</option>
                   <option value="Phd">Phd</option>
-                  <option value="Phd">Diploma</option>
+                  <option value="Diploma">Diploma</option>
                 </select>
               </div>
               <div className=" modal-input-container">
                 <span>Field of study </span>
-                <input className="mt-0" name="field" />
+                <input
+                  className="mt-0"
+                  name="field"
+                  defaultValue={state?.values?.field || ""}
+                />
               </div>
               <div className="modal-input-container">
                 <span>Start date</span>
 
-                <div className="flex gap-2">
+                <div
+                  className="flex gap-2"
+                  key={state?.values?.startMonth || "initial"}
+                >
                   <select
                     name="startMonth"
                     className="border rounded-md px-2  text-sm bg-white grow"
-                    defaultValue=""
+                    defaultValue={state?.values?.startMonth || ""}
                   >
                     <option value="" disabled>
                       Month
@@ -359,7 +376,8 @@ const router = useRouter();
                   <select
                     name="startYear"
                     className="border rounded-md px-2 py-2 text-sm bg-white grow"
-                    defaultValue=""
+                    key={state?.values?.startYear || "initial"}
+                    defaultValue={state?.values?.startYear || ""}
                   >
                     <option value="" disabled>
                       Year
@@ -376,11 +394,14 @@ const router = useRouter();
               <div className="modal-input-container">
                 <span>End date (or expected)</span>
 
-                <div className="flex gap-2">
+                <div
+                  className="flex gap-2"
+                  key={state?.values?.endMonth || "initial"}
+                >
                   <select
                     name="endMonth"
                     className="border rounded-md px-2 py-2 text-sm bg-white grow"
-                    defaultValue=""
+                    defaultValue={state?.values?.endMonth || ""}
                   >
                     <option value="" disabled>
                       Month
@@ -395,7 +416,8 @@ const router = useRouter();
                   <select
                     name="endYear"
                     className="border rounded-md px-2 py-2 text-sm bg-white grow"
-                    defaultValue=""
+                    key={state?.values?.endYear || "initial"}
+                    defaultValue={state?.values?.endYear || ""}
                   >
                     <option value="" disabled>
                       Year
@@ -408,10 +430,19 @@ const router = useRouter();
                   </select>
                 </div>
               </div>
+              {state?.errors?.date && (
+                <span className="text-red-500 text-[11px]">
+                  {state?.errors?.date}
+                </span>
+              )}
 
               <div className="modal-input-container">
                 <span>Description</span>
-                <textarea maxLength={1000} name="description" />
+                <textarea
+                  maxLength={1000}
+                  name="description"
+                  defaultValue={state?.values?.description || ""}
+                />
               </div>
               <SaveButton />
             </form>
@@ -425,6 +456,7 @@ const router = useRouter();
             setIsAddModalOpen(false);
             setIsEditModalOpen(false);
             setIsEducationEditModalOpen(false);
+            formRef.current.reset();
           }}
         />
       )}

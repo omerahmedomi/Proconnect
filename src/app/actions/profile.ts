@@ -9,6 +9,7 @@ import { revalidatePath } from "next/cache";
 import { headers } from "next/headers";
 import { redirect } from "next/navigation";
 import experience from "@/models/experience";
+import { error } from "console";
 
 export type ProfileFormState = {
   success: boolean;
@@ -31,6 +32,7 @@ export type EducationState = {
 
 export type EducationErrors = {
   school?: string;
+  date?:string
 };
 
 export type ExperienceState = {
@@ -131,13 +133,25 @@ export async function addEducation(
   const userProfile = await profile.findOne({ user: user.user.id });
   const errors: EducationErrors = {};
   const school = formData.get("school");
+  const startMonth = formData.get("startMonth");
+  const endMonth = formData.get("endMonth");
+  const startYear = formData.get("startYear");
+  const endYear = formData.get("endYear");
   if (!school) {
     errors.school = "School is required";
   }
+  if(startYear && endYear && Number(startYear) > Number(endYear)){
+    errors.date = "Start Date can't be greater than End Date"
+  }
+  if(startYear && endYear && startMonth && endMonth && startYear==endYear && startMonth > endMonth)
+{
+  errors.date = "Start Date can't be greater than End Date";
+}
   if (Object.keys(errors).length > 0) {
     return {
       success: false,
       errors,
+      values:{...educationData}
     };
   }
 
