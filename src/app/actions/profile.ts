@@ -8,6 +8,7 @@ import { formatDate } from "date-fns";
 import { revalidatePath } from "next/cache";
 import { headers } from "next/headers";
 import { redirect } from "next/navigation";
+import experience from "@/models/experience";
 
 export type ProfileFormState = {
   success: boolean;
@@ -25,11 +26,24 @@ export type ProfileErrors = {
 export type EducationState = {
   success: boolean;
   errors?: EducationErrors;
-  values?: Record<string, FormDataEntryValue>;
+  values?: any;
 };
 
 export type EducationErrors = {
   school?: string;
+};
+
+export type ExperienceState = {
+  success: boolean;
+  errors?: ExperienceErrors;
+  values?: any;
+};
+
+export type ExperienceErrors = {
+  title?: string;
+  company?: string;
+  startDate?: string;
+  endDate?: string;
 };
 
 export async function saveProfile(
@@ -157,14 +171,55 @@ export const fetchEducation = async () => {
   }
 };
 
-export async function deleteEducation(id:string){
-   try {
-    console.log("ID from ",id)
+export async function deleteEducation(id: string) {
+  try {
+    console.log("ID from ", id);
     const user = await requireAuth();
     await education.findByIdAndDelete(id);
-   } catch (error) {
-    console.log(error)
-    
-   }
-  
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+export async function addExperience(
+  prevState: ExperienceState,
+  formData: FormData,
+) {
+  console.log(formData);
+  const experienceId = formData.get("experienceId");
+  const user = await requireAuth();
+  const experienceData = Object.fromEntries(formData.entries());
+  const userProfile = await profile.findOne({ user: user.user.id });
+  const errors: ExperienceErrors = {};
+  const title = formData.get("title");
+  const startYear = formData.get("startYear");
+  const endYear = formData.get("endYear");
+  const startMonth = formData.get("startMonth");
+  const endMonth = formData.get("endMonth");
+  const company = formData.get("company");
+  if (!title) {
+    errors.title = "Title is required";
+  }
+  if(!company){
+    errors.company = "Company is required"
+  }
+  if(!startMonth || !startYear)
+  {
+    errors.startDate = "Start date is required"
+  }
+   if(!endMonth || !endYear)
+  {
+    errors.endDate = "End date is required"
+  }
+  if (Object.keys(errors).length > 0) {
+    return {
+      success: false,
+      errors,
+    };
+  }
+
+  if (experienceId)
+    await experience.findByIdAndUpdate(experienceId, experienceData);
+  else await experience.create({ profile: userProfile.id, ...experienceData });
+  redirect(`/profile/${userProfile.id}`);
 }

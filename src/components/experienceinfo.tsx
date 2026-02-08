@@ -1,9 +1,10 @@
 "use client";
-import { useState,useEffect } from "react";
+import { useState,useEffect, useActionState } from "react";
 import PlusIcon from "./icons/addicon";
 import EditIcon from "./icons/editicon";
 import Modal from "./modal";
 import SaveButton from "./savebutton";
+import { addExperience, ExperienceState } from "@/app/actions/profile";
 export default function ExperienceInfo() {
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
@@ -26,6 +27,12 @@ export default function ExperienceInfo() {
     { length: 60 },
     (_, i) => new Date().getFullYear() - i,
   );
+
+  const initialState:ExperienceState ={
+    success:false,
+    errors:{}
+  }
+  const [state,formAction] = useActionState<ExperienceState,FormData>(addExperience, initialState)
   useEffect(() => {
     if (isAddModalOpen || isEditModalOpen )
       document.body.style.overflow = "hidden";
@@ -60,7 +67,7 @@ export default function ExperienceInfo() {
           content={
             <form
               className="w-full  space-y-3 overflow-y-auto px-2 flex flex-col"
-              // action={}
+              action={formAction}
             >
               <h6 className="text-xs"> * indicates required</h6>
               <div className=" modal-input-container">
@@ -69,12 +76,13 @@ export default function ExperienceInfo() {
                   type="text"
                   name="title"
                   placeholder="Ex. Managing Partner"
+                  // onBlur={()=>{state?.errors?.title= null}}
                 />
-                {/* {state?.errors && (
-                            <span className="text-red-500 text-[10px]">
-                              {state?.errors?.school}
-                            </span>
-                          )} */}
+                {state?.errors?.title && (
+                  <span className="text-red-500 text-[10px]">
+                    {state?.errors?.title}
+                  </span>
+                )}
               </div>
               <div className=" modal-input-container  ">
                 <span className="">Employment Type</span>
@@ -101,6 +109,11 @@ export default function ExperienceInfo() {
                   name="company"
                   placeholder="Ex. Apple"
                 />
+                {state?.errors?.company && (
+                  <span className="text-red-500 text-[10px]">
+                    {state?.errors?.company}
+                  </span>
+                )}
               </div>
               <div className="modal-input-container ">
                 <span>Start date*</span>
@@ -136,6 +149,11 @@ export default function ExperienceInfo() {
                     ))}
                   </select>
                 </div>
+                {state?.errors?.startDate && (
+                  <span className="text-red-500 text-[10px]">
+                    {state?.errors?.startDate}
+                  </span>
+                )}
               </div>
 
               <div className="modal-input-container">
@@ -172,12 +190,17 @@ export default function ExperienceInfo() {
                     ))}
                   </select>
                 </div>
+                 {state?.errors?.endDate && (
+                            <span className="text-red-500 text-[10px]">
+                              {state?.errors?.endDate}
+                            </span>
+                          )}
               </div>
               <div className=" modal-input-container">
                 <span>Location </span>
                 <input
                   type="text"
-                  name="title"
+                  name="location"
                   placeholder="Ex. Addis Ababa, Ethiopia"
                 />
               </div>
@@ -185,18 +208,16 @@ export default function ExperienceInfo() {
                 <span className="">Location Type</span>
 
                 <select
-                  name="type"
+                  name="locationType"
                   className="border px-2 py-1 rounded"
                   // defaultValue={(state?.values?.degree as string) || ""}
                 >
                   <option value={""} disabled selected>
                     Please Select
                   </option>
-                  <option value="fulltime">Full-time</option>
-                  <option value="partime">Part-time</option>
-                  <option value="contractual">Contractual</option>
-                  <option value="internship">Internship</option>
-                  <option value="freelance">Freelance</option>
+                  <option value="onsite">On-site</option>
+                  <option value="partime">Remote</option>
+                  <option value="hybrid">Hybrid</option>
                 </select>
               </div>
 
