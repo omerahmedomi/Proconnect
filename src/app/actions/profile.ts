@@ -32,7 +32,7 @@ export type EducationState = {
 
 export type EducationErrors = {
   school?: string;
-  date?:string
+  date?: string;
 };
 
 export type ExperienceState = {
@@ -140,18 +140,24 @@ export async function addEducation(
   if (!school) {
     errors.school = "School is required";
   }
-  if(startYear && endYear && Number(startYear) > Number(endYear)){
-    errors.date = "Start Date can't be greater than End Date"
+  if (startYear && endYear && Number(startYear) > Number(endYear)) {
+    errors.date = "Start Date can't be greater than End Date";
   }
-  if(startYear && endYear && startMonth && endMonth && startYear==endYear && startMonth > endMonth)
-{
-  errors.date = "Start Date can't be greater than End Date";
-}
+  if (
+    startYear &&
+    endYear &&
+    startMonth &&
+    endMonth &&
+    startYear == endYear &&
+    startMonth > endMonth
+  ) {
+    errors.date = "Start Date can't be greater than End Date";
+  }
   if (Object.keys(errors).length > 0) {
     return {
       success: false,
       errors,
-      values:{...educationData}
+      values: { ...educationData },
     };
   }
 
@@ -214,22 +220,20 @@ export async function addExperience(
   if (!title) {
     errors.title = "Title is required";
   }
-  if(!company){
-    errors.company = "Company is required"
+  if (!company) {
+    errors.company = "Company is required";
   }
-  if(!startMonth || !startYear)
-  {
-    errors.startDate = "Start date is required"
+  if (!startMonth || !startYear) {
+    errors.startDate = "Start date is required";
   }
-   if(!endMonth || !endYear)
-  {
-    errors.endDate = "End date is required"
+  if (!endMonth || !endYear) {
+    errors.endDate = "End date is required";
   }
   if (Object.keys(errors).length > 0) {
     return {
       success: false,
       errors,
-      values:{...experienceData}
+      values: { ...experienceData },
     };
   }
 
@@ -238,3 +242,29 @@ export async function addExperience(
   else await experience.create({ profile: userProfile.id, ...experienceData });
   redirect(`/profile/${userProfile.id}`);
 }
+
+export const fetchExperience = async () => {
+  try {
+    const user = await requireAuth();
+    console.log("From exp", user);
+    const userProfile = await profile.findOne({ user: user?.user?.id });
+    console.log(userProfile.id);
+    const data = await experience.find({ profile: userProfile?.id }).lean();
+    console.log(data);
+    return data.map((e) => ({
+      id: e._id.toString(),
+      title: e.title,
+      type: e.type,
+      location: e.location,
+      company:e.company,
+      locationType: e.locationType,
+      description: e.description,
+      startMonth: e.startMonth,
+      startYear: e.startYear,
+      endMonth: e.endMonth,
+      endYear: e.endYear,
+    }));
+  } catch (error) {
+    console.log(error);
+  }
+};

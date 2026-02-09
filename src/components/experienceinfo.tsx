@@ -4,7 +4,8 @@ import PlusIcon from "./icons/addicon";
 import EditIcon from "./icons/editicon";
 import Modal from "./modal";
 import SaveButton from "./savebutton";
-import { addExperience, ExperienceState } from "@/app/actions/profile";
+import { addExperience, ExperienceState, fetchExperience } from "@/app/actions/profile";
+import { Loader } from "lucide-react";
 
 const months = [
   "January",
@@ -29,8 +30,33 @@ const years = Array.from(
 export default function ExperienceInfo() {
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
+   const [isExperienceEditModalOpen, setIsExperienceEditModalOpen] =
+      useState(false);
+    const [selectedExperience, setSelectedExperience] = useState({});
+    const [experience, setExperience] = useState([]);
+    const [isLoading, setIsLoading] = useState(false);
   
+   useEffect(() => {
+      if (!isEditModalOpen) {
+        setExperience([]); // reset when closed
+        return;
+      }
   
+      let alive = true;
+  
+      (async () => {
+        setIsLoading(true);
+        const edu = await fetchExperience();
+        if (alive) {
+          setExperience(JSON.parse(JSON.stringify(edu)));
+        }
+        setIsLoading(false);
+      })();
+  
+      return () => {
+        alive = false;
+      };
+    }, [isEditModalOpen]);
   useEffect(() => {
     if (isAddModalOpen || isEditModalOpen )
       document.body.style.overflow = "hidden";
@@ -55,6 +81,51 @@ export default function ExperienceInfo() {
           title="Edit Experience"
           clearFunction={() => setIsEditModalOpen(false)}
           styles={"profile-modal-styles"}
+          content={
+            isLoading ? (
+              <span className=" flex justify-center w-full">
+                <Loader color="black" />
+              </span>
+            ) : (
+              <div className=" text-black w-full space-y-2  overflow-y-auto">
+                {experience?.map((e, i) => (
+                  <div
+                    key={i}
+                    className="flex justify-between rounded border-gray-300 shadow  px-3 py-1 items-start border-px"
+                  >
+                    <div>
+                      <p className="font-semibold text-sm">{e?.title}</p>
+                      <p className="text-xs">
+                        {e?.company} {e?.type && ". " + e?.type}
+                      </p>
+                      <p className="text-[11px] text-gray-500">
+                        {months[e?.startMonth - 1]?.slice(0, 3)} {e?.startYear}{" "}
+                        {(e?.startMonth ||
+                          e?.endMonth ||
+                          e?.startYear ||
+                          e?.endYear) &&
+                          "-"}{" "}
+                        {months[e?.endMonth - 1]?.slice(0, 3)} {e?.endYear}
+                      </p>
+                      <p className="text-gray-500">
+                        {e?.location}{" "}
+                        {e?.locationType && ". " + e?.locationType}
+                      </p>
+                    </div>
+                    <span
+                      onClick={() => {
+                        setIsExperienceEditModalOpen(true);
+                        setIsEditModalOpen(false);
+                        setSelectedExperience(e);
+                      }}
+                    >
+                      <EditIcon styles="static" />
+                    </span>
+                  </div>
+                ))}
+              </div>
+            )
+          }
         />
       )}
       {isAddModalOpen && (
@@ -62,9 +133,7 @@ export default function ExperienceInfo() {
           title="Add Experience"
           clearFunction={() => setIsAddModalOpen(false)}
           styles={"profile-modal-styles"}
-          content={
-            <AddExperienceContent/>
-          }
+          content={<AddExperienceContent />}
         />
       )}
       {(isEditModalOpen || isAddModalOpen) && (
@@ -120,11 +189,11 @@ export default function ExperienceInfo() {
           <option value={""} disabled selected>
             Please Select
           </option>
-          <option value="fulltime">Full-time</option>
-          <option value="partime">Part-time</option>
-          <option value="contractual">Contractual</option>
-          <option value="internship">Internship</option>
-          <option value="freelance">Freelance</option>
+          <option value="Fulltime">Full-time</option>
+          <option value="Partime">Part-time</option>
+          <option value="Contractual">Contractual</option>
+          <option value="Internship">Internship</option>
+          <option value="Freelance">Freelance</option>
         </select>
       </div>
       <div className=" modal-input-container">
@@ -248,9 +317,9 @@ export default function ExperienceInfo() {
           <option value={""} disabled selected>
             Please Select
           </option>
-          <option value="onsite">On-site</option>
-          <option value="partime">Remote</option>
-          <option value="hybrid">Hybrid</option>
+          <option value="Onsite">On-site</option>
+          <option value="Partime">Remote</option>
+          <option value="Hybrid">Hybrid</option>
         </select>
       </div>
 
