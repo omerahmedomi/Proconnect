@@ -5,34 +5,32 @@ import EditIcon from "./icons/editicon";
 import Modal from "./modal";
 import SaveButton from "./savebutton";
 import { addExperience, ExperienceState } from "@/app/actions/profile";
+
+const months = [
+  "January",
+  "February",
+  "March",
+  "April",
+  "May",
+  "June",
+  "July",
+  "August",
+  "September",
+  "October",
+  "November",
+  "December",
+];
+
+const years = Array.from(
+  { length: 60 },
+  (_, i) => new Date().getFullYear() - i,
+);
+
 export default function ExperienceInfo() {
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
-  const months = [
-    "January",
-    "February",
-    "March",
-    "April",
-    "May",
-    "June",
-    "July",
-    "August",
-    "September",
-    "October",
-    "November",
-    "December",
-  ];
-  // const router = useRouter();
-  const years = Array.from(
-    { length: 60 },
-    (_, i) => new Date().getFullYear() - i,
-  );
-
-  const initialState:ExperienceState ={
-    success:false,
-    errors:{}
-  }
-  const [state,formAction] = useActionState<ExperienceState,FormData>(addExperience, initialState)
+  
+  
   useEffect(() => {
     if (isAddModalOpen || isEditModalOpen )
       document.body.style.overflow = "hidden";
@@ -65,172 +63,7 @@ export default function ExperienceInfo() {
           clearFunction={() => setIsAddModalOpen(false)}
           styles={"profile-modal-styles"}
           content={
-            <form
-              className="w-full  space-y-3 overflow-y-auto px-2 flex flex-col"
-              action={formAction}
-            >
-              <h6 className="text-xs"> * indicates required</h6>
-              <div className=" modal-input-container">
-                <span>Title* </span>
-                <input
-                  type="text"
-                  name="title"
-                  placeholder="Ex. Managing Partner"
-                  // onBlur={()=>{state?.errors?.title= null}}
-                />
-                {state?.errors?.title && (
-                  <span className="text-red-500 text-[10px]">
-                    {state?.errors?.title}
-                  </span>
-                )}
-              </div>
-              <div className=" modal-input-container  ">
-                <span className="">Employment Type</span>
-
-                <select
-                  name="type"
-                  className="border px-2 py-1 rounded"
-                  // defaultValue={(state?.values?.degree as string) || ""}
-                >
-                  <option value={""} disabled selected>
-                    Please Select
-                  </option>
-                  <option value="fulltime">Full-time</option>
-                  <option value="partime">Part-time</option>
-                  <option value="contractual">Contractual</option>
-                  <option value="internship">Internship</option>
-                  <option value="freelance">Freelance</option>
-                </select>
-              </div>
-              <div className=" modal-input-container">
-                <span>Company or Organization*</span>
-                <input
-                  className="mt-0"
-                  name="company"
-                  placeholder="Ex. Apple"
-                />
-                {state?.errors?.company && (
-                  <span className="text-red-500 text-[10px]">
-                    {state?.errors?.company}
-                  </span>
-                )}
-              </div>
-              <div className="modal-input-container ">
-                <span>Start date*</span>
-
-                <div className="flex gap-2">
-                  <select
-                    name="startMonth"
-                    className="border rounded-md px-2 bg-white grow"
-                    defaultValue=""
-                  >
-                    <option value="" disabled>
-                      Month
-                    </option>
-                    {months.map((m, i) => (
-                      <option key={m} value={i + 1}>
-                        {m}
-                      </option>
-                    ))}
-                  </select>
-
-                  <select
-                    name="startYear"
-                    className="border rounded-md px-2 py-2  bg-white grow"
-                    defaultValue=""
-                  >
-                    <option value="" disabled>
-                      Year
-                    </option>
-                    {years.map((y) => (
-                      <option key={y} value={y}>
-                        {y}
-                      </option>
-                    ))}
-                  </select>
-                </div>
-                {state?.errors?.startDate && (
-                  <span className="text-red-500 text-[10px]">
-                    {state?.errors?.startDate}
-                  </span>
-                )}
-              </div>
-
-              <div className="modal-input-container">
-                <span>End date* </span>
-
-                <div className="flex gap-2">
-                  <select
-                    name="endMonth"
-                    className="border rounded-md px-2 py-2  bg-white grow"
-                    defaultValue=""
-                  >
-                    <option value="" disabled>
-                      Month
-                    </option>
-                    {months.map((m, i) => (
-                      <option key={m} value={i + 1}>
-                        {m}
-                      </option>
-                    ))}
-                  </select>
-
-                  <select
-                    name="endYear"
-                    className="border rounded-md px-2 py-2 bg-white grow"
-                    defaultValue=""
-                  >
-                    <option value="" disabled>
-                      Year
-                    </option>
-                    {years.map((y) => (
-                      <option key={y} value={y}>
-                        {y}
-                      </option>
-                    ))}
-                  </select>
-                </div>
-                 {state?.errors?.endDate && (
-                            <span className="text-red-500 text-[10px]">
-                              {state?.errors?.endDate}
-                            </span>
-                          )}
-              </div>
-              <div className=" modal-input-container">
-                <span>Location </span>
-                <input
-                  type="text"
-                  name="location"
-                  placeholder="Ex. Addis Ababa, Ethiopia"
-                />
-              </div>
-              <div className=" modal-input-container  ">
-                <span className="">Location Type</span>
-
-                <select
-                  name="locationType"
-                  className="border px-2 py-1 rounded"
-                  // defaultValue={(state?.values?.degree as string) || ""}
-                >
-                  <option value={""} disabled selected>
-                    Please Select
-                  </option>
-                  <option value="onsite">On-site</option>
-                  <option value="partime">Remote</option>
-                  <option value="hybrid">Hybrid</option>
-                </select>
-              </div>
-
-              <div className="modal-input-container">
-                <span>Description</span>
-                <textarea
-                  maxLength={1000}
-                  name="description"
-                  placeholder="Major durties,projects and successes"
-                />
-              </div>
-              <SaveButton />
-            </form>
+            <AddExperienceContent/>
           }
         />
       )}
@@ -246,3 +79,198 @@ export default function ExperienceInfo() {
     </div>
   );
 }
+ export function AddExperienceContent(){
+  const initialState: ExperienceState = {
+    success: false,
+    errors: {},
+  };
+  const [state, formAction] = useActionState<ExperienceState, FormData>(
+    addExperience,
+    initialState,
+  );
+  return (
+    <form
+      className="w-full  space-y-3 overflow-y-auto px-2 flex flex-col"
+      action={formAction}
+    >
+      <h6 className="text-xs"> * indicates required</h6>
+      <div className=" modal-input-container">
+        <span>Title* </span>
+        <input
+          type="text"
+          name="title"
+          placeholder="Ex. Managing Partner"
+          defaultValue={state?.values?.title || ""}
+        />
+        {state?.errors?.title && (
+          <span className="text-red-500 text-[10px]">
+            {state?.errors?.title}
+          </span>
+        )}
+      </div>
+      <div className=" modal-input-container  ">
+        <span className="">Employment Type</span>
+
+        <select
+          key={state?.values?.type || ""}
+          name="type"
+          className="border px-2 py-1 rounded"
+          defaultValue={state?.values?.type || ""}
+        >
+          <option value={""} disabled selected>
+            Please Select
+          </option>
+          <option value="fulltime">Full-time</option>
+          <option value="partime">Part-time</option>
+          <option value="contractual">Contractual</option>
+          <option value="internship">Internship</option>
+          <option value="freelance">Freelance</option>
+        </select>
+      </div>
+      <div className=" modal-input-container">
+        <span>Company or Organization*</span>
+        <input
+          className="mt-0"
+          name="company"
+          placeholder="Ex. Apple"
+          defaultValue={state?.values?.company || ""}
+        />
+        {state?.errors?.company && (
+          <span className="text-red-500 text-[10px]">
+            {state?.errors?.company}
+          </span>
+        )}
+      </div>
+      <div className="modal-input-container ">
+        <span>Start date*</span>
+
+        <div
+          className="flex gap-2"
+          key={state?.values?.startMonth || "initial"}
+        >
+          <select
+            name="startMonth"
+            className="border rounded-md px-2 bg-white grow"
+            defaultValue={state?.values?.startMonth || ""}
+          >
+            <option value="" disabled>
+              Month
+            </option>
+            {months.map((m, i) => (
+              <option key={m} value={i + 1}>
+                {m}
+              </option>
+            ))}
+          </select>
+
+          <select
+            key={state?.values?.startYear || "initial"}
+            name="startYear"
+            className="border rounded-md px-2 py-2  bg-white grow"
+            defaultValue={state?.values?.startYear || ""}
+          >
+            <option value="" disabled>
+              Year
+            </option>
+            {years.map((y) => (
+              <option key={y} value={y}>
+                {y}
+              </option>
+            ))}
+          </select>
+        </div>
+        {state?.errors?.startDate && (
+          <span className="text-red-500 text-[10px]">
+            {state?.errors?.startDate}
+          </span>
+        )}
+      </div>
+
+      <div className="modal-input-container">
+        <span>End date* </span>
+
+        <div className="flex gap-2" key={state?.values?.endMonth || "initial"}>
+          <select
+            name="endMonth"
+            className="border rounded-md px-2 py-2  bg-white grow"
+            defaultValue={state?.values?.endMonth || ""}
+          >
+            <option value="" disabled>
+              Month
+            </option>
+            {months.map((m, i) => (
+              <option key={m} value={i + 1}>
+                {m}
+              </option>
+            ))}
+          </select>
+
+          <select
+            key={state?.values?.endYear || "initial"}
+            name="endYear"
+            className="border rounded-md px-2 py-2 bg-white grow"
+            defaultValue={state?.values?.endYear|| ""}
+          >
+            <option value="" disabled>
+              Year
+            </option>
+            {years.map((y) => (
+              <option key={y} value={y}>
+                {y}
+              </option>
+            ))}
+          </select>
+        </div>
+        {state?.errors?.endDate && (
+          <span className="text-red-500 text-[10px]">
+            {state?.errors?.endDate}
+          </span>
+        )}
+      </div>
+      <div className=" modal-input-container">
+        <span>Location </span>
+        <input
+          type="text"
+          name="location"
+          placeholder="Ex. Addis Ababa, Ethiopia"
+          defaultValue={state?.values?.location || ""}
+        />
+      </div>
+      <div className=" modal-input-container  ">
+        <span className="">Location Type</span>
+
+        <select
+          key={state?.values?.locationType || "initial"}
+          name="locationType"
+          className="border px-2 py-1 rounded"
+          defaultValue={state?.values?.locationType || ""}
+        >
+          <option value={""} disabled selected>
+            Please Select
+          </option>
+          <option value="onsite">On-site</option>
+          <option value="partime">Remote</option>
+          <option value="hybrid">Hybrid</option>
+        </select>
+      </div>
+
+      <div className="modal-input-container">
+        <span>Description</span>
+        <textarea
+          maxLength={1000}
+          name="description"
+          placeholder="Major duties,projects and successes"
+          defaultValue={state?.values?.description || ""}
+        />
+      </div>
+      <SaveButton />
+    </form>
+  );
+ }
+
+
+ export function EditExperienceContent(){
+  return(
+<form></form>
+  )
+ }

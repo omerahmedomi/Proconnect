@@ -26,7 +26,7 @@ export default function PostInput() {
           content={
             <EmojiPickerLayout clearFunction={() => setIsModalOpen(false)} />
           }
-        //  styles={'border-0'}e
+         styles={'overflow-y-auto'}
         />
       )}
       {isModalOpen && (

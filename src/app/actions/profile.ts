@@ -229,6 +229,7 @@ export async function addExperience(
     return {
       success: false,
       errors,
+      values:{...experienceData}
     };
   }
 
