@@ -46,6 +46,7 @@ export type ExperienceErrors = {
   company?: string;
   startDate?: string;
   endDate?: string;
+  date?:string;
 };
 
 export async function saveProfile(
@@ -228,6 +229,19 @@ export async function addExperience(
   }
   if (!endMonth || !endYear) {
     errors.endDate = "End date is required";
+  }
+  if (startYear && endYear && Number(startYear) > Number(endYear)) {
+    errors.date = "Start Date can't be greater than End Date";
+  }
+  if (
+    startYear &&
+    endYear &&
+    startMonth &&
+    endMonth &&
+    startYear == endYear &&
+    startMonth > endMonth
+  ) {
+    errors.date = "Start Date can't be greater than End Date";
   }
   if (Object.keys(errors).length > 0) {
     return {

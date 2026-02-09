@@ -59,7 +59,7 @@ export default function ExperienceInfo() {
       };
     }, [isEditModalOpen]);
   useEffect(() => {
-    if (isAddModalOpen || isEditModalOpen )
+    if (isAddModalOpen || isEditModalOpen || isExperienceEditModalOpen )
       document.body.style.overflow = "hidden";
     return () => (document.body.style.overflow = "unset");
   }, [isEditModalOpen, isAddModalOpen]);
@@ -190,7 +190,7 @@ export default function ExperienceInfo() {
           defaultValue={state?.values?.title || ""}
         />
         {state?.errors?.title && (
-          <span className="text-red-500 text-[10px]">
+          <span className="text-red-500 text-[11px]">
             {state?.errors?.title}
           </span>
         )}
@@ -223,7 +223,7 @@ export default function ExperienceInfo() {
           defaultValue={state?.values?.company || ""}
         />
         {state?.errors?.company && (
-          <span className="text-red-500 text-[10px]">
+          <span className="text-red-500 text-[11px]">
             {state?.errors?.company}
           </span>
         )}
@@ -267,7 +267,7 @@ export default function ExperienceInfo() {
           </select>
         </div>
         {state?.errors?.startDate && (
-          <span className="text-red-500 text-[10px]">
+          <span className="text-red-500 text-[11px]">
             {state?.errors?.startDate}
           </span>
         )}
@@ -296,7 +296,7 @@ export default function ExperienceInfo() {
             key={state?.values?.endYear || "initial"}
             name="endYear"
             className="border rounded-md px-2 py-2 bg-white grow"
-            defaultValue={state?.values?.endYear|| ""}
+            defaultValue={state?.values?.endYear || ""}
           >
             <option value="" disabled>
               Year
@@ -309,8 +309,13 @@ export default function ExperienceInfo() {
           </select>
         </div>
         {state?.errors?.endDate && (
-          <span className="text-red-500 text-[10px]">
+          <span className="text-red-500 text-[11px]">
             {state?.errors?.endDate}
+          </span>
+        )}
+        {state?.errors?.date && (
+          <span className="text-red-500 text-[11px]">
+            {state?.errors?.date}
           </span>
         )}
       </div>
@@ -373,66 +378,75 @@ export default function ExperienceInfo() {
       className="w-full  space-y-3 overflow-y-auto px-2 flex flex-col"
       action={formAction}
     >
-       {isDeleteModalOpen && (
-              <div
-                className=" fixed inset-0 bg-black/20 -bottom-3 z-45 cursor-pointer"
-                onClick={() => {
-                  setIsDeleteModalOpen(false);
-                }}
-              />
-            )}
-            {isDeleteModalOpen && (
-              <Modal
-                // title='Delete Post'
-                content={
-                  <div className="flex flex-col items-center w-full gap-y-2">
-                    <div className="flex gap-1 items-center justify-center text-lg">
-                      <AlertTriangle className="text-red-700" />
-                      <span>Experience Deletion Alert!</span>
-                    </div>
-                    <div className="flex flex-col items-center text-base gap-y-4">
-                      <p>Are you sure you want to delete the selected experience?</p>
-                      <div className="flex gap-5">
-                        <button
-                          className="btn-register rounded-sm disabled:bg-gray-300 disabled:text-white disabled:cursor-not-allowed"
-                          disabled={isLoading}
-                          onClick={async () => {
-                            setIsLoading(true);
-                            await deleteExperience(selectedExperience?.id);
-                            setIsLoading(false);
-                            setIsDeleteModalOpen(false)
-                            router.refresh();
-                            back();
-                          }}
-                        >
-                          {isLoading ? "Deleting" : "Delete"}
-                        </button>
-      
-                        <button
-                          className="btn-register rounded-sm"
-                          onClick={() => setIsDeleteModalOpen(false)}
-                        >
-                          No
-                        </button>
-                      </div>
-                    </div>
-                  </div>
-                }
-                clearFunction={() => setIsDeleteModalOpen(false)}
-                styles={"top-1/4 bottom-1/3 max-w-100 h-fit"}
-              />
-            )}
+      {isDeleteModalOpen && (
+        <div
+          className=" fixed inset-0 bg-black/20 -bottom-3 z-45 cursor-pointer"
+          onClick={() => {
+            setIsDeleteModalOpen(false);
+          }}
+        />
+      )}
+      {isDeleteModalOpen && (
+        <Modal
+          // title='Delete Post'
+          content={
+            <div className="flex flex-col items-center w-full gap-y-2">
+              <div className="flex gap-1 items-center justify-center text-lg">
+                <AlertTriangle className="text-red-700" />
+                <span>Experience Deletion Alert!</span>
+              </div>
+              <div className="flex flex-col items-center text-base gap-y-4">
+                <p>Are you sure you want to delete the selected experience?</p>
+                <div className="flex gap-5">
+                  <button
+                    className="btn-register rounded-sm disabled:bg-gray-300 disabled:text-white disabled:cursor-not-allowed"
+                    disabled={isLoading}
+                    onClick={async () => {
+                      setIsLoading(true);
+                      await deleteExperience(selectedExperience?.id);
+                      setIsLoading(false);
+                      setIsDeleteModalOpen(false);
+                      router.refresh();
+                      back();
+                    }}
+                  >
+                    {isLoading ? "Deleting" : "Delete"}
+                  </button>
+
+                  <button
+                    className="btn-register rounded-sm"
+                    onClick={() => setIsDeleteModalOpen(false)}
+                  >
+                    No
+                  </button>
+                </div>
+              </div>
+            </div>
+          }
+          clearFunction={() => setIsDeleteModalOpen(false)}
+          styles={"top-1/4 bottom-1/3 max-w-100 h-fit"}
+        />
+      )}
       <h6 className="text-xs"> * indicates required</h6>
       <div className=" modal-input-container">
         <span>Title* </span>
         <input
+          type="hidden"
+          name="experienceId"
+          value={selectedExperience?.id ?? ""}
+        />
+        <input
           type="text"
           name="title"
           placeholder="Ex. Managing Partner"
-          defaultValue={state?.values?.title || ""}
+          defaultValue={
+            state?.values?.title ||
+            (state?.values?.title != 0 && selectedExperience?.title) ||
+            ""
+          }
         />
         {state?.errors?.title && (
-          <span className="text-red-500 text-[10px]">
+          <span className="text-red-500 text-[11px]">
             {state?.errors?.title}
           </span>
         )}
@@ -444,7 +458,11 @@ export default function ExperienceInfo() {
           key={state?.values?.type || ""}
           name="type"
           className="border px-2 py-1 rounded"
-          defaultValue={state?.values?.type || ""}
+          defaultValue={
+            state?.values?.type ||
+            (state?.values?.type != 0 && selectedExperience?.type) ||
+            ""
+          }
         >
           <option value={""} disabled selected>
             Please Select
@@ -462,10 +480,14 @@ export default function ExperienceInfo() {
           className="mt-0"
           name="company"
           placeholder="Ex. Apple"
-          defaultValue={state?.values?.company || ""}
+          defaultValue={
+            state?.values?.company ||
+            (state?.values?.company != 0 && selectedExperience?.company) ||
+            ""
+          }
         />
         {state?.errors?.company && (
-          <span className="text-red-500 text-[10px]">
+          <span className="text-red-500 text-[11px]">
             {state?.errors?.company}
           </span>
         )}
@@ -480,7 +502,12 @@ export default function ExperienceInfo() {
           <select
             name="startMonth"
             className="border rounded-md px-2 bg-white grow"
-            defaultValue={state?.values?.startMonth || ""}
+            defaultValue={
+              state?.values?.startMonth ||
+              (state?.values?.startMonth != 0 &&
+                selectedExperience?.startMonth) ||
+              ""
+            }
           >
             <option value="" disabled>
               Month
@@ -496,7 +523,12 @@ export default function ExperienceInfo() {
             key={state?.values?.startYear || "initial"}
             name="startYear"
             className="border rounded-md px-2 py-2  bg-white grow"
-            defaultValue={state?.values?.startYear || ""}
+            defaultValue={
+              state?.values?.startYear ||
+              (state?.values?.startYear != 0 &&
+                selectedExperience?.startYear) ||
+              ""
+            }
           >
             <option value="" disabled>
               Year
@@ -509,7 +541,7 @@ export default function ExperienceInfo() {
           </select>
         </div>
         {state?.errors?.startDate && (
-          <span className="text-red-500 text-[10px]">
+          <span className="text-red-500 text-[11px]">
             {state?.errors?.startDate}
           </span>
         )}
@@ -522,7 +554,11 @@ export default function ExperienceInfo() {
           <select
             name="endMonth"
             className="border rounded-md px-2 py-2  bg-white grow"
-            defaultValue={state?.values?.endMonth || ""}
+            defaultValue={
+              state?.values?.endMonth ||
+              (state?.values?.endMonth != 0 && selectedExperience?.endMonth) ||
+              ""
+            }
           >
             <option value="" disabled>
               Month
@@ -538,7 +574,11 @@ export default function ExperienceInfo() {
             key={state?.values?.endYear || "initial"}
             name="endYear"
             className="border rounded-md px-2 py-2 bg-white grow"
-            defaultValue={state?.values?.endYear || ""}
+            defaultValue={
+              state?.values?.endYear ||
+              (state?.values?.endYear != 0 && selectedExperience?.endYear) ||
+              ""
+            }
           >
             <option value="" disabled>
               Year
@@ -551,8 +591,13 @@ export default function ExperienceInfo() {
           </select>
         </div>
         {state?.errors?.endDate && (
-          <span className="text-red-500 text-[10px]">
+          <span className="text-red-500 text-[11px]">
             {state?.errors?.endDate}
+          </span>
+        )}
+        {state?.errors?.date && (
+          <span className="text-red-500 text-[11px]">
+            {state?.errors?.date}
           </span>
         )}
       </div>
@@ -562,7 +607,11 @@ export default function ExperienceInfo() {
           type="text"
           name="location"
           placeholder="Ex. Addis Ababa, Ethiopia"
-          defaultValue={state?.values?.location || ""}
+          defaultValue={
+            state?.values?.location ||
+            (state?.values?.location != 0 && selectedExperience?.location) ||
+            ""
+          }
         />
       </div>
       <div className=" modal-input-container  ">
@@ -572,7 +621,12 @@ export default function ExperienceInfo() {
           key={state?.values?.locationType || "initial"}
           name="locationType"
           className="border px-2 py-1 rounded"
-          defaultValue={state?.values?.locationType || ""}
+          defaultValue={
+            state?.values?.locationType ||
+            (state?.values?.locationType != 0 &&
+              selectedExperience?.locationType) ||
+            ""
+          }
         >
           <option value={""} disabled selected>
             Please Select
@@ -589,22 +643,27 @@ export default function ExperienceInfo() {
           maxLength={1000}
           name="description"
           placeholder="Major duties,projects and successes"
-          defaultValue={state?.values?.description || ""}
+          defaultValue={
+            state?.values?.description ||
+            (state?.values?.description != 0 &&
+              selectedExperience?.description) ||
+            ""
+          }
         />
       </div>
-    
+
       <span className="flex justify-between">
-              <button
-                type="button"
-                disabled={isLoading}
-                className="final-action-button disabled:bg-gray-400 disabled:text-white disabled:cursor-not-allowed bg-red-500 hover:bg-red-400 transition"
-                onClick={() => setIsDeleteModalOpen(true)}
-              >
-                Delete
-              </button>
-      
-              <SaveButton />
-            </span>
+        <button
+          type="button"
+          disabled={isLoading}
+          className="final-action-button disabled:bg-gray-400 disabled:text-white disabled:cursor-not-allowed bg-red-500 hover:bg-red-400 transition"
+          onClick={() => setIsDeleteModalOpen(true)}
+        >
+          Delete
+        </button>
+
+        <SaveButton />
+      </span>
     </form>
   );
  }

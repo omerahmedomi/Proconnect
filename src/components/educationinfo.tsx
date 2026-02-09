@@ -44,7 +44,7 @@ export default function EducationInfo() {
   const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
-    if (isAddModalOpen || isEditModalOpen || isEducationEditModalOpen)
+    if (isAddModalOpen || isEditModalOpen || isEducationEditModalOpen )
       document.body.style.overflow = "hidden";
     return () => (document.body.style.overflow = "unset");
   }, [isEditModalOpen, isAddModalOpen, isEducationEditModalOpen]);
