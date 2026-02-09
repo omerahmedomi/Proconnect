@@ -12,16 +12,8 @@ import {
 } from "@/app/actions/profile";
 import { useActionState } from "react";
 import { useRouter } from "next/navigation";
-import { Loader } from "lucide-react";
-export default function EducationInfo() {
-  const [isEditModalOpen, setIsEditModalOpen] = useState(false);
-  const [isAddModalOpen, setIsAddModalOpen] = useState(false);
-  const [isEducationEditModalOpen, setIsEducationEditModalOpen] =
-    useState(false);
-  const [selectedEducation, setSelectedEducaiton] = useState({});
-  const [education, setEducation] = useState([]);
-  const [isLoading,setIsLoading] = useState(false)
-  const formRef = useRef<HTMLFormElement | null>(null);
+import { Loader } from "lucide-react"
+
   const months = [
     "January",
     "February",
@@ -36,11 +28,30 @@ export default function EducationInfo() {
     "November",
     "December",
   ];
-const router = useRouter();
-  const years = Array.from(
+
+    const years = Array.from(
     { length: 60 },
     (_, i) => new Date().getFullYear() - i,
   );
+export default function EducationInfo() {
+  const [isEditModalOpen, setIsEditModalOpen] = useState(false);
+  const [isAddModalOpen, setIsAddModalOpen] = useState(false);
+  const [isEducationEditModalOpen, setIsEducationEditModalOpen] =
+    useState(false);
+  const [selectedEducation, setSelectedEducaiton] = useState({});
+  const [education, setEducation] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
+ const initialState: EducationState = {
+    success: false,
+    errors: {},
+  };
+   const [state, formAction] = useActionState<EducationState, FormData>(
+     addEducation,
+     initialState,
+   );
+
+  const router = useRouter();
+
 
   useEffect(() => {
     if (isAddModalOpen || isEditModalOpen || isEducationEditModalOpen)
@@ -72,14 +83,6 @@ const router = useRouter();
 
  
 
-  const initialState: EducationState = {
-    success: false,
-    errors: {},
-  };
-
-  const [state, formAction] = useActionState<EducationState,FormData>(addEducation, initialState);
- 
-
   return (
     <div className="profile-div p-6">
       <div className="flex justify-between">
@@ -101,7 +104,7 @@ const router = useRouter();
           clearFunction={() => setIsEducationEditModalOpen(false)}
           content={
             <form
-            ref={formRef}
+              // ref={formRef}
               className="w-full  space-y-3  px-2 flex flex-col "
               action={formAction}
             >
@@ -305,161 +308,170 @@ const router = useRouter();
           key={isAddModalOpen ? "add-modal-open" : "add-modal-closed"}
           title={isEditModalOpen ? "Edit Education" : "Add Educaton"}
           clearFunction={() => {
-            setIsAddModalOpen(false)
-          formRef.current.reset();
+         
+            setIsAddModalOpen(false);
           }}
           styles={"profile-modal-styles"}
           content={
-            <form
-            ref={formRef}
-              className="w-full  space-y-3 overflow-y-auto px-2 flex flex-col"
-              action={formAction}
-            >
-              <h6 className="text-xs"> * indicates required</h6>
-              <div className=" modal-input-container">
-                <span>School* </span>
-                <input type="text" name="school" />
-                {state?.errors?.school && (
-                  <span className="text-red-500 text-[11px]">
-                    {state?.errors?.school}
-                  </span>
-                )}
-              </div>
-              <div className=" modal-input-container flex flex-row gap-x-4 items-center">
-                <span className="">Degree </span>
-
-                <select
-                  name="degree"
-                  key={state?.values?.degree || "initial"}
-                  className="border px-2 py-1 rounded"
-                  defaultValue={state?.values?.degree || ""}
-                >
-                  <option value={""} disabled>
-                    Select your degree
-                  </option>
-                  <option value="Bachelors">Bachelors</option>
-                  <option value="Masters">Masters</option>
-                  <option value="Phd">Phd</option>
-                  <option value="Diploma">Diploma</option>
-                </select>
-              </div>
-              <div className=" modal-input-container">
-                <span>Field of study </span>
-                <input
-                  className="mt-0"
-                  name="field"
-                  defaultValue={state?.values?.field || ""}
-                />
-              </div>
-              <div className="modal-input-container">
-                <span>Start date</span>
-
-                <div
-                  className="flex gap-2"
-                  key={state?.values?.startMonth || "initial"}
-                >
-                  <select
-                    name="startMonth"
-                    className="border rounded-md px-2  text-sm bg-white grow"
-                    defaultValue={state?.values?.startMonth || ""}
-                  >
-                    <option value="" disabled>
-                      Month
-                    </option>
-                    {months.map((m, i) => (
-                      <option key={m} value={i + 1}>
-                        {m}
-                      </option>
-                    ))}
-                  </select>
-
-                  <select
-                    name="startYear"
-                    className="border rounded-md px-2 py-2 text-sm bg-white grow"
-                    key={state?.values?.startYear || "initial"}
-                    defaultValue={state?.values?.startYear || ""}
-                  >
-                    <option value="" disabled>
-                      Year
-                    </option>
-                    {years.map((y) => (
-                      <option key={y} value={y}>
-                        {y}
-                      </option>
-                    ))}
-                  </select>
-                </div>
-              </div>
-
-              <div className="modal-input-container">
-                <span>End date (or expected)</span>
-
-                <div
-                  className="flex gap-2"
-                  key={state?.values?.endMonth || "initial"}
-                >
-                  <select
-                    name="endMonth"
-                    className="border rounded-md px-2 py-2 text-sm bg-white grow"
-                    defaultValue={state?.values?.endMonth || ""}
-                  >
-                    <option value="" disabled>
-                      Month
-                    </option>
-                    {months.map((m, i) => (
-                      <option key={m} value={i + 1}>
-                        {m}
-                      </option>
-                    ))}
-                  </select>
-
-                  <select
-                    name="endYear"
-                    className="border rounded-md px-2 py-2 text-sm bg-white grow"
-                    key={state?.values?.endYear || "initial"}
-                    defaultValue={state?.values?.endYear || ""}
-                  >
-                    <option value="" disabled>
-                      Year
-                    </option>
-                    {years.map((y) => (
-                      <option key={y} value={y}>
-                        {y}
-                      </option>
-                    ))}
-                  </select>
-                </div>
-              </div>
-              {state?.errors?.date && (
-                <span className="text-red-500 text-[11px]">
-                  {state?.errors?.date}
-                </span>
-              )}
-
-              <div className="modal-input-container">
-                <span>Description</span>
-                <textarea
-                  maxLength={1000}
-                  name="description"
-                  defaultValue={state?.values?.description || ""}
-                />
-              </div>
-              <SaveButton />
-            </form>
+           <AddEducationContent/>
           }
         />
       )}
       {(isEditModalOpen || isAddModalOpen || isEducationEditModalOpen) && (
         <div
           className=" fixed inset-0 bg-black/20 z-45 cursor-pointer"
-          onClick={() => {
+          onClick={(e) => {
+           
             setIsAddModalOpen(false);
             setIsEditModalOpen(false);
             setIsEducationEditModalOpen(false);
-            formRef.current.reset();
           }}
         />
       )}
     </div>
+  );
+}
+
+export function AddEducationContent(){
+   const initialState: EducationState = {
+    success: false,
+    errors: {},
+  };
+   const [state, formAction] = useActionState<EducationState, FormData>(
+     addEducation,
+     initialState,
+   );
+  return (
+    <form
+      // key={formKey}
+      className="w-full  space-y-3 overflow-y-auto px-2 flex flex-col"
+      action={formAction}
+    >
+      <h6 className="text-xs"> * indicates required</h6>
+      <div className=" modal-input-container">
+        <span>School* </span>
+        <input type="text" name="school" />
+        {state?.errors?.school && (
+          <span className="text-red-500 text-[11px]">
+            {state?.errors?.school}
+          </span>
+        )}
+      </div>
+      <div className=" modal-input-container flex flex-row gap-x-4 items-center">
+        <span className="">Degree </span>
+
+        <select
+          name="degree"
+          key={state?.values?.degree || "initial"}
+          className="border px-2 py-1 rounded"
+          defaultValue={state?.values?.degree || ""}
+        >
+          <option value={""} disabled>
+            Select your degree
+          </option>
+          <option value="Bachelors">Bachelors</option>
+          <option value="Masters">Masters</option>
+          <option value="Phd">Phd</option>
+          <option value="Diploma">Diploma</option>
+        </select>
+      </div>
+      <div className=" modal-input-container">
+        <span>Field of study </span>
+        <input
+          className="mt-0"
+          name="field"
+          defaultValue={state?.values?.field || ""}
+        />
+      </div>
+      <div className="modal-input-container">
+        <span>Start date</span>
+
+        <div
+          className="flex gap-2"
+          key={state?.values?.startMonth || "initial"}
+        >
+          <select
+            name="startMonth"
+            className="border rounded-md px-2  text-sm bg-white grow"
+            defaultValue={state?.values?.startMonth || ""}
+          >
+            <option value="" disabled>
+              Month
+            </option>
+            {months.map((m, i) => (
+              <option key={m} value={i + 1}>
+                {m}
+              </option>
+            ))}
+          </select>
+
+          <select
+            name="startYear"
+            className="border rounded-md px-2 py-2 text-sm bg-white grow"
+            key={state?.values?.startYear || "initial"}
+            defaultValue={state?.values?.startYear || ""}
+          >
+            <option value="" disabled>
+              Year
+            </option>
+            {years.map((y) => (
+              <option key={y} value={y}>
+                {y}
+              </option>
+            ))}
+          </select>
+        </div>
+      </div>
+
+      <div className="modal-input-container">
+        <span>End date (or expected)</span>
+
+        <div className="flex gap-2" key={state?.values?.endMonth || "initial"}>
+          <select
+            name="endMonth"
+            className="border rounded-md px-2 py-2 text-sm bg-white grow"
+            defaultValue={state?.values?.endMonth || ""}
+          >
+            <option value="" disabled>
+              Month
+            </option>
+            {months.map((m, i) => (
+              <option key={m} value={i + 1}>
+                {m}
+              </option>
+            ))}
+          </select>
+
+          <select
+            name="endYear"
+            className="border rounded-md px-2 py-2 text-sm bg-white grow"
+            key={state?.values?.endYear || "initial"}
+            defaultValue={state?.values?.endYear || ""}
+          >
+            <option value="" disabled>
+              Year
+            </option>
+            {years.map((y) => (
+              <option key={y} value={y}>
+                {y}
+              </option>
+            ))}
+          </select>
+        </div>
+      </div>
+      {state?.errors?.date && (
+        <span className="text-red-500 text-[11px]">{state?.errors?.date}</span>
+      )}
+
+      <div className="modal-input-container">
+        <span>Description</span>
+        <textarea
+          maxLength={1000}
+          name="description"
+          defaultValue={state?.values?.description || ""}
+        />
+      </div>
+      <SaveButton />
+    </form>
   );
 }
