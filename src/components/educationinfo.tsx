@@ -368,6 +368,7 @@ export function EditEducationContent({ selectedEducation, back }) {
                       setIsLoading(true);
                       await deleteEducation(selectedEducation?.id);
                       setIsLoading(false);
+                      setIsDeleteModalOpen(false)
                       router.refresh();
                       back();
                     }}

@@ -256,7 +256,7 @@ export const fetchExperience = async () => {
       title: e.title,
       type: e.type,
       location: e.location,
-      company:e.company,
+      company: e.company,
       locationType: e.locationType,
       description: e.description,
       startMonth: e.startMonth,
@@ -268,3 +268,13 @@ export const fetchExperience = async () => {
     console.log(error);
   }
 };
+
+export async function deleteExperience(id: string) {
+  try {
+    console.log("ID from ", id);
+    const user = await requireAuth();
+    await experience.findByIdAndDelete(id);
+  } catch (error) {
+    console.log(error);
+  }
+}
