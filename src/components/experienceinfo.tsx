@@ -1,14 +1,20 @@
 "use client";
-import { useState,useEffect, useActionState } from "react";
+import { useState, useEffect, useActionState } from "react";
 import PlusIcon from "./icons/addicon";
 import EditIcon from "./icons/editicon";
 import Modal from "./modal";
 import SaveButton from "./savebutton";
-import { addExperience, ExperienceState, fetchExperience,deleteExperience } from "@/app/actions/profile";
+import {
+  addExperience,
+  ExperienceState,
+  fetchExperience,
+  deleteExperience,
+} from "@/app/actions/profile";
 import { AlertTriangle, Loader } from "lucide-react";
 import { useRouter } from "next/navigation";
+import ExperienceDisplay from "./experiencedisplay";
 
-const months = [
+export const months = [
   "January",
   "February",
   "March",
@@ -31,35 +37,35 @@ const years = Array.from(
 export default function ExperienceInfo() {
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
-   const [isExperienceEditModalOpen, setIsExperienceEditModalOpen] =
-      useState(false);
-    const [selectedExperience, setSelectedExperience] = useState({});
-    const [experience, setExperience] = useState([]);
-    const [isLoading, setIsLoading] = useState(false);
-  
-   useEffect(() => {
-      if (!isEditModalOpen) {
-        setExperience([]); // reset when closed
-        return;
-      }
-  
-      let alive = true;
-  
-      (async () => {
-        setIsLoading(true);
-        const edu = await fetchExperience();
-        if (alive) {
-          setExperience(JSON.parse(JSON.stringify(edu)));
-        }
-        setIsLoading(false);
-      })();
-  
-      return () => {
-        alive = false;
-      };
-    }, [isEditModalOpen]);
+  const [isExperienceEditModalOpen, setIsExperienceEditModalOpen] =
+    useState(false);
+  const [selectedExperience, setSelectedExperience] = useState({});
+  const [experience, setExperience] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
+
   useEffect(() => {
-    if (isAddModalOpen || isEditModalOpen || isExperienceEditModalOpen )
+    // if (!isEditModalOpen) {
+    //   setExperience([]); // reset when closed
+    //   return;
+    // }
+
+    let alive = true;
+
+    (async () => {
+      setIsLoading(true);
+      const edu = await fetchExperience();
+      if (alive) {
+        setExperience(JSON.parse(JSON.stringify(edu)));
+      }
+      setIsLoading(false);
+    })();
+
+    return () => {
+      alive = false;
+    };
+  }, [isEditModalOpen]);
+  useEffect(() => {
+    if (isAddModalOpen || isEditModalOpen || isExperienceEditModalOpen)
       document.body.style.overflow = "hidden";
     return () => (document.body.style.overflow = "unset");
   }, [isEditModalOpen, isAddModalOpen]);
@@ -77,22 +83,29 @@ export default function ExperienceInfo() {
           </button>
         </div>
       </div>
+      <div className="flex flex-col">
+        <div className="flex flex-col divide-y divide-gray-300">
+          {experience &&
+            experience.map((e) => {
+              return <ExperienceDisplay key={e.id} experience={e} />;
+            })}
+        </div>
+      </div>
       {isExperienceEditModalOpen && (
-              <Modal
-                title={"Edit this"}
-                styles={"profile-modal-styles "}
-                clearFunction={() => setIsExperienceEditModalOpen(false)}
-                content={
-                  <EditExperienceContent
-                    selectedExperience={selectedExperience}
-                    back={() => {
-                      setIsEditModalOpen(true);
-                      
-                    }}
-                  />
-                }
-              />
-            )}
+        <Modal
+          title={"Edit this"}
+          styles={"profile-modal-styles "}
+          clearFunction={() => setIsExperienceEditModalOpen(false)}
+          content={
+            <EditExperienceContent
+              selectedExperience={selectedExperience}
+              back={() => {
+                setIsEditModalOpen(true);
+              }}
+            />
+          }
+        />
+      )}
       {isEditModalOpen && (
         <Modal
           title="Edit Experience"
@@ -106,29 +119,8 @@ export default function ExperienceInfo() {
             ) : (
               <div className=" text-black w-full space-y-2  overflow-y-auto">
                 {experience?.map((e, i) => (
-                  <div
-                    key={i}
-                    className="flex justify-between rounded border-gray-300 shadow  px-3 py-1 items-start border-px"
-                  >
-                    <div>
-                      <p className="font-semibold text-sm">{e?.title}</p>
-                      <p className="text-xs">
-                        {e?.company} {e?.type && ". " + e?.type}
-                      </p>
-                      <p className="text-[11px] text-gray-500">
-                        {months[e?.startMonth - 1]?.slice(0, 3)} {e?.startYear}{" "}
-                        {(e?.startMonth ||
-                          e?.endMonth ||
-                          e?.startYear ||
-                          e?.endYear) &&
-                          "-"}{" "}
-                        {months[e?.endMonth - 1]?.slice(0, 3)} {e?.endYear}
-                      </p>
-                      <p className="text-gray-500">
-                        {e?.location}{" "}
-                        {e?.locationType && ". " + e?.locationType}
-                      </p>
-                    </div>
+                  <div key={i} className="flex justify-between px-3">
+                    <ExperienceDisplay key={e.id} experience={e} />
                     <span
                       onClick={() => {
                         setIsExperienceEditModalOpen(true);
@@ -159,14 +151,14 @@ export default function ExperienceInfo() {
           onClick={() => {
             setIsAddModalOpen(false);
             setIsEditModalOpen(false);
-            setIsExperienceEditModalOpen(false)
+            setIsExperienceEditModalOpen(false);
           }}
         />
       )}
     </div>
   );
 }
- export function AddExperienceContent(){
+export function AddExperienceContent() {
   const initialState: ExperienceState = {
     success: false,
     errors: {},
@@ -358,10 +350,9 @@ export default function ExperienceInfo() {
       <SaveButton />
     </form>
   );
- }
+}
 
-
- export function EditExperienceContent({selectedExperience,back}){
+export function EditExperienceContent({ selectedExperience, back }) {
   const initialState: ExperienceState = {
     success: false,
     errors: {},
@@ -370,9 +361,9 @@ export default function ExperienceInfo() {
     addExperience,
     initialState,
   );
-    const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
-    const router = useRouter();
-    const [isLoading, setIsLoading] = useState(false);
+  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
+  const router = useRouter();
+  const [isLoading, setIsLoading] = useState(false);
   return (
     <form
       className="w-full  space-y-3 overflow-y-auto px-2 flex flex-col"
@@ -666,4 +657,4 @@ export default function ExperienceInfo() {
       </span>
     </form>
   );
- }
+}

@@ -96,7 +96,7 @@ const PersonalProfile = async ({params}) => {
           <h1 className="font-semibold ">People you may know</h1>
         </div>
         <div className="mt-1 flex flex-col gap-y-2 ">
-          <MayKnowPerson session={session} />
+          <MayKnowPerson profile={userProfile} />
           <div className="w-full h-px bg-gray-500"></div>
         </div>
       </div>

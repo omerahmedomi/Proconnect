@@ -14,6 +14,7 @@ import { useActionState } from "react";
 import { useRouter } from "next/navigation";
 import { AlertTriangle, Loader } from "lucide-react";
 import DeleteButton from "./deletebutton";
+import EducationDisplay from "./educationdisplay";
 
 const months = [
   "January",
@@ -50,10 +51,10 @@ export default function EducationInfo() {
   }, [isEditModalOpen, isAddModalOpen, isEducationEditModalOpen]);
 
   useEffect(() => {
-    if (!isEditModalOpen) {
-      setEducation([]); // reset when closed
-      return;
-    }
+    // if (!isEditModalOpen) {
+    //   setEducation([]); // reset when closed
+    //   return;
+    // }
 
     let alive = true;
 
@@ -85,6 +86,12 @@ export default function EducationInfo() {
           </button>
         </div>
       </div>
+      <div className="divide-y divide-gray-300 flex flex-col ">
+        {education &&
+          education.map((e) => {
+            return <EducationDisplay key={e.id} education={e} />;
+          })}
+      </div>
       {isEducationEditModalOpen && (
         <Modal
           title={"Edit this"}
@@ -95,7 +102,6 @@ export default function EducationInfo() {
               selectedEducation={selectedEducation}
               back={() => {
                 setIsEditModalOpen(true);
-                
               }}
             />
           }
@@ -114,25 +120,8 @@ export default function EducationInfo() {
             ) : (
               <div className=" text-black w-full space-y-2  overflow-y-auto">
                 {education?.map((e, i) => (
-                  <div
-                    key={i}
-                    className="flex justify-between rounded border-gray-300 shadow  px-3 py-1 items-start border-px"
-                  >
-                    <div>
-                      <p className="font-semibold text-sm">{e?.school}</p>
-                      <p className="text-xs">
-                        {e?.degree} {e?.field && ", " + e?.field}
-                      </p>
-                      <p className="text-[11px] text-gray-500">
-                        {months[e?.startMonth - 1]?.slice(0, 3)} {e?.startYear}{" "}
-                        {(e?.startMonth ||
-                          e?.endMonth ||
-                          e?.startYear ||
-                          e?.endYear) &&
-                          "-"}{" "}
-                        {months[e?.endMonth - 1]?.slice(0, 3)} {e?.endYear}
-                      </p>
-                    </div>
+                  <div key={i} className="flex justify-between px-3  divide-gray-300">
+                    <EducationDisplay education={e} />
                     <span
                       onClick={() => {
                         setIsEducationEditModalOpen(true);
