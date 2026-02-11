@@ -19,20 +19,18 @@ export default function ProfileInfo({ profile, education, experience }) {
   // const router = useRouter();
 
   return (
-    <div className="info mt-11 text-sm px-6 flex justify-between items-center">
+    <div className="info mt-11 text-sm px-6 flex flex-col ">
       <span onClick={() => setIsModalOpen((prev) => !prev)}>
         <EditIcon styles="right-3 top-35 " />
       </span>{" "}
-      <div>
-        <h5 className="text-2xl font-semibold">
-          {profile?.name?.firstName + " " + profile?.name?.lastName}
-        </h5>
-        <h5 className="  ">{profile?.headline}</h5>
-        <h5 className=" text-gray-500">{profile?.location?.city}</h5>
-        <h4 className="text-cyan-600 hover:underline cursor-pointer">
-          500 + connections
-        </h4>
-      </div>
+      <h5 className="text-2xl font-semibold">
+        {profile?.name?.firstName + " " + profile?.name?.lastName}
+      </h5>
+      <h5 className="  ">
+        {profile?.headline} | Developer | Developer | Developer | Developer |
+        Developer | Developer
+      </h5>
+      <h5 className=" text-gray-500">{profile?.location?.city}</h5>
       <div className="companies  text-gray-500  items-center gap-1 flex  text-sm">
         <p>{experience.find((e) => e._id == profile?.position)?.company}</p>
         <div className="rounded-full size-1 bg-gray-500 "></div>
@@ -40,6 +38,9 @@ export default function ProfileInfo({ profile, education, experience }) {
           {education.find((e) => e._id == profile?.school)?.school}
         </p>
       </div>
+      <h4 className="text-cyan-600 hover:underline cursor-pointer">
+        500 + connections
+      </h4>
       {isModalOpen && (
         <Modal
           title={"Edit Profile"}
