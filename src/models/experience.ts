@@ -29,7 +29,7 @@ const experienceSchema = new Schema(
     },
     endMonth: {
       type: Number,
-      required: true,
+      // required: true,
     },
     startYear: {
       type: Number,
@@ -37,7 +37,7 @@ const experienceSchema = new Schema(
     },
     endYear: {
       type: Number,
-      required: true,
+      // required: true,
     },
     location: {
       type: String,
@@ -51,6 +51,10 @@ const experienceSchema = new Schema(
       type: String,
       trim: true,
     },
+    current:{
+      type:Boolean,
+      default:false,
+    }
   },
   {
     timestamps: true,

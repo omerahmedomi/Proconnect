@@ -221,6 +221,8 @@ export async function addExperience(
   const startMonth = formData.get("startMonth");
   const endMonth = formData.get("endMonth");
   const company = formData.get("company");
+  const current = formData.get("current") as boolean | null;
+  console.log("Current", current)
   if (!title) {
     errors.title = "Title is required";
   }
@@ -230,7 +232,7 @@ export async function addExperience(
   if (!startMonth || !startYear) {
     errors.startDate = "Start date is required";
   }
-  if (!endMonth || !endYear) {
+  if ((!endMonth || !endYear) && !current) {
     errors.endDate = "End date is required";
   }
   if (startYear && endYear && Number(startYear) > Number(endYear)) {
@@ -280,6 +282,7 @@ export const fetchExperience = async () => {
       startYear: e.startYear,
       endMonth: e.endMonth,
       endYear: e.endYear,
+      current:e.current
     }));
   } catch (error) {
     console.log(error);

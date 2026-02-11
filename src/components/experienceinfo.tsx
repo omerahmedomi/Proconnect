@@ -87,6 +87,7 @@ export default function ExperienceInfo() {
         <div className="flex flex-col divide-y divide-gray-300">
           {experience &&
             experience.map((e) => {
+              console.log("From Info",e)
               return <ExperienceDisplay key={e.id} experience={e} />;
             })}
         </div>
@@ -167,6 +168,7 @@ export function AddExperienceContent() {
     addExperience,
     initialState,
   );
+  const [isCurrentChecked,setIsCurrentChecked] = useState(false)
   return (
     <form
       className="w-full  space-y-3 overflow-y-auto px-2 flex flex-col"
@@ -220,6 +222,21 @@ export function AddExperienceContent() {
           </span>
         )}
       </div>
+      <div className="flex items-center gap-2 ">
+        <input
+          type="checkbox"
+          className="focus:ring-0! size-4 accent-cyan-400"
+          name="current"
+          id="current-checkbox"
+          defaultChecked={isCurrentChecked}
+          value={isCurrentChecked ? "true" : "false"}
+          onChange={()=>setIsCurrentChecked((prev)=>!prev)}
+        />
+        <label htmlFor="current-checkbox" className="">
+          Are you currently working this?
+        </label>
+      </div>
+
       <div className="modal-input-container ">
         <span>Start date*</span>
 
@@ -271,8 +288,9 @@ export function AddExperienceContent() {
         <div className="flex gap-2" key={state?.values?.endMonth || "initial"}>
           <select
             name="endMonth"
-            className="border rounded-md px-2 py-2  bg-white grow"
+            className="border rounded-md px-2 py-2  bg-white grow disabled:bg-gray-300 disabled:cursor-not-allowed"
             defaultValue={state?.values?.endMonth || ""}
+            disabled={isCurrentChecked}
           >
             <option value="" disabled>
               Month
@@ -287,8 +305,9 @@ export function AddExperienceContent() {
           <select
             key={state?.values?.endYear || "initial"}
             name="endYear"
-            className="border rounded-md px-2 py-2 bg-white grow"
+            className="border rounded-md px-2 py-2 bg-white grow disabled:bg-gray-300 disabled:cursor-not-allowed"
             defaultValue={state?.values?.endYear || ""}
+            disabled={isCurrentChecked}
           >
             <option value="" disabled>
               Year

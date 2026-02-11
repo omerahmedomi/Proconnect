@@ -26,14 +26,13 @@ export default function ProfileInfo({ profile, education, experience }) {
       <h5 className="text-2xl font-semibold">
         {profile?.name?.firstName + " " + profile?.name?.lastName}
       </h5>
-      <h5 className="  ">
-        {profile?.headline} | Developer | Developer | Developer | Developer |
-        Developer | Developer
-      </h5>
+      <h5 className="  ">{profile?.headline}</h5>
       <h5 className=" text-gray-500">{profile?.location?.city}</h5>
       <div className="companies  text-gray-500  items-center gap-1 flex  text-sm">
         <p>{experience.find((e) => e._id == profile?.position)?.company}</p>
-        <div className="rounded-full size-1 bg-gray-500 "></div>
+        {profile?.school.length > 0 && profile?.position.length > 0 && (
+          <div className="rounded-full size-1 bg-gray-500 "></div>
+        )}
         <p className="">
           {education.find((e) => e._id == profile?.school)?.school}
         </p>
@@ -65,7 +64,7 @@ export default function ProfileInfo({ profile, education, experience }) {
   );
 }
 
-export function ProfileContent({profile,education,experience}) {
+export function ProfileContent({ profile, education, experience }) {
   const initialState: ProfileFormState = {
     success: false,
     errors: {},
@@ -138,6 +137,7 @@ export function ProfileContent({profile,education,experience}) {
         <h4 className="text-base font-semibold">Current Position</h4>
         <span>Position*</span>
         <select
+          key={state?.values?.selectedExperienceId || "initial"}
           className="border px-2 py-1 rounded"
           name="selectedExperienceId"
           defaultValue={
@@ -177,6 +177,7 @@ export function ProfileContent({profile,education,experience}) {
         <h4 className="text-base font-semibold">Education</h4>
         <span>School*</span>
         <select
+          key={state?.values?.selectedEducationId || "initial"}
           className="border px-2 py-1 rounded"
           name="selectedEducationId"
           defaultValue={
