@@ -1,5 +1,7 @@
+import ProfileLoaderIcon from "@/components/loaders/profileloadericon";
+
 export default function ProfileLoader(){
     return(
-        <div>Loading</div>
+        <ProfileLoaderIcon/>
     )
 }

@@ -21,7 +21,7 @@ export type ProfileErrors = {
   firstName?: string;
   lastName?: string;
   headline?: string;
-  city?: string;
+  industry?: string;
   country?: string;
 };
 export type EducationState = {
@@ -61,6 +61,9 @@ export async function saveProfile(
   const headline = formData.get("headline") as string | null;
   const city = formData.get("city") as string | null;
   const country = formData.get("country") as string | null;
+  const industry = formData.get("industry") as string | null;
+  const selectedEducationId = formData.get("selectedEducationId") 
+  const selectedExperienceId = formData.get("selectedExperienceId")
   const errors: ProfileErrors = {};
 
   if (!firstName) {
@@ -72,8 +75,8 @@ export async function saveProfile(
   if (!headline) {
     errors.headline = "Headline is required";
   }
-  if (!city) {
-    errors.city = "City is required";
+  if (!industry) {
+    errors.industry = "Industry is required";
   }
   if (!country) {
     errors.country = "Country is required";
@@ -89,27 +92,27 @@ export async function saveProfile(
         city,
         country,
         headline,
+        industry,
+        selectedEducationId,
+        selectedExperienceId,
       },
     };
   }
-
+  console.log(selectedEducationId,selectedExperienceId)
   const updatedValue = await profile.findOneAndUpdate(
     { user: user.user.id },
     {
       name: { firstName, lastName },
       location: { city, country },
       headline,
+      industry,
+      school:selectedEducationId,
+      position:selectedExperienceId,
     },
     { new: true },
   );
   redirect(`/profile/${userProfile._id}`);
-  // return {
-  //   success: true,
-  //   errors: {},
-  //   values: {
-  //     firstName,
-  //   },
-  // };
+ 
 }
 
 export async function updateAbout(formData: FormData) {

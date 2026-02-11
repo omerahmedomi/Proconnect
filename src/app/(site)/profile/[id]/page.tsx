@@ -16,40 +16,36 @@ import mongoose from "mongoose";
 import SkillsInfo from "@/components/skillsinfo";
 import EducationInfo from "@/components/educationinfo";
 import ExperienceInfo from "@/components/experienceinfo";
+import education from "@/models/education";
+import experience from "@/models/experience";
 
-const PersonalProfile = async ({params}) => {
+const PersonalProfile = async ({ params }) => {
   const session = await auth.api.getSession({
-    headers: await headers()
-  })
-  if (!session) redirect('/')
-  const {id:profileID }= await params;
+    headers: await headers(),
+  });
+  if (!session) redirect("/");
+  const { id: profileID } = await params;
   if (!mongoose.Types.ObjectId.isValid(profileID)) {
     notFound();
   }
-  
+
   await dbConnect();
-  const userProfileDoc = await profile
-    .findById(profileID)
+  const userProfileDoc = await profile.findById(profileID).lean();
+  const userProfile = userProfileDoc
+    ? JSON.parse(JSON.stringify(userProfileDoc))
+    : null;
+  if (!userProfile) notFound();
+
+  const userPosts = await post
+    .find({ profile: profileID })
+    .sort({ createdAt: -1 })
     .lean();
-      const userProfile = userProfileDoc
-        ? JSON.parse(JSON.stringify(userProfileDoc))
-        : null;
-    if(!userProfile) notFound();
+  const posts = JSON.parse(JSON.stringify(userPosts));
 
-    const userPosts = await post
-  .find({profile:profileID})
-  .sort({ createdAt: -1 })
-  .lean();
-
-
-
-    const posts = JSON.parse(JSON.stringify(userPosts));
-    console.log(posts)
-
-
-
-  console.log("Server",userProfile)
-
+  const userEducationDoc = await education.find({profile:profileID}).lean()
+  const userExperienceDoc = await experience.find({profile:profileID}).lean()
+  const userEducations = userEducationDoc ? JSON.parse(JSON.stringify(userEducationDoc)) : null;
+  const userExperiences = userExperienceDoc ? JSON.parse(JSON.stringify(userExperienceDoc)) : null
 
   return (
     <div className="flex flex-col md:flex-row  md:gap-x-5 mx-auto w-full max-w-250 md:px-5 text-sm ">
@@ -59,7 +55,7 @@ const PersonalProfile = async ({params}) => {
             <MyCover styles={"h-30"} profile={userProfile} showEdit={true} />
           </div>
           <MyProfile profile={userProfile} />
-          <ProfileInfo  profile={userProfile} />
+          <ProfileInfo profile={userProfile} education={userEducations} experience={userExperiences} />
         </div>
         <AboutInfo profile={userProfile} />
         <div className="profile-div flex flex-col gap-5 p-6 ">
@@ -87,9 +83,9 @@ const PersonalProfile = async ({params}) => {
             )}
           </div>
         </div>
-        <ExperienceInfo/>
-        <EducationInfo/>
-        <SkillsInfo/>
+        <ExperienceInfo />
+        <EducationInfo />
+        <SkillsInfo />
       </div>
       <div className="self-start profile-div p-6 max-md:mt-0 max-md:w-full md:w-100 ">
         <div className="">

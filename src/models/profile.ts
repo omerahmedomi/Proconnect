@@ -25,8 +25,15 @@ const ProfileSchema = new mongoose.Schema({
         type:String,
         trim:true,
     },
-    school:String,
-    position:String,
+    school:{
+        type:Schema.Types.ObjectId,
+        ref:'Education'
+    },
+
+    position:{
+        type:Schema.Types.ObjectId,
+        ref:'Experience'
+    },
     profile_picture:{
         type:String,
         default:null,
@@ -52,12 +59,11 @@ const ProfileSchema = new mongoose.Schema({
         default:null,
     },
     
-   connections:[{ type: Schema.Types.ObjectId, ref: 'User' }],
+   connections:[{ type: Schema.Types.ObjectId, ref: 'Profile' }],
 
 },{
     timestamps:false,
 })
-
 
 
 export default mongoose.models.Profile ||

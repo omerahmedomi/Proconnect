@@ -199,8 +199,8 @@ export function AddExperienceContent() {
           <option value={""} disabled selected>
             Please Select
           </option>
-          <option value="Fulltime">Full-time</option>
-          <option value="Partime">Part-time</option>
+          <option value="Full-time">Full-time</option>
+          <option value="Part-time">Part-time</option>
           <option value="Contractual">Contractual</option>
           <option value="Internship">Internship</option>
           <option value="Freelance">Freelance</option>

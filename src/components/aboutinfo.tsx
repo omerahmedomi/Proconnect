@@ -28,7 +28,7 @@ export default function AboutInfo({profile}) {
         <Modal
           content={
             <form
-              className="w-full modal-input-container overflow-y-scroll "
+              className="w-full modal-input-container overflow-y-auto "
               action={updateAbout}
             >
               <textarea
