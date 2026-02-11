@@ -29,12 +29,12 @@ export default function ProfileInfo({ profile, education, experience }) {
       <h5 className="  ">{profile?.headline}</h5>
       <h5 className=" text-gray-500">{profile?.location?.city}</h5>
       <div className="companies  text-gray-500  items-center gap-1 flex  text-sm">
-        <p>{experience.find((e) => e._id == profile?.position)?.company}</p>
-        {profile?.school.length > 0 && profile?.position.length > 0 && (
+        <p>{profile?.school?.school}</p>
+        {profile?.school  && profile?.position && (
           <div className="rounded-full size-1 bg-gray-500 "></div>
         )}
         <p className="">
-          {education.find((e) => e._id == profile?.school)?.school}
+          {profile?.position?.company}
         </p>
       </div>
       <h4 className="text-cyan-600 hover:underline cursor-pointer">
@@ -142,7 +142,7 @@ export function ProfileContent({ profile, education, experience }) {
           name="selectedExperienceId"
           defaultValue={
             state?.values?.selectedExperienceId ||
-            (state?.values?.selectedExperienceId != 0 && profile?.position) ||
+            (state?.values?.selectedExperienceId != "" && profile?.position) ||
             ""
           }
         >

@@ -30,7 +30,7 @@ const PersonalProfile = async ({ params }) => {
   }
 
   await dbConnect();
-  const userProfileDoc = await profile.findById(profileID).lean();
+  const userProfileDoc = await profile.findById(profileID).populate("school position").lean();
   const userProfile = userProfileDoc
     ? JSON.parse(JSON.stringify(userProfileDoc))
     : null;

@@ -120,7 +120,7 @@ async function Home() {
       <div className="relative md:sticky md:top-10 bg-pink-50 md:min-w-50 self-start ">
         <div className="profile-view w-full  h-40 flex-col flex items-start mt-3 border sm:rounded-lg border-gray-200 bg-white">
           <MyCover
-            styles="cover-image h-14 bg-yellow-400 self-stretch sm:rounded-t-lg border-gray-200"
+            styles="cover-image h-14 self-stretch sm:rounded-t-lg border-gray-200"
             showEdit={false}
             profile={userProfile}
           />

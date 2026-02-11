@@ -13,7 +13,7 @@ export default function AboutInfo({profile}) {
     return () => (document.body.style.overflow = "unset");
   },[isModalOpen])
   return (
-    <div className="profile-div p-6 flex flex-col gap-y-5 ">
+    <div className="profile-div p-6 pt-2 flex flex-col gap-y-5 ">
       <span
         onClick={() => {
           setIsModalOpen((prev) => !prev);
@@ -29,7 +29,10 @@ export default function AboutInfo({profile}) {
           content={
             <form
               className="w-full modal-input-container overflow-y-auto "
-              action={updateAbout}
+              action={update
+                
+
+              }
             >
               <textarea
                 className="field-sizing-content min-h-30 selection:bg-cyan-600 selection:text-white"

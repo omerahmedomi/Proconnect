@@ -1,6 +1,7 @@
 "use client";
 import axios from "axios";
 import { Edit2 } from "lucide-react";
+import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useRef,useState } from "react";
 export default function MyCover({ styles, profile, showEdit }) {
@@ -52,9 +53,11 @@ export default function MyCover({ styles, profile, showEdit }) {
       />
       <div className={`${styles} border-b border-gray-300 `}>
         <img
-          src={profile?.cover_picture || "./sample-cover.jpg"}
+          src={profile?.cover_picture || "/sample-cover.jfif"}
           alt="cover-image"
-          className={`w-full h-full object-cover sm:rounded-t-lg ${isUploading && 'blur-[1px]'}`}
+          // width={100}
+          // height={100}
+          className={`w-full h-full object-cover sm:rounded-t-lg ${isUploading && "blur-[1px]"}`}
         />
       </div>
     </>
