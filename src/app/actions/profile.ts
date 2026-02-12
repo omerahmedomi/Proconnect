@@ -10,6 +10,7 @@ import { headers } from "next/headers";
 import { redirect } from "next/navigation";
 import experience from "@/models/experience";
 import { error } from "console";
+import { pinata } from "@/utils/config";
 
 export type ProfileFormState = {
   success: boolean;
@@ -298,3 +299,25 @@ export async function deleteExperience(id: string) {
     console.log(error);
   }
 }
+
+export async function removeProfilePhoto(){
+  try {
+    const user = await requireAuth();
+    const userProfile = await profile.findOne({user:user?.user?.id})
+    const picturecid = userProfile?.profile_picture.split("/")[4]
+    console.log("picture id",picturecid)
+    await profile.updateOne({_id:userProfile._id},{ $unset:{profile_picture:""}})
+    revalidatePath('/profile')
+      
+const {files} = await pinata.files.public.list().cid(picturecid)
+const pictureFileId = files[0]?.id;
+
+
+console.log(files);
+
+    await pinata.files.public.delete([pictureFileId])
+  } catch (error) {
+    console.log(error)
+  }
+}
+
