@@ -4,11 +4,11 @@ import { Trash2, Pencil, AlertTriangle } from "lucide-react";
 import Image from "next/image";
 import { useState, useEffect } from "react";
 import Modal from "./modal";
-import {  deletePost, updatePost } from "@/app/actions/post";
+import { deletePost, updatePost } from "@/app/actions/post";
 import DeleteButton from "./deletebutton";
 import SaveButton from "./savebutton";
 
-export default function ProfileActivityPost({ post }) {
+export default function ProfileActivityPost({ post, self }) {
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
 
@@ -26,12 +26,16 @@ export default function ProfileActivityPost({ post }) {
 
         {/* management */}
         <div className="flex gap-1 *:cursor-pointer *:hover:bg-cyan-50 *:rounded-full *:p-2 transition">
-          <button title="Edit" onClick={() => setIsEditModalOpen(true)}>
-            <Pencil size={16} />
-          </button>
-          <button title="Delete" onClick={() => setIsDeleteModalOpen(true)}>
-            <Trash2 size={16} />
-          </button>
+          {self && (
+            <button title="Edit" onClick={() => setIsEditModalOpen(true)}>
+              <Pencil size={16} />
+            </button>
+          )}
+          {self && (
+            <button title="Delete" onClick={() => setIsDeleteModalOpen(true)}>
+              <Trash2 size={16} />
+            </button>
+          )}
         </div>
       </div>
 
@@ -48,11 +52,19 @@ export default function ProfileActivityPost({ post }) {
       )}
       {isEditModalOpen && (
         <Modal
-        title="Edit Post"
-          content={<form className="w-full flex flex-col gap-y-2" action={updatePost}>
-            <input type="text" placeholder="Update post text" name="text" className="w-full" defaultValue={post?.text}/>
-            <SaveButton/>
-          </form>}
+          title="Edit Post"
+          content={
+            <form className="w-full flex flex-col gap-y-2" action={updatePost}>
+              <input
+                type="text"
+                placeholder="Update post text"
+                name="text"
+                className="w-full"
+                defaultValue={post?.text}
+              />
+              <SaveButton />
+            </form>
+          }
           clearFunction={() => setIsEditModalOpen(false)}
           styles={"profile-modal-styles"}
         />
@@ -69,8 +81,8 @@ export default function ProfileActivityPost({ post }) {
               <div className="flex flex-col items-center text-base gap-y-4">
                 <p>Are you sure you want to delete the selected post?</p>
                 <div className="flex gap-5">
-                  <form action={deletePost.bind(null,post?._id)}>
-                  <DeleteButton/>
+                  <form action={deletePost.bind(null, post?._id)}>
+                    <DeleteButton />
                   </form>
                   <button
                     className="btn-register rounded-sm"

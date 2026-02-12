@@ -34,7 +34,7 @@ const years = Array.from(
   (_, i) => new Date().getFullYear() - i,
 );
 
-export default function ExperienceInfo() {
+export default function ExperienceInfo({self}) {
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
   const [isExperienceEditModalOpen, setIsExperienceEditModalOpen] =
@@ -68,26 +68,28 @@ export default function ExperienceInfo() {
     if (isAddModalOpen || isEditModalOpen || isExperienceEditModalOpen)
       document.body.style.overflow = "hidden";
     return () => (document.body.style.overflow = "unset");
-  }, [isEditModalOpen, isAddModalOpen]);
+  }, [isEditModalOpen, isAddModalOpen,isExperienceEditModalOpen]);
   return (
     <div className="profile-div p-6">
       <div className="flex justify-between">
         {" "}
         <h4 className="font-semibold  text-lg">Experience</h4>
-        <div>
-          <button className="" onClick={() => setIsAddModalOpen(true)}>
-            <PlusIcon styles="mr-15" />
-          </button>
-          <button onClick={() => setIsEditModalOpen(true)}>
-            <EditIcon />
-          </button>
-        </div>
+        {self && (
+          <div>
+            <button className="" onClick={() => setIsAddModalOpen(true)}>
+              <PlusIcon styles="mr-15" />
+            </button>
+            <button onClick={() => setIsEditModalOpen(true)}>
+              <EditIcon />
+            </button>
+          </div>
+        )}
       </div>
       <div className="flex flex-col">
         <div className="flex flex-col divide-y divide-gray-300">
           {experience &&
             experience.map((e) => {
-              console.log("From Info",e)
+              console.log("From Info", e);
               return <ExperienceDisplay key={e.id} experience={e} />;
             })}
         </div>
@@ -168,7 +170,7 @@ export function AddExperienceContent() {
     addExperience,
     initialState,
   );
-  const [isCurrentChecked,setIsCurrentChecked] = useState(false)
+  const [isCurrentChecked, setIsCurrentChecked] = useState(false);
   return (
     <form
       className="w-full  space-y-3 overflow-y-auto px-2 flex flex-col"
@@ -230,7 +232,7 @@ export function AddExperienceContent() {
           id="current-checkbox"
           defaultChecked={isCurrentChecked}
           value={isCurrentChecked ? "true" : "false"}
-          onChange={()=>setIsCurrentChecked((prev)=>!prev)}
+          onChange={() => setIsCurrentChecked((prev) => !prev)}
         />
         <label htmlFor="current-checkbox" className="">
           Are you currently working this?
@@ -384,7 +386,9 @@ export function EditExperienceContent({ selectedExperience, back }) {
   const router = useRouter();
   const [isLoading, setIsLoading] = useState(false);
 
-  const [isCurrentChecked, setIsCurrentChecked] = useState(selectedExperience?.current);
+  const [isCurrentChecked, setIsCurrentChecked] = useState(
+    selectedExperience?.current,
+  );
   return (
     <form
       className="w-full  space-y-3 overflow-y-auto px-2 flex flex-col"

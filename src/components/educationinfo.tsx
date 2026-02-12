@@ -35,7 +35,7 @@ const years = Array.from(
   { length: 60 },
   (_, i) => new Date().getFullYear() - i,
 );
-export default function EducationInfo() {
+export default function EducationInfo({self}) {
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
   const [isEducationEditModalOpen, setIsEducationEditModalOpen] =
@@ -77,7 +77,7 @@ export default function EducationInfo() {
       <div className="flex justify-between">
         {" "}
         <h4 className="font-semibold  text-lg">Education</h4>
-        <div>
+    {self &&    <div>
           <button className="" onClick={() => setIsAddModalOpen(true)}>
             <PlusIcon styles="mr-15" />
           </button>
@@ -85,7 +85,9 @@ export default function EducationInfo() {
             <EditIcon />
           </button>
         </div>
+}
       </div>
+    
       <div className="divide-y divide-gray-300 flex flex-col ">
         {education &&
           education.map((e) => {

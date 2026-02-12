@@ -5,7 +5,7 @@ export default function MayKnowPerson({profile}){
     return (
       <div className="grid grid-cols-[repeat(2,auto)] gap-x-2 justify-start">
         <span className="row-span-2">
-          <ProfileImage image={profile?.cover_picture} styles="w-15 h-15 border-[0.5px] border-gray-700" />
+          <ProfileImage image={profile?.cover_picture} styles="w-15 h-15" />
         </span>
         <div className="text-left mt-1">
           <h2 className="font-semibold">

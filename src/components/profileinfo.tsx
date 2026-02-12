@@ -7,7 +7,7 @@ import { saveProfile } from "@/app/actions/profile";
 import { ProfileFormState } from "@/app/actions/profile";
 import SaveButton from "./savebutton";
 // import { useRouter } from "next/navigation";
-export default function ProfileInfo({ profile, education, experience }) {
+export default function ProfileInfo({ profile, education, experience, self }) {
   // const router = useRouter();
   const [isModalOpen, setIsModalOpen] = useState(false);
   useEffect(() => {
@@ -20,9 +20,9 @@ export default function ProfileInfo({ profile, education, experience }) {
 
   return (
     <div className="info mt-11 text-sm px-6 flex flex-col ">
-      <span onClick={() => setIsModalOpen((prev) => !prev)}>
-        <EditIcon styles="right-3 top-35 " />
-      </span>{" "}
+      {self && <span onClick={() => setIsModalOpen((prev) => !prev)}>
+        <EditIcon styles="right-3 top-35 " /> 
+      </span>}
       <h5 className="text-2xl font-semibold">
         {profile?.name?.firstName + " " + profile?.name?.lastName}
       </h5>
@@ -40,7 +40,7 @@ export default function ProfileInfo({ profile, education, experience }) {
       <h4 className="text-cyan-600 hover:underline cursor-pointer">
         500 + connections
       </h4>
-      {isModalOpen && (
+      {isModalOpen && self (
         <Modal
           title={"Edit Profile"}
           content={

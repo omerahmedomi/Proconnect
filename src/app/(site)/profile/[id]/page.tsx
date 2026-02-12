@@ -1,5 +1,3 @@
-import PlusIcon from "@/components/icons/addicon";
-import EditIcon from "@/components/icons/editicon";
 import MayKnowPerson from "@/components/mayknowperson";
 import MyCover from "@/components/mycover";
 import MyProfile from "@/components/myprofile";
@@ -30,7 +28,7 @@ const PersonalProfile = async ({ params }) => {
   }
 
   await dbConnect();
-  const userProfileDoc = await profile.findById(profileID).populate("school position").lean();
+  const userProfileDoc = await profile.findById(profileID).populate("user school position").lean();
   const userProfile = userProfileDoc
     ? JSON.parse(JSON.stringify(userProfileDoc))
     : null;
@@ -47,18 +45,20 @@ const PersonalProfile = async ({ params }) => {
   const userEducations = userEducationDoc ? JSON.parse(JSON.stringify(userEducationDoc)) : null;
   const userExperiences = userExperienceDoc ? JSON.parse(JSON.stringify(userExperienceDoc)) : null
 
+  const isMe = userProfile.user._id == session?.user?.id;
+
   return (
     <div className="flex flex-col md:flex-row  md:gap-x-5 mx-auto w-full max-w-250 md:px-5 text-sm ">
       <div className="w-full">
         <div className="profile-view sm:rounded-lg w-full flex-col flex items-start profile-div">
           <div className="cover-image h-30 self-stretch sm:rounded-lg sm:rounded-t-lg border-gray-200 relative ">
-            <MyCover styles={"h-30"} profile={userProfile} showEdit={true} />
+            <MyCover styles={"h-30"} profile={userProfile}  self={isMe} />
           </div>
-          <MyProfile profile={userProfile} />
-          <ProfileInfo profile={userProfile} education={userEducations} experience={userExperiences} />
+          <MyProfile profile={userProfile} self={isMe} />
+          <ProfileInfo profile={userProfile} education={userEducations} experience={userExperiences} self={isMe}/>
         </div>
-        <AboutInfo profile={userProfile} />
-        <div className="profile-div flex flex-col gap-5 p-6 ">
+       <AboutInfo profile={userProfile} self={isMe}/>
+        <div className={`profile-div flex flex-col gap-5 p-6 ${ !isMe &&"pb-0"} `}>
           <div className="sm:flex sm:justify-between">
             <div className="font-semibold text-lg">
               <h3>Activity</h3>
@@ -71,21 +71,22 @@ const PersonalProfile = async ({ params }) => {
                 <h6 className="text-sm text-cyan-700">{posts?.length} posts</h6>
                 <div className="grid grid-cols-[repeat(auto-fit,minmax(140px,1fr))] gap-3">
                   {posts.map((post) => (
-                    <ProfileActivityPost key={post._id} post={post} />
+                    <ProfileActivityPost key={post._id} post={post} self={isMe} />
                   ))}
                 </div>
               </div>
             ) : (
-              <div className="flex flex-col leading-tight">
+             isMe && <div className="flex flex-col leading-tight">
                 <h5 className="font-semibold">You haven’t posted yet.</h5>
                 <h6>Posts you share will be displayed here.</h6>
               </div>
+             
             )}
           </div>
         </div>
-        <ExperienceInfo />
-        <EducationInfo />
-        <SkillsInfo />
+        <ExperienceInfo self={isMe} />
+        <EducationInfo self={isMe} />
+        <SkillsInfo self={isMe}/>
       </div>
       <div className="self-start profile-div p-6 max-md:mt-0 max-md:w-full md:w-100 ">
         <div className="">

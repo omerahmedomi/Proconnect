@@ -3,7 +3,7 @@ import { useState } from "react";
 import PlusIcon from "./icons/addicon";
 import EditIcon from "./icons/editicon";
 import Modal from "./modal";
-export default function SkillsInfo(){
+export default function SkillsInfo({self}){
     const [isEditModalOpen, setIsEditModalOpen] = useState(false);
       const [isAddModalOpen, setIsAddModalOpen] = useState(false);
     return(
@@ -11,7 +11,7 @@ export default function SkillsInfo(){
               <div className="flex justify-between">
                 {" "}
                 <h4 className="font-semibold  text-lg">Skills</h4>
-                <div>
+             {self &&   <div>
                   <button className="" onClick={() => setIsAddModalOpen(true)}>
                     <PlusIcon styles="mr-15" />
                   </button>
@@ -19,6 +19,7 @@ export default function SkillsInfo(){
                     <EditIcon />
                   </button>
                 </div>
+}
               </div>
               {isEditModalOpen && (
                 <Modal

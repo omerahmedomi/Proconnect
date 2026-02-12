@@ -4,7 +4,7 @@ import EditIcon from "./icons/editicon";
 import Modal from "./modal";
 import { updateAbout } from "@/app/actions/profile";
 import SaveButton from "./savebutton";
-export default function AboutInfo({profile}) {
+export default function AboutInfo({profile,self}) {
 
   const [isModalOpen,setIsModalOpen] = useState(false);
   const [aboutLength,setAboutLength] = useState(profile?.about?.length||0)
@@ -13,26 +13,24 @@ export default function AboutInfo({profile}) {
     return () => (document.body.style.overflow = "unset");
   },[isModalOpen])
   return (
-    <div className="profile-div p-6 pt-2 flex flex-col gap-y-5 ">
-      <span
+    <div className="profile-div p-6  flex flex-col gap-y-5 ">
+   {self &&   <span
         onClick={() => {
           setIsModalOpen((prev) => !prev);
         }}
       >
         <EditIcon />
       </span>
-
+}
       <h5 className="text-lg font-semibold">About</h5>
       <h6>{profile?.about}</h6>
-      {isModalOpen && (
+      {isModalOpen && self(
         <Modal
+        title={"Edit About"}
           content={
             <form
               className="w-full modal-input-container overflow-y-auto "
-              action={update
-                
-
-              }
+              action={updateAbout}
             >
               <textarea
                 className="field-sizing-content min-h-30 selection:bg-cyan-600 selection:text-white"

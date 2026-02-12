@@ -4,7 +4,7 @@ import { Edit2 } from "lucide-react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useRef,useState } from "react";
-export default function MyCover({ styles, profile, showEdit }) {
+export default function MyCover({ styles, profile, self }) {
   const fileInputRef = useRef<HTMLInputElement>(null);
   const router = useRouter();
   const [isUploading,setIsUploading] = useState(false)
@@ -32,7 +32,7 @@ export default function MyCover({ styles, profile, showEdit }) {
   }
   return (
     <>
-      {showEdit && (
+      {self && (
         <div
           className="rounded-full bg-cyan-200 absolute right-3 top-3 hover:bg-cyan-400 transition-colors duration-500 cursor-pointer p-2"
           onClick={() => fileInputRef.current?.click()}

@@ -3,7 +3,7 @@ import { useRef, useState } from "react";
 import ProfileImage from "./profileimage";
 import axios from "axios";
 import { useRouter } from "next/navigation";
-export default function MyProfile({profile }) {
+export default function MyProfile({profile,self }) {
   const fileInputRef = useRef<HTMLInputElement>(null);
   const router = useRouter();
   const [isUploading, setIsUploading] = useState(false);
@@ -33,12 +33,12 @@ export default function MyProfile({profile }) {
 
   return (
     <div
-      className="hover:cursor-pointer"
+      className={`${self && 'hover:cursor-pointer'}`}
       onClick={() => {
         fileInputRef.current?.click();
       }}
     >
-      <input
+  {self && <input
         type="file"
         accept="image/*"
         ref={fileInputRef}
@@ -49,6 +49,8 @@ export default function MyProfile({profile }) {
           await uploadProfilePicture(imageFile);
         }}
       />
+
+}
       <ProfileImage
         image={profile?.profile_picture}
         styles={
