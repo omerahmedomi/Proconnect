@@ -1,4 +1,5 @@
 "use client";
+import { removeCoverPhoto } from "@/app/actions/profile";
 import axios from "axios";
 import { Edit2 } from "lucide-react";
 import Image from "next/image";
@@ -78,7 +79,7 @@ export default function MyCover({ styles, profile, self }) {
           >
             Change Photo
           </button>
-          <button>Remove Photo</button>
+       {profile?.cover_picture && <button onClick={removeCoverPhoto}>Remove Photo</button>}
         </div>
       </div>
 

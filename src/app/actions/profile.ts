@@ -321,3 +321,26 @@ console.log(files);
   }
 }
 
+export async function removeCoverPhoto() {
+  try {
+    const user = await requireAuth();
+    const userProfile = await profile.findOne({ user: user?.user?.id });
+    const picturecid = userProfile?.cover_picture.split("/")[4];
+    console.log("picture id", picturecid);
+    await profile.updateOne(
+      { _id: userProfile._id },
+      { $unset: { cover_picture: "" } },
+    );
+    revalidatePath("/profile");
+
+    const { files } = await pinata.files.public.list().cid(picturecid);
+    const pictureFileId = files[0]?.id;
+
+    console.log(files);
+
+    await pinata.files.public.delete([pictureFileId]);
+  } catch (error) {
+    console.log(error);
+  }
+}
+
