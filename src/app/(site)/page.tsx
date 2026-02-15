@@ -125,7 +125,7 @@ async function Home() {
             profile={userProfile}
           />
           <ProfileImage
-            session={session}
+           
             styles={
               "w-17 h-17 border bg-cyan-50 border-gray-300 absolute top-7 left-2"
             }
@@ -161,7 +161,7 @@ async function Home() {
         </div>
         {userPost?.length > 0 &&
           userPost?.map((post, i) => (
-            <Post key={i} session={session} post={post} />
+            <Post key={i}  post={post} />
           ))}
       </div>
       <div className="hidden lg:block mt-3 rounded-lg border-gray-200 border p-2 bg-white self-start">

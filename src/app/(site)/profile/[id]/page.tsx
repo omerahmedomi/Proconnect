@@ -16,6 +16,7 @@ import EducationInfo from "@/components/educationinfo";
 import ExperienceInfo from "@/components/experienceinfo";
 import education from "@/models/education";
 import experience from "@/models/experience";
+import { Suspense } from "react";
 
 const PersonalProfile = async ({ params }) => {
   const session = await auth.api.getSession({
@@ -84,6 +85,7 @@ const PersonalProfile = async ({ params }) => {
             )}
           </div>
         </div>
+        
         <ExperienceInfo self={isMe} />
         <EducationInfo self={isMe} />
         <SkillsInfo self={isMe}/>

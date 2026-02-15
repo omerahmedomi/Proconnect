@@ -17,11 +17,11 @@ export default async function Post({post}){
         </div>
 
         <div className="flex justify-between items-center">
-          <div className="flex items-center gap-2">
-            <ProfileImage styles={"w-14"} />
-            <div className="text-left! -space-y-0.5 ">
-              <h5 className="text-sm font-semibold">{post.profile.name.firstName + " "+ post.profile.name.lastName}</h5>
-              <h5 className="text-xs line-clamp-1">Professional</h5>
+          <div className="flex items-centr  gap-2">
+            <ProfileImage styles={"w-14 h-14"} image={post?.profile?.profile_picture} imgStyles={''} />
+            <div className="text-left! -space-y-0.5 mt-1 ">
+              <h5 className="text-sm font-semibold">{post?.profile?.name?.firstName + " "+ post?.profile?.name?.lastName}</h5>
+              <h5 className="text-xs line-clamp-1">{post?.profile?.headline}</h5>
               <h5 className="text-xs font-light">
                 {timeAgo(post?.createdAt)}
               </h5>
