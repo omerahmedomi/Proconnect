@@ -2,7 +2,8 @@ import { Ellipsis,X,ThumbsUp,MessageCircleMore,Repeat2,Send } from "lucide-react
 import ProfileImage from "./profileimage";
 import Connect from "./connect";
 import { timeAgo } from './../utils/dateformat';
-export default async function Post({post}){
+import Link from "next/link";
+export default async function Post({post,userProfileId}){
    
     return (
       <div className="sm:rounded-lg border border-gray-200 *:px-3 py-3  w-full bg-white ">
@@ -17,7 +18,7 @@ export default async function Post({post}){
         </div>
 
         <div className="flex justify-between items-center">
-          <div className="flex items-centr  gap-2">
+          <Link className="flex items-centr  gap-2" href={`/profile/${post?.profile?._id}`}>
             <ProfileImage styles={"w-14 h-14"} image={post?.profile?.profile_picture} imgStyles={''} />
             <div className="text-left! -space-y-0.5 mt-1 ">
               <h5 className="text-sm font-semibold">{post?.profile?.name?.firstName + " "+ post?.profile?.name?.lastName}</h5>
@@ -26,8 +27,8 @@ export default async function Post({post}){
                 {timeAgo(post?.createdAt)}
               </h5>
             </div>
-          </div>
-          <Connect />
+          </Link>
+          <Connect profileId={post?.profile?._id?.toString()} userProfileId={userProfileId}/>
         </div>
         <div className="mt-2 text-sm">{post?.text}</div>
         {post?.images?.length > 0 && (
@@ -45,8 +46,6 @@ export default async function Post({post}){
             <p>Liked by Umer and 5000 others </p>
             <div className="flex gap-1 items-center">
               <p>212 comments</p>
-              <div className="rounded-full size-1 bg-gray-500"></div>
-              <p>310 repost</p>
             </div>
           </div>
           <div className="w-full">
@@ -60,10 +59,6 @@ export default async function Post({post}){
             <span>
               <MessageCircleMore size={17} />
               Comment
-            </span>
-            <span>
-              <Repeat2 size={17} />
-              Repost
             </span>
             <span>
               <Send size={17} />

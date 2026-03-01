@@ -59,7 +59,8 @@ const ProfileSchema = new mongoose.Schema({
         default:null,
     },
     
-   connections:[{ type: Schema.Types.ObjectId, ref: 'Profile' }],
+   connections:[{ type: Schema.Types.ObjectId, ref: 'Profile',unique:true }],
+   connection_requests:[{type: Schema.Types.ObjectId,ref:'Profile',unique:true}]
 
 },{
     timestamps:false,

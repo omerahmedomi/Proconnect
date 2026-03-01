@@ -14,7 +14,7 @@ export default function MayKnowPerson({profile}){
           <h3 className="text-sm">{profile?.headline}</h3>
         </div>
         <div className="rounded-full px-2 border w-fit mt-1">
-          <Connect />
+          <Connect profileId={profile?._id} />
         </div>
       </div>
     );

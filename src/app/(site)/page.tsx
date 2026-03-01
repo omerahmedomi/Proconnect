@@ -161,7 +161,7 @@ async function Home() {
         </div>
         {userPost?.length > 0 &&
           userPost?.map((post, i) => (
-            <Post key={i}  post={post} />
+            <Post key={i}  post={post} userProfileId={userProfile?._id} />
           ))}
       </div>
       <div className="hidden lg:block mt-3 rounded-lg border-gray-200 border p-2 bg-white self-start">

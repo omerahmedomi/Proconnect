@@ -344,3 +344,52 @@ export async function removeCoverPhoto() {
   }
 }
 
+
+export async function requestConnection(id:string){
+  try {
+
+    const user = await requireAuth();
+     const userProfile = await profile.findOne({ user: user?.user?.id });
+
+    await profile.updateOne({_id:id},{
+      $push:{
+        connection_requests:userProfile._id
+      }
+    })
+
+    
+  } catch (error) {
+    console.log(error)
+    
+  }
+}
+
+
+export async function getConnectionStatus(
+  myId: string,
+  otherId: string
+) {
+
+  const me = await profile.findById(myId).select(
+    "connections connection_requests"
+  );
+
+  const other = await profile.findById(otherId).select(
+    "connections connection_requests"
+  );
+
+  if (me?.connections.includes(otherId)) {
+    return "connected";
+  }
+
+  if (me?.connection_requests.includes(otherId)) {
+    return "received";
+  }
+
+  if (other?.connection_requests.includes(myId)) {
+    return "sent";
+  }
+
+  return "none"
+  
+}
