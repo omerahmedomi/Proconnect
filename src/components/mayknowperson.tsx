@@ -1,7 +1,7 @@
 import Connect from "./connect";
 import ProfileImage from "./profileimage";
 
-export default function MayKnowPerson({profile}){
+export default function MayKnowPerson({profile,userProfileId}){
     return (
       <div className="grid grid-cols-[repeat(2,auto)] gap-x-2 justify-start">
         <span className="row-span-2">
@@ -14,7 +14,7 @@ export default function MayKnowPerson({profile}){
           <h3 className="text-sm">{profile?.headline}</h3>
         </div>
         <div className="rounded-full px-2 border w-fit mt-1">
-          <Connect profileId={profile?._id} />
+          <Connect profileId={profile?._id} userProfileId={userProfileId} />
         </div>
       </div>
     );

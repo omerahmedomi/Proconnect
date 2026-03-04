@@ -63,7 +63,6 @@ const PersonalProfile = async ({ params }) => {
           <div className="sm:flex sm:justify-between">
             <div className="font-semibold text-lg">
               <h3>Activity</h3>
-              <h6 className="text-sm text-cyan-700">799 followers</h6>
             </div>
           </div>
           <div className="flex flex-col leading-tight">
@@ -95,7 +94,7 @@ const PersonalProfile = async ({ params }) => {
           <h1 className="font-semibold ">People you may know</h1>
         </div>
         <div className="mt-1 flex flex-col gap-y-2 ">
-          <MayKnowPerson profile={userProfile} />
+          <MayKnowPerson profile={userProfile} userProfileId={userProfile._id} />
           <div className="w-full h-px bg-gray-500"></div>
         </div>
       </div>

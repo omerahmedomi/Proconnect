@@ -59,11 +59,32 @@ const ProfileSchema = new mongoose.Schema({
         default:null,
     },
     
-   connections:[{ type: Schema.Types.ObjectId, ref: 'Profile',unique:true }],
-   connection_requests:[{type: Schema.Types.ObjectId,ref:'Profile',unique:true}]
+   connections:[{ type: Schema.Types.ObjectId, ref: 'Profile',}],
+   connection_requests: [
+  {
+    from: {
+      type: Schema.Types.ObjectId,
+      ref: "Profile",
+      required: true,
+    },
+    status: {
+      type: String,
+      enum: ["pending", "ignored"],
+      default: "pending",
+    },
+    createdAt: {
+      type: Date,
+      default: Date.now,
+    },
+    ignoredAt: {
+      type: Date,
+      default: null,
+    },
+  },
+],
 
 },{
-    timestamps:false,
+    timestamps:true,
 })
 
 

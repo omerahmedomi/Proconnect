@@ -4,22 +4,21 @@ import { UserPlus } from "lucide-react";
 export default async function Connect({ profileId,userProfileId }) {
   const connectionStatus = await getConnectionStatus(userProfileId,profileId) 
  if (
-   profileId === userProfileId 
-  //  connectionStatus === "sent" ||
-  //  connectionStatus === "received"
+   profileId === userProfileId ||
+   connectionStatus !== "none" 
  )
    return null;
 
- if (connectionStatus === "connected") {
-   return <span className="text-green-600">Connected</span>;
- }
+//  if (connectionStatus === "connected") {
+//    return <span className="text-green-600">Connected</span>;
+//  }
 
- if (connectionStatus === "sent") {
-   return <span className="text-gray-500">Sent</span>;
- }
-if (connectionStatus === "received") {
-   return <span className="text-gray-500">Received</span>;
- }
+//  if (connectionStatus === "sent") {
+//    return <span className="text-gray-500">Sent</span>;
+//  }
+// if (connectionStatus === "received") {
+//    return <span className="text-gray-500">Received</span>;
+//  }
   return (
   
     <form

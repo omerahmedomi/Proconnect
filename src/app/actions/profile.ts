@@ -353,7 +353,9 @@ export async function requestConnection(id:string){
 
     await profile.updateOne({_id:id},{
       $push:{
-        connection_requests:userProfile._id
+        connection_requests:{
+        from:userProfile._id
+        }
       }
     })
 
@@ -362,6 +364,8 @@ export async function requestConnection(id:string){
     console.log(error)
     
   }
+
+  revalidatePath('/')
 }
 
 
@@ -370,26 +374,81 @@ export async function getConnectionStatus(
   otherId: string
 ) {
 
-  const me = await profile.findById(myId).select(
-    "connections connection_requests"
+  const me = await profile.findById(myId).populate(
+    "connection_requests.from"
   );
 
-  const other = await profile.findById(otherId).select(
-    "connections connection_requests"
+  const other = await profile.findById(otherId).populate(
+    "connection_requests.from"
   );
+
 
   if (me?.connections.includes(otherId)) {
     return "connected";
   }
 
-  if (me?.connection_requests.includes(otherId)) {
-    return "received";
+  for(const req of me?.connection_requests){
+    if(req.from._id.toString() == otherId && req.status != 'ignored' )
+      return 'received'
   }
 
-  if (other?.connection_requests.includes(myId)) {
-    return "sent";
+  for(const req of other?.connection_requests){
+    if(req.from._id.toString() == myId)
+      return 'sent'
   }
+
 
   return "none"
   
+}
+
+export async function handleConnectionAction(fromProfileId: string,
+  action: "accept" | "ignore"){
+
+  const user = await requireAuth();
+  const myProfile = await profile.findOne({user:user.user.id})
+  if(!myProfile)
+    throw new Error('Profile not found');
+   if (action === "accept") {
+    // 1️⃣ remove request
+    await profile.updateOne(
+      { _id: myProfile._id },
+      {
+        $pull: {
+          connection_requests: { from: fromProfileId },
+        },
+        $addToSet: {
+          connections: fromProfileId,
+        },
+      }
+    );
+
+    // 2️⃣ add reverse connection
+    await profile.updateOne(
+      { _id: fromProfileId },
+      {
+        $addToSet: {
+          connections: myProfile._id,
+        },
+      }
+    );
+  }
+
+  if (action === "ignore") {
+    await profile.updateOne(
+      {
+        _id: myProfile._id,
+        "connection_requests.from": fromProfileId,
+      },
+      {
+        $set: {
+          "connection_requests.$.status": "ignored",
+          "connection_requests.$.ignoredAt": new Date(),
+        },
+      }
+    );
+  }
+
+  // refresh my-network page
+  revalidatePath("/mynetwork");
 }

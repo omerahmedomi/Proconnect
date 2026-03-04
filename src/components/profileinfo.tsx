@@ -38,9 +38,9 @@ export default function ProfileInfo({ profile, education, experience, self }) {
         </p>
       </div>
       <h4 className="text-cyan-600 hover:underline cursor-pointer">
-        500 + connections
+        {profile?.connections?.length > 0 && profile?.connections?.length+" "+"connections"} 
       </h4>
-      {isModalOpen && self (
+      {(isModalOpen && self) && (
         <Modal
           title={"Edit Profile"}
           content={
