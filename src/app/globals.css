@@ -149,7 +149,9 @@
 .hero-card-texts h3 {
   @apply font-semibold
 }
-
+.cover-photo {
+  @apply bg-linear-to-r from-[#0070B0]/15 via-[#0070B0]/8 to-[#0070B0]/4
+}
 .hero-card-texts p {
   @apply text-sm text-gray-600
 }

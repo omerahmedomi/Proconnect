@@ -11,7 +11,7 @@ export default function ConnectionRequestCard({ req ,onAction}) {
       <div
         className={`h-16 relative bg-cover bg-center ${
           !req.from.cover_picture &&
-          "bg-linear-to-r from-[#0070B0]/15 via-[#0070B0]/8 to-[#0070B0]/4"
+          "cover-photo"
         }`}
         style={
           req.from.cover_picture

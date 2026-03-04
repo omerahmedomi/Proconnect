@@ -83,14 +83,18 @@ export default function MyCover({ styles, profile, self }) {
         </div>
       </div>
 
-      <div className={`${styles} border-b border-gray-300 `}>
-        <img
-          src={profile?.cover_picture || "/sample-cover.jfif"}
+      <div className={`${styles} border-b border-gray-300 bg-cover bg-center ${!profile?.cover_picture && 'cover-photo'} `}  style={
+          profile?.cover_picture
+            ? { backgroundImage: `url(${profile.cover_picture})` }
+            : undefined
+        }>
+        {/* <img
+          src={profile?.cover_picture}
           alt="cover-image"
           // width={100}
           // height={100}
           className={`w-full h-full object-cover sm:rounded-t-lg ${isUploading && "blur-[1px]"}`}
-        />
+        /> */}
       </div>
     </>
   );
