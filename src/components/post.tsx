@@ -1,8 +1,9 @@
-import { Ellipsis,X,ThumbsUp,MessageCircleMore,Repeat2,Send } from "lucide-react";
+import { Ellipsis,X,ThumbsUp,MessageCircleMore,Send } from "lucide-react";
 import ProfileImage from "./profileimage";
 import Connect from "./connect";
 import { timeAgo } from './../utils/dateformat';
 import Link from "next/link";
+import PostActivities from "./postactivities";
 export default async function Post({post,userProfileId}){
    
     return (
@@ -41,31 +42,9 @@ export default async function Post({post,userProfileId}){
           </div>
         )}
 
-        <div className="flex flex-col mt-2 space-y-1">
-          <div className="flex justify-between text-sm text-gray-500">
-            <p>Liked by Umer and 5000 others </p>
-            <div className="flex gap-1 items-center">
-              <p>212 comments</p>
-            </div>
-          </div>
-          <div className="w-full">
-            <div className="h-px px-3  w-full bg-gray-400" />
-          </div>
-          <div className="flex justify-between text-sm text-gray-500 *:flex *:items-center *:gap-x-2 *:p-2 *:hover:bg-gray-200 *:cursor-pointer *:rounded transition-all duration-500">
-            <span>
-              <ThumbsUp size={17} />
-              Like
-            </span>
-            <span>
-              <MessageCircleMore size={17} />
-              Comment
-            </span>
-            <span>
-              <Send size={17} />
-              Share
-            </span>
-          </div>
-        </div>
+       
+<PostActivities post={JSON.parse(JSON.stringify(post))} userProfileId={userProfileId}/>         
+     
       </div>
     );
 

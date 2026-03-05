@@ -24,3 +24,27 @@ export const updatePost=async(formData:FormData)=>{
     redirect(`/profile/${userProfile._id}`);
 
 }
+
+export async function handleToggleLikeAction(postId:string,userProfileId:string){
+
+    console.log(postId,userProfileId)
+
+
+   const userPost = await post.findById(postId);
+
+   const alreadyLiked = userPost.likes.some(
+     (id) => id.toString() === userProfileId,
+   );
+
+   if (alreadyLiked) {
+     userPost.likes.pull(userProfileId);
+   } else {
+     userPost.likes.push(userProfileId);
+   }
+
+   await userPost.save()
+
+    
+    
+
+}

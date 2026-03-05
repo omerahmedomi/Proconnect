@@ -16,13 +16,17 @@ const postSchema = new mongoose.Schema({
     type: [String],
     default:[]
 },
-//   likes: [{ type: Schema.Types.ObjectId, ref: "User" }],
-//   comments: [
-//     {
-//       by: { type: Schema.Types.ObjectId, ref: "User" },
-//       comment: String,
-//     },
-//   ],
+  likes: [{ type: Schema.Types.ObjectId, ref: "Profile" }],
+  comments: [
+    {
+      by: { type: Schema.Types.ObjectId, ref: "Profile" },
+      comment: String,
+      createdAt: {
+        type:Date,
+        default:Date.now
+      }
+    }
+  ],
 },{timestamps:true});
 
 

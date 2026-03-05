@@ -117,7 +117,7 @@ async function Home() {
 
   return (
     <div className="md:px-6 max-w-xl  mx-auto  md:mx-0 md:flex md:gap-x-10  md:max-w-full! min-[1200px]:justify-center  ">
-      <div className="relative md:sticky md:top-10 bg-pink-50 md:min-w-50 self-start ">
+      <div className="relative md:sticky md:top-17 bg-pink-50 md:min-w-50 self-start ">
         <div className="profile-view w-full  h-40 flex-col flex items-start mt-3 border sm:rounded-lg border-gray-200 bg-white">
           <MyCover
             styles="cover-image h-14 self-stretch sm:rounded-t-lg border-gray-200"
