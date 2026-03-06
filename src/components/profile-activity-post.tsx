@@ -42,7 +42,7 @@ export default function ProfileActivityPost({ post, self }) {
       <p className=" text-left!">{post.text}</p>
 
       {post.images.length > 0 && (
-        <Image
+        <img
           src={post.images[0]}
           className="max-h-80 object-cover"
           width={200}

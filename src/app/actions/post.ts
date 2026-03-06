@@ -3,6 +3,7 @@
 import { requireAuth } from "@/lib/auth-middleware"
 import post from "@/models/post";
 import profile from "@/models/profile";
+import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 
 export const deletePost= async(id:any)=>{
@@ -44,7 +45,22 @@ export async function handleToggleLikeAction(postId:string,userProfileId:string)
 
    await userPost.save()
 
-    
-    
 
+}
+
+export async function addCommentAction(postId: string, userProfileId: string, text: string) {
+
+  if (!text.trim()) return
+
+  const userPost = await post.findById(postId)
+
+  userPost.comments.push({
+    by: userProfileId,
+    comment: text
+  })
+
+  await userPost.save()
+
+  revalidatePath('/')
+  return userPost.comments[userPost.comments.length - 1]
 }

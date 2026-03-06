@@ -1,14 +1,18 @@
 "use client"
 
-import { handleToggleLikeAction } from "@/app/actions/post"
+import { handleToggleLikeAction,addCommentAction } from "@/app/actions/post"
 import { MessageCircleMore, Send, ThumbsUp } from "lucide-react"
 import { useState } from "react"
+import PostCommentors from "./postcommentors"
 
-export default function PostActivities({ post, userProfileId }) {
+export default function PostActivities({ post, userProfileId,children }) {
 
   const [likes, setLikes] = useState(post.likes)
 
   const liked = likes.some(id => id.toString() === userProfileId)
+  const [isCommentSectionVisible,setIsCommentSectionVisible] = useState(false);
+  const [commentText, setCommentText] = useState("");
+  const [comments, setComments] = useState(post.comments || []);
 
   async function handleToggleLike(postId, profileId) {
 
@@ -30,13 +34,31 @@ export default function PostActivities({ post, userProfileId }) {
     }
   }
 
+  async function handleAddComment() {
+    if (!commentText.trim()) return;
+
+    const newComment = {
+      by: userProfileId,
+      comment: commentText,
+      createdAt: new Date(),
+    };
+
+    // optimistic UI
+    setComments((prev) => [...prev, newComment]);
+    setCommentText("");
+
+    try {
+      await addCommentAction(post._id, userProfileId, commentText);
+    } catch (err) {
+      console.error(err);
+    }
+  }
   return (
     <div className="flex flex-col mt-2 space-y-1">
-
       <div className="flex justify-between text-sm text-gray-500">
         <p>Liked by Umer and {likes.length} others</p>
         <div className="flex gap-1 items-center">
-          <p>212 comments</p>
+          <p>{comments.length > 0 ? comments.length == 1 ? '1 comment': `${comments.length} comments`:''}</p>
         </div>
       </div>
 
@@ -45,13 +67,12 @@ export default function PostActivities({ post, userProfileId }) {
       </div>
 
       <div className="flex justify-between text-sm text-gray-500 *:flex *:items-center *:gap-x-2 *:p-2 *:hover:bg-gray-200 *:cursor-pointer *:rounded transition-all duration-500">
-
         <span onClick={() => handleToggleLike(post._id, userProfileId)}>
           <ThumbsUp size={17} fill={liked ? "cyan" : "none"} />
           Like
         </span>
 
-        <span>
+        <span onClick={() => setIsCommentSectionVisible(true)}>
           <MessageCircleMore size={17} />
           Comment
         </span>
@@ -60,8 +81,28 @@ export default function PostActivities({ post, userProfileId }) {
           <Send size={17} />
           Share
         </span>
-
       </div>
+      {isCommentSectionVisible && (
+        <div className="flex flex-col">
+          <div className='flex gap-2 mt-2'>
+            <input
+            value={commentText}
+            onChange={(e) => setCommentText(e.target.value)}
+            placeholder="Write a comment..."
+            className="border rounded-full px-2 py-1 w-full text-sm focus:outline-none focus:ring-1 transition-all ring-cyan-700"
+          />
+
+          <button
+            // disabled={true}
+            onClick={handleAddComment}
+            className="text-sm bg-cyan-500 hover:bg-cyan-400 transition-colors hover:cursor-pointer text-white px-3 rounded-full disabled:bg-gray-200 disabled:text-gray-400"
+          >
+            Post
+          </button>
+          </div>
+         { children}
+        </div>
+      )}
     </div>
-  )
+  );
 }

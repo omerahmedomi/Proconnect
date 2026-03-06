@@ -4,6 +4,8 @@ import Connect from "./connect";
 import { timeAgo } from './../utils/dateformat';
 import Link from "next/link";
 import PostActivities from "./postactivities";
+import PostCommentors from "./postcommentors";
+import { Prosto_One } from "next/font/google";
 export default async function Post({post,userProfileId}){
    
     return (
@@ -19,17 +21,31 @@ export default async function Post({post,userProfileId}){
         </div>
 
         <div className="flex justify-between items-center">
-          <Link className="flex items-centr  gap-2" href={`/profile/${post?.profile?._id}`}>
-            <ProfileImage styles={"w-14 h-14"} image={post?.profile?.profile_picture} imgStyles={''} />
+          <Link
+            className="flex items-centr  gap-2"
+            href={`/profile/${post?.profile?._id}`}
+          >
+            <ProfileImage
+              styles={"w-14 h-14"}
+              image={post?.profile?.profile_picture}
+              imgStyles={""}
+            />
             <div className="text-left! -space-y-0.5 mt-1 ">
-              <h5 className="text-sm font-semibold">{post?.profile?.name?.firstName + " "+ post?.profile?.name?.lastName}</h5>
-              <h5 className="text-xs line-clamp-1">{post?.profile?.headline}</h5>
-              <h5 className="text-xs font-light">
-                {timeAgo(post?.createdAt)}
+              <h5 className="text-sm font-semibold">
+                {post?.profile?.name?.firstName +
+                  " " +
+                  post?.profile?.name?.lastName}
               </h5>
+              <h5 className="text-xs line-clamp-1">
+                {post?.profile?.headline}
+              </h5>
+              <h5 className="text-xs font-light">{timeAgo(post?.createdAt)}</h5>
             </div>
           </Link>
-          <Connect profileId={post?.profile?._id?.toString()} userProfileId={userProfileId}/>
+          <Connect
+            profileId={post?.profile?._id?.toString()}
+            userProfileId={userProfileId}
+          />
         </div>
         <div className="mt-2 text-sm">{post?.text}</div>
         {post?.images?.length > 0 && (
@@ -42,9 +58,12 @@ export default async function Post({post,userProfileId}){
           </div>
         )}
 
-       
-<PostActivities post={JSON.parse(JSON.stringify(post))} userProfileId={userProfileId}/>         
-     
+        <PostActivities
+          post={JSON.parse(JSON.stringify(post))}
+          userProfileId={userProfileId}
+        >
+          <PostCommentors postId={post._id} />
+        </PostActivities>
       </div>
     );
 
