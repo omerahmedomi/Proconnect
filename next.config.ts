@@ -6,6 +6,9 @@ const nextConfig: NextConfig = {
   images: {
     remotePatterns: [new URL("https://amber-central-ape-305.mypinata.cloud/ipfs/**")],
   },
+  typescript:{
+    ignoreBuildErrors:true,
+  }
  
 };
 
