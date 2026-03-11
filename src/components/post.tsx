@@ -62,7 +62,7 @@ export default async function Post({post,userProfileId}){
           post={JSON.parse(JSON.stringify(post))}
           userProfileId={userProfileId}
         >
-          <PostCommentors postId={post._id} />
+          <PostCommentors postId={post._id} userProfileId={userProfileId} />
         </PostActivities>
       </div>
     );

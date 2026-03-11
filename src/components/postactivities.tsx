@@ -4,6 +4,7 @@ import { handleToggleLikeAction,addCommentAction } from "@/app/actions/post"
 import { MessageCircleMore, Send, ThumbsUp } from "lucide-react"
 import { useState } from "react"
 import PostCommentors from "./postcommentors"
+import { LineWave } from "react-loader-spinner"
 
 export default function PostActivities({ post, userProfileId,children }) {
 
@@ -13,6 +14,7 @@ export default function PostActivities({ post, userProfileId,children }) {
   const [isCommentSectionVisible,setIsCommentSectionVisible] = useState(false);
   const [commentText, setCommentText] = useState("");
   const [comments, setComments] = useState(post.comments || []);
+  const [isCommenting,setIsCommenting] = useState(false);
 
   async function handleToggleLike(postId, profileId) {
 
@@ -48,9 +50,12 @@ export default function PostActivities({ post, userProfileId,children }) {
     setCommentText("");
 
     try {
+      setIsCommenting(true)
       await addCommentAction(post._id, userProfileId, commentText);
     } catch (err) {
       console.error(err);
+    } finally{
+      setIsCommenting(false)
     }
   }
   return (
@@ -93,11 +98,11 @@ export default function PostActivities({ post, userProfileId,children }) {
           />
 
           <button
-            // disabled={true}
+            disabled={isCommenting}
             onClick={handleAddComment}
-            className="text-sm bg-cyan-500 hover:bg-cyan-400 transition-colors hover:cursor-pointer text-white px-3 rounded-full disabled:bg-gray-200 disabled:text-gray-400"
+            className="text-sm bg-cyan-500 hover:bg-cyan-400 transition-colors hover:cursor-pointer text-white px-3 rounded-full disabled:bg-gray-200 disabled:text-gray-400 flex justify-center items-center disabled:cursor-not-allowed"
           >
-            Post
+            {isCommenting ? <span className='mx-auto w-fit max-w-7 flex justify-center items-center'><LineWave height='30'/></span>:'Post'}
           </button>
           </div>
          { children}
