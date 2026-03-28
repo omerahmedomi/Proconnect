@@ -1,6 +1,7 @@
 "use server";
 
 import { requireAuth } from "@/lib/auth-middleware";
+import { sendNotification } from "@/lib/notificaionhelper";
 import post from "@/models/post";
 import profile from "@/models/profile";
 import { revalidatePath } from "next/cache";
@@ -59,6 +60,8 @@ export async function addCommentAction(
   });
 
   await userPost.save();
+
+  await sendNotification({type:'comment',recipientId:userPost.profile,senderId:userProfileId,postId:userPost._id})
 
   revalidatePath("/");
   return userPost.comments[userPost.comments.length - 1];

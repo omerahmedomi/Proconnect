@@ -1,9 +1,7 @@
 'use client'
 import {
-
   Home,
   Users,
-  Briefcase,
   MessageSquare,
   Bell,
 } from "lucide-react";
@@ -35,7 +33,7 @@ return (
       </span>
       <span>Messaging</span>
     </Link>
-    <Link href={"/notfifications"} className={`${pathname == "/notfifications" && active}`}>
+    <Link href={"/notifications"} className={`${pathname == "/notifications" && active}`}>
       <span className="relative">
         <Bell size={20} />
         <Noty count={4} />

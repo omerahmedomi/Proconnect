@@ -85,7 +85,7 @@ export default function SideMenu({profile}) {
                 <span>Messaging</span>
               </Link>
               <Link
-                href={"/notfifications"}
+                href={"/notifications"}
                 className={`${pathname == "/notfifications" && active}`}
               >
                 <span className="relative">
