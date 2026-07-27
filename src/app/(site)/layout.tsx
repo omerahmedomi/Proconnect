@@ -2,7 +2,7 @@ import '../globals.css'
 import type { Metadata } from "next";
 import {Roboto,Dancing_Script} from "next/font/google";
 import NavigationBar from "@/components/navbar";
-
+import { Toaster } from "sonner";
 
 const roboto = Roboto({
   variable:'--font-roboto',
@@ -12,6 +12,8 @@ const dancing =Dancing_Script({
   variable:'--font-dancing',
   subsets:['latin']
 })
+
+import Footer from "@/components/footer";
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -26,10 +28,14 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${roboto.className} antialiased scroll-smooth ${dancing.variable}`}
+        className={`${roboto.className} antialiased scroll-smooth ${dancing.variable} flex flex-col min-h-screen`}
       >
        <NavigationBar/>
-        {children}
+        <Toaster position="bottom-right" richColors />
+        <main className="flex-1">
+          {children}
+        </main>
+        <Footer />
       </body>
     </html>
   );

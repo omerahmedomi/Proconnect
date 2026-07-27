@@ -40,14 +40,17 @@ export default function EducationInfo({self}) {
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
   const [isEducationEditModalOpen, setIsEducationEditModalOpen] =
     useState(false);
-  const [selectedEducation, setSelectedEducaiton] = useState({});
-  const [education, setEducation] = useState([]);
+  const [selectedEducation, setSelectedEducaiton] = useState<any>({});
+  const [education, setEducation] = useState<any[]>([]);
   const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
-    if (isAddModalOpen || isEditModalOpen || isEducationEditModalOpen )
+    if (isAddModalOpen || isEditModalOpen || isEducationEditModalOpen) {
       document.body.style.overflow = "hidden";
-    return () => (document.body.style.overflow = "unset");
+    } else {
+      document.body.style.overflow = "unset";
+    }
+    return () => {};
   }, [isEditModalOpen, isAddModalOpen, isEducationEditModalOpen]);
 
   useEffect(() => {

@@ -24,7 +24,7 @@ export default function AboutInfo({profile,self}) {
 }
       <h5 className="text-lg font-semibold">About</h5>
       <h6>{profile?.about}</h6>
-      {isModalOpen && self(
+      {(isModalOpen && self) && (
         <Modal
         title={"Edit About"}
           content={

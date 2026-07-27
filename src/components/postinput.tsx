@@ -8,7 +8,7 @@ export default function PostInput() {
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
   useEffect(() => {
     if (isModalOpen) document.body.style.overflow = "hidden";
-    return () => (document.body.style.overflow = "unset");
+    return () => { document.body.style.overflow = "unset" };
   }, [isModalOpen]);
   return (
     <>

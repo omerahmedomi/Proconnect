@@ -1,12 +1,17 @@
+"use server";
 import { requireAuth } from "@/lib/auth-middleware";
 import notification from "@/models/notification";
 import profile from "@/models/profile";
-import { revalidatePath } from "next/cache";
+
 
 export async function getNotifications() {
   const user = await requireAuth();
 
   const myProfile = await profile.findOne({ user: user.user.id });
+  if (!myProfile) {
+    return [];
+  }
+  
   console.log("From noti serv", myProfile._id.toString());
   const notifications = await notification
     .find({
@@ -18,4 +23,26 @@ export async function getNotifications() {
 
     
   return notifications;
+}
+
+export async function markAllAsRead() {
+
+  const user = await requireAuth();
+
+  const myProfile = await profile.findOne({ user: user.user.id });
+
+  if (!myProfile) {
+    return;
+  }
+
+  await notification.updateMany(
+    {
+      recipient: myProfile._id,
+      read: false,
+    },
+    {
+      $set: { read: true },
+    },
+  );
+
 }

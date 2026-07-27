@@ -1,16 +1,13 @@
-import post from "@/models/post";
 import PostCommentsClient from "./postcommentsclient";
 
-export default async function PostCommentors({ postId, userProfileId }) {
-  const userPost = await post.findById(postId).populate("comments.by");
-
-  const comments = userPost.comments.sort((a, b) => b.createdAt - a.createdAt);
+export default function PostCommentors({ postId, userProfileId, postComments, postOwnerId }) {
+  const comments = postComments?.sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()) || [];
 
   return (
     <PostCommentsClient
-      comments={JSON.parse(JSON.stringify(comments))}
-      postId={postId}
-      postOwnerId={userPost.profile.toString()}
+      comments={comments}
+      postId={postId.toString()}
+      postOwnerId={postOwnerId}
       userProfileId={userProfileId}
     />
   );

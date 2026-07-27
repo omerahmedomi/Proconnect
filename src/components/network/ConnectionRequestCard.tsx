@@ -30,7 +30,7 @@ export default function ConnectionRequestCard({ req ,onAction}) {
 
       {/* Body */}
       <div className="pt-10 px-4 text-center">
-        <Link className="font-semibold text-lg hover:underline underline-offset-2" href={`profile/${req?._id}`}>
+        <Link className="font-semibold text-lg hover:underline underline-offset-2" href={`/profile/${req?.from?._id}`}>
           {req.from.name.firstName + " " + req.from.name.lastName}
         </Link>
         <p className="text-sm text-gray-600 mt-1">{req.from.headline}</p>

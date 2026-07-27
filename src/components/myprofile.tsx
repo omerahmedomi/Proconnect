@@ -10,7 +10,7 @@ export default function MyProfile({profile,self }) {
   const [isUploading, setIsUploading] = useState(false);
 
 const [menuOpen,setMenuOpen] = useState(false)
-const modalRef = useRef(null);
+const modalRef = useRef<HTMLDivElement>(null);
 
   async function uploadProfilePicture(image: File) {
     if (!image) return;
@@ -64,7 +64,8 @@ const modalRef = useRef(null);
             disabled={isUploading}
             className="absolute right-[99999px]"
             onChange={async (e) => {
-              const imageFile = e.target.files[0]!;
+              const imageFile = e.target.files?.[0];
+              if (!imageFile) return;
               await uploadProfilePicture(imageFile);
             }}
           />

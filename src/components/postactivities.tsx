@@ -5,9 +5,10 @@ import { MessageCircleMore, Send, ThumbsUp } from "lucide-react"
 import { useState } from "react"
 import PostCommentors from "./postcommentors"
 import { LineWave } from "react-loader-spinner"
+import { toast } from "sonner"
 
-export default function PostActivities({ post, userProfileId,children }) {
-
+export default function PostActivities({ post, userProfile }) {
+  const userProfileId = userProfile?._id?.toString();
   const [likes, setLikes] = useState(post.likes)
 
   const liked = likes.some(id => id.toString() === userProfileId)
@@ -40,9 +41,10 @@ export default function PostActivities({ post, userProfileId,children }) {
     if (!commentText.trim()) return;
 
     const newComment = {
-      by: userProfileId,
+      _id: Math.random().toString(),
+      by: userProfile,
       comment: commentText,
-      createdAt: new Date(),
+      createdAt: new Date().toISOString(),
     };
 
     // optimistic UI
@@ -61,7 +63,12 @@ export default function PostActivities({ post, userProfileId,children }) {
   return (
     <div className="flex flex-col mt-2 space-y-1">
       <div className="flex justify-between text-sm text-gray-500">
-        <p>Liked by Umer and {likes.length} others</p>
+        <p>
+          {liked 
+            ? `Liked by you ${likes.length - 1 > 0 ? `and ${likes.length - 1} others` : ''}`
+            : `${likes.length} ${likes.length === 1 ? 'Like' : 'Likes'}`
+          }
+        </p>
         <div className="flex gap-1 items-center">
           <p>{comments.length > 0 ? comments.length == 1 ? '1 comment': `${comments.length} comments`:''}</p>
         </div>
@@ -82,7 +89,14 @@ export default function PostActivities({ post, userProfileId,children }) {
           Comment
         </span>
 
-        <span>
+        <span onClick={() => {
+          const url = `${window.location.origin}/post/${post._id}`;
+          navigator.clipboard.writeText(url).then(() => {
+            toast.success("Post URL copied to clipboard!");
+          }).catch(() => {
+            toast.error("Failed to copy URL");
+          });
+        }}>
           <Send size={17} />
           Share
         </span>
@@ -105,7 +119,12 @@ export default function PostActivities({ post, userProfileId,children }) {
             {isCommenting ? <span className='mx-auto w-fit max-w-7 flex justify-center items-center'><LineWave height='30'/></span>:'Post'}
           </button>
           </div>
-         { children}
+          <PostCommentors 
+            postId={post._id} 
+            userProfileId={userProfileId} 
+            postComments={comments} 
+            postOwnerId={post.profile._id?.toString() || post.profile.toString()} 
+          />
         </div>
       )}
     </div>

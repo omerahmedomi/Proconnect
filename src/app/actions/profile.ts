@@ -11,6 +11,8 @@ import { redirect } from "next/navigation";
 import experience from "@/models/experience";
 import { error } from "console";
 import { pinata } from "@/utils/config";
+import { sendNotification } from "@/lib/notificaionhelper";
+
 
 export type ProfileFormState = {
   success: boolean;
@@ -347,9 +349,8 @@ export async function removeCoverPhoto() {
 
 export async function requestConnection(id:string){
   try {
-
     const user = await requireAuth();
-     const userProfile = await profile.findOne({ user: user?.user?.id });
+    const userProfile = await profile.findOne({ user: user?.user?.id }).select("_id").lean();
 
     await profile.updateOne({_id:id},{
       $push:{
@@ -358,11 +359,15 @@ export async function requestConnection(id:string){
         }
       }
     })
-
+    
+    await sendNotification({
+      type: 'connection_request',
+      recipientId: id,
+      senderId: userProfile._id.toString()
+    });
     
   } catch (error) {
     console.log(error)
-    
   }
 
   revalidatePath('/')
@@ -373,40 +378,31 @@ export async function getConnectionStatus(
   myId: string,
   otherId: string
 ) {
+  const me = await profile.findById(myId).select("connections connection_requests").lean();
+  const other = await profile.findById(otherId).select("connection_requests").lean();
 
-  const me = await profile.findById(myId).populate(
-    "connection_requests.from"
-  );
-
-  const other = await profile.findById(otherId).populate(
-    "connection_requests.from"
-  );
-
-
-  if (me?.connections.includes(otherId)) {
+  if (me?.connections?.some((id: any) => id.toString() === otherId)) {
     return "connected";
   }
 
-  for(const req of me?.connection_requests){
-    if(req.from._id.toString() == otherId && req.status != 'ignored' )
+  for(const req of me?.connection_requests || []){
+    if(req.from?.toString() === otherId && req.status !== 'ignored' )
       return 'received'
   }
 
-  for(const req of other?.connection_requests){
-    if(req.from._id.toString() == myId)
+  for(const req of other?.connection_requests || []){
+    if(req.from?.toString() === myId)
       return 'sent'
   }
 
-
   return "none"
-  
 }
 
 export async function handleConnectionAction(fromProfileId: string,
   action: "accept" | "ignore"){
 
   const user = await requireAuth();
-  const myProfile = await profile.findOne({user:user.user.id})
+  const myProfile = await profile.findOne({user:user.user.id}).select("_id").lean();
   if(!myProfile)
     throw new Error('Profile not found');
    if (action === "accept") {
@@ -432,6 +428,12 @@ export async function handleConnectionAction(fromProfileId: string,
         },
       }
     );
+
+    await sendNotification({
+      type: 'connection_accepted',
+      recipientId: fromProfileId,
+      senderId: myProfile._id.toString()
+    });
   }
 
   if (action === "ignore") {
@@ -451,4 +453,80 @@ export async function handleConnectionAction(fromProfileId: string,
 
   // refresh my-network page
   revalidatePath("/mynetwork");
+}
+
+export async function updateSkills(skills: string[]) {
+  const user = await requireAuth();
+  // await dbConnect();
+  
+  await profile.updateOne(
+    { user: user.user.id },
+    { $set: { skills } }
+  );
+  
+  revalidatePath("/profile/[id]", "page");
+  return { success: true };
+}
+
+export async function getRecommendations(limit: number = 3) {
+  try {
+    const user = await requireAuth();
+    if (!user) return [];
+    
+    // Find the current user's profile to get connections and requests
+    const myProfile = await profile.findOne({ user: user.user.id })
+      .select("_id connections connection_requests")
+      .lean();
+      
+    if (!myProfile) return [];
+
+    // Collect IDs to exclude
+    const excludedIds = [myProfile._id];
+    
+    if (myProfile.connections) {
+      excludedIds.push(...myProfile.connections);
+    }
+    
+    if (myProfile.connection_requests) {
+      for (const req of myProfile.connection_requests) {
+        if (req.from) excludedIds.push(req.from);
+      }
+    }
+
+    // Also need to find profiles that WE have sent requests to
+    // Wait, the requests array only contains incoming requests.
+    // Outgoing requests are stored in the *other* user's profile.
+    // So if another user has myProfile._id in their connection_requests, we should exclude them.
+    // But querying that directly might be slow.
+    // For now, we will query random profiles and then filter them out if we sent a request.
+    
+    // First, find candidates excluding ourselves and our connections
+    const candidates = await profile.aggregate([
+      { $match: { _id: { $nin: excludedIds } } },
+      { $sample: { size: limit * 3 } } // Grab extra to filter out those we sent requests to
+    ]);
+    
+    // Filter out candidates we have already sent a request to
+    const finalRecommendations = [];
+    for (const candidate of candidates) {
+      const hasSentRequest = candidate.connection_requests?.some(
+        (req: any) => req.from?.toString() === myProfile._id.toString()
+      );
+      if (!hasSentRequest) {
+        finalRecommendations.push({
+          _id: candidate._id.toString(),
+          name: candidate.name,
+          headline: candidate.headline,
+          profile_picture: candidate.profile_picture,
+          cover_picture: candidate.cover_picture
+        });
+      }
+      if (finalRecommendations.length >= limit) break;
+    }
+    
+    return finalRecommendations;
+  } catch (error) {
+    console.error("Error getting recommendations:", error);
+    return [];
+  }
 }

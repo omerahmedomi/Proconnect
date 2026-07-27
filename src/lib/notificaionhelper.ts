@@ -1,7 +1,5 @@
 import notification from "@/models/notification"
-import { requireAuth } from "./auth-middleware";
-import profile from "@/models/profile";
-import { revalidatePath } from "next/cache";
+
 
 export type notificationType = 'connection_request' | 'connection_accepted' | 'like' | 'comment'
 
@@ -26,7 +24,7 @@ export async function sendNotification({
   });
 }
 
-export function getNotificationMessage(notif) {
+export function getNotificationMessage(notif: any) {
   const name = `${notif.sender?.name?.firstName || ""} ${
     notif.sender?.name?.lastName || ""
   }`.trim();
@@ -49,7 +47,7 @@ export function getNotificationMessage(notif) {
   }
 }
 
-export function getNotificationLink(notif) {
+export function getNotificationLink(notif: any) {
   switch (notif.type) {
     case "like":
     case "comment":
@@ -66,7 +64,7 @@ export function getNotificationLink(notif) {
   }
 }
 
-export function formatTime(dateString) {
+export function formatTime(dateString: string) {
   const date = new Date(dateString);
   const now = new Date();
 
@@ -79,21 +77,5 @@ export function formatTime(dateString) {
   return `${Math.floor(diff / 86400)}d ago`;
 }
 
-export async function markAllAsRead() {
-  const user = await requireAuth();
 
-  const myProfile = await profile.findOne({ user: user.user.id });
-
-  await notification.updateMany(
-    {
-      recipient: myProfile._id,
-      read: false,
-    },
-    {
-      $set: { read: true },
-    },
-  );
-
-
-}
 

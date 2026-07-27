@@ -3,15 +3,27 @@
 import { Eye, EyeOff } from "lucide-react";
 import { useState } from "react";
 
-export default function Password({ type,defaultValue }: { type: string,defaultValue:any}) {
+export default function Password({ 
+  type, 
+  defaultValue,
+  value,
+  onChange,
+  className
+}: { 
+  type: string;
+  defaultValue?: any;
+  value?: string;
+  onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  className?: string;
+}) {
   const [isVisible, setIsVisible] = useState<boolean>(false);
 
   return (
-    <div className="relative">
+    <div className="relative w-full">
       <input
         name={type}
         type={isVisible ? "text" : "password"}
-        className="auth-input"
+        className={className || "auth-input"}
         placeholder={
           type === "confirmPassword"
             ? "Confirm Password"
@@ -20,6 +32,8 @@ export default function Password({ type,defaultValue }: { type: string,defaultVa
             : "Password"
         }
         defaultValue={defaultValue}
+        value={value}
+        onChange={onChange}
         required
       />
 

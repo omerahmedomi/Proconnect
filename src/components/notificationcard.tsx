@@ -1,5 +1,5 @@
 import { formatTime, getNotificationLink, getNotificationMessage } from "@/lib/notificaionhelper";
-import { Link } from 'next/link';
+import Link from "next/link";
 
 export default function NotificationCard({ notif }) {
   const sender = notif.sender;
@@ -7,9 +7,9 @@ export default function NotificationCard({ notif }) {
   const message = getNotificationMessage(notif);
 
   return (
-    <div
-    //   href={getNotificationLink(notif)}
-      className={`flex items-start gap-3 p-4 rounded-lg border transition hover:bg-gray-50 ${
+    <Link
+      href={getNotificationLink(notif)}
+      className={`flex items-start gap-3 p-4 rounded-lg border border-gray-300 transition hover:bg-gray-50 ${
         !notif.read ? "bg-blue-50 border-blue-100" : "bg-white"
       }`}
     >
@@ -28,6 +28,6 @@ export default function NotificationCard({ notif }) {
           {formatTime(notif.createdAt)}
         </span>
       </div>
-    </div>
+    </Link>
   );
 }

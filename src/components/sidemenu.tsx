@@ -1,5 +1,5 @@
 "use client";
-import { MenuIcon, X,Home, Users, Briefcase, MessageSquare, Bell, Settings,LogOut } from "lucide-react";
+import { MenuIcon, X,Home, Users, Briefcase, MessageSquare, Bell, Settings,LogOut, Bookmark } from "lucide-react";
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import { authClient } from "@/lib/auth-clients";
@@ -10,7 +10,7 @@ import { usePathname } from "next/navigation";
 import { active } from "./navlinks";
 
 
-export default function SideMenu({profile}) {
+export default function SideMenu({profile, notificationCount = 0}: { profile: any, notificationCount?: number }) {
   const [isMenuOpen, setIsMenuOpen] = useState<boolean>(false);
   
   const {
@@ -22,10 +22,15 @@ export default function SideMenu({profile}) {
 
   const pathname = usePathname();
 
+  useEffect(() => {
+    setIsMenuOpen(false);
+  }, [pathname]);
+
+
    useEffect(() => {
     if(isMenuOpen)
      document.body.style.overflow = 'hidden';
-     return ()=> document.body.style.overflow = 'unset';
+     return ()=> { document.body.style.overflow = 'unset' };
   }, [isMenuOpen]);
  
   return (
@@ -74,6 +79,20 @@ export default function SideMenu({profile}) {
                 <Users size={20} />
                 <span>My Network</span>
               </Link>
+              <Link
+                href={"/saved"}
+                className={`${pathname == "/saved" && active}`}
+              >
+                <Bookmark size={20} />
+                <span>Saved Items</span>
+              </Link>
+              <Link
+                href={"/groups"}
+                className={`${pathname == "/groups" && active}`}
+              >
+                <Users size={20} />
+                <span>Groups</span>
+              </Link>
               
               <Link
                 href={"/messages"}
@@ -90,7 +109,7 @@ export default function SideMenu({profile}) {
               >
                 <span className="relative">
                   <Bell size={20} />
-                  <Noty count={4} />
+                  {notificationCount > 0 && <Noty count={notificationCount} />}
                 </span>
                 <span>Notifications</span>
               </Link >

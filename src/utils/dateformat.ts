@@ -9,14 +9,14 @@ export function timeAgo(date: Date | string) {
   }).replace(/^about /, "");}
 
 
-  export function formatRelativeTime(date) {
+  export function formatRelativeTime(date: any) {
     const result = formatDistanceToNowStrict(date);
 
     // Split the result into value and unit (e.g., "10" and "minutes")
     const [value, unit] = result.split(" ");
 
 
-    const unitMap = {
+    const unitMap: Record<string, string> = {
       seconds: "s",
       second: "s",
       minutes: "m",

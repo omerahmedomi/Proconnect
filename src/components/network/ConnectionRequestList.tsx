@@ -3,6 +3,7 @@ import { startTransition, useOptimistic } from "react";
 import ConnectionRequestCard from "./ConnectionRequestCard";
 import EmptyState from "./EmptyState";
 import { handleConnectionAction } from "@/app/actions/profile";
+import { toast } from "sonner";
 
 const mockRequests = [
   {
@@ -54,15 +55,20 @@ const pendingRequests = optimisticRequests.filter(
   (r) => r.status === "pending"
 );
   async function handleAction(userId: string,reqId:string ,action: "accept" | "ignore") {
-    console.log(reqId,action)
-    console.log('jo')
-    removeOptimistic(reqId)
+    startTransition(() => {
+      removeOptimistic(reqId);
+    });
     try {
-    await handleConnectionAction(userId, action);
-  } catch (err) {
-    console.error(err);
-    // optional: rollback logic later
-  }
+      await handleConnectionAction(userId, action);
+      if (action === "accept") {
+        toast.success("Connection accepted!");
+      } else {
+        toast.info("Connection ignored.");
+      }
+    } catch (err) {
+      console.error(err);
+      toast.error("Failed to process request.");
+    }
   }
   if (pendingRequests?.length === 0) {
     return <EmptyState />;

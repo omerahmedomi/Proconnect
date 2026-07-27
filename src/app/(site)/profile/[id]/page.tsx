@@ -17,8 +17,11 @@ import ExperienceInfo from "@/components/experienceinfo";
 import education from "@/models/education";
 import experience from "@/models/experience";
 import { Suspense } from "react";
+import Connect from "@/components/connect";
+import { getRecommendations } from "@/app/actions/profile";
 
 const PersonalProfile = async ({ params }) => {
+  const recommendations = await getRecommendations(3);
   const session = await auth.api.getSession({
     headers: await headers(),
   });
@@ -47,6 +50,13 @@ const PersonalProfile = async ({ params }) => {
   const userExperiences = userExperienceDoc ? JSON.parse(JSON.stringify(userExperienceDoc)) : null
 
   const isMe = userProfile.user._id == session?.user?.id;
+  let myProfileId = userProfile._id.toString();
+  if (!isMe) {
+    const myProfileDoc = await profile.findOne({ user: session?.user?.id }).select("_id").lean();
+    if (myProfileDoc) {
+      myProfileId = myProfileDoc._id.toString();
+    }
+  }
 
   return (
     <div className="flex flex-col md:flex-row  md:gap-x-5 mx-auto w-full max-w-250 md:px-5 text-sm ">
@@ -57,6 +67,11 @@ const PersonalProfile = async ({ params }) => {
           </div>
           <MyProfile profile={userProfile} self={isMe} />
           <ProfileInfo profile={userProfile} education={userEducations} experience={userExperiences} self={isMe}/>
+          {!isMe && (
+            <div className="px-6 pb-4">
+              <Connect profileId={userProfile._id.toString()} userProfileId={myProfileId} />
+            </div>
+          )}
         </div>
        <AboutInfo profile={userProfile} self={isMe}/>
         <div className={`profile-div flex flex-col gap-5 p-6 ${ !isMe &&"pb-0"} `}>
@@ -87,15 +102,14 @@ const PersonalProfile = async ({ params }) => {
         
         <ExperienceInfo self={isMe} />
         <EducationInfo self={isMe} />
-        <SkillsInfo self={isMe}/>
+        <SkillsInfo self={isMe} skills={userProfile.skills || []}/>
       </div>
       <div className="self-start profile-div p-6 max-md:mt-0 max-md:w-full md:w-100 ">
-        <div className="">
+        <div className="mb-4">
           <h1 className="font-semibold ">People you may know</h1>
         </div>
         <div className="mt-1 flex flex-col gap-y-2 ">
-          <MayKnowPerson profile={userProfile} userProfileId={userProfile._id} />
-          <div className="w-full h-px bg-gray-500"></div>
+          <MayKnowPerson profiles={recommendations} userProfileId={myProfileId} />
         </div>
       </div>
     </div>

@@ -1,11 +1,9 @@
-import { getNotifications } from "@/app/actions/notification";
+import { getNotifications} from "@/app/actions/notification";
+import MarkAsReadClient from "@/components/markasreadclient";
 import NotificationCard from "@/components/notificationcard";
-import { markAllAsRead } from "@/lib/notificaionhelper";
-import Link from "next/link";
 
 export default async function NotificationsPage() {
 
-  await markAllAsRead();
 
   const notifications = await getNotifications();
 
@@ -13,7 +11,7 @@ export default async function NotificationsPage() {
     <div className="max-w-2xl mx-auto px-4 py-6">
       {/* Header */}
   
-
+      <MarkAsReadClient/>
       {/* Empty state */}
       {notifications.length === 0 ? (
         <div className="text-center text-gray-500 py-16">

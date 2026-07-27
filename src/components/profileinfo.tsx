@@ -6,13 +6,18 @@ import { useActionState } from "react";
 import { saveProfile } from "@/app/actions/profile";
 import { ProfileFormState } from "@/app/actions/profile";
 import SaveButton from "./savebutton";
+import Link from "next/link";
 // import { useRouter } from "next/navigation";
-export default function ProfileInfo({ profile, education, experience, self }) {
+export default function ProfileInfo({ profile, education, experience, self }: { profile: any; education: any[]; experience: any[]; self: boolean }) {
   // const router = useRouter();
   const [isModalOpen, setIsModalOpen] = useState(false);
   useEffect(() => {
-    if (isModalOpen) document.body.style.overflow = "hidden";
-    return () => (document.body.style.overflow = "unset");
+    if (isModalOpen) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "unset";
+    }
+    return () => {};
   }, [isModalOpen]);
   console.log("Client", profile);
 
@@ -37,9 +42,11 @@ export default function ProfileInfo({ profile, education, experience, self }) {
           {profile?.position?.company}
         </p>
       </div>
-      <h4 className="text-cyan-600 hover:underline cursor-pointer">
-        {profile?.connections?.length > 0 && profile?.connections?.length+" "+"connections"} 
-      </h4>
+      <Link href={`/profile/${profile?._id}/connections`} className="text-cyan-600 hover:underline cursor-pointer">
+        <h4 className="inline">
+          {profile?.connections?.length > 0 && profile?.connections?.length+" "+"connections"} 
+        </h4>
+      </Link>
       {(isModalOpen && self) && (
         <Modal
           title={"Edit Profile"}
@@ -64,7 +71,7 @@ export default function ProfileInfo({ profile, education, experience, self }) {
   );
 }
 
-export function ProfileContent({ profile, education, experience }) {
+export function ProfileContent({ profile, education, experience }: { profile: any; education: any[]; experience: any[] }) {
   const initialState: ProfileFormState = {
     success: false,
     errors: {},

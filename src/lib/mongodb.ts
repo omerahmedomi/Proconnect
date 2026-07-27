@@ -6,6 +6,10 @@ if (!MONGODB_URI) {
   throw new Error("Please define the MONGODB_URI environment variable");
 }
 
+declare global {
+  var mongoose: any;
+}
+
 /**
  * Cached connection for MongoDB.
  */

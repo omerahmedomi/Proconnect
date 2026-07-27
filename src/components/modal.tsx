@@ -3,7 +3,13 @@ import {  X } from "lucide-react";
 import EmojiPickerLayout from "./emojipickerlayout";
 import React from "react";
 
-export default function Modal({clearFunction,content,styles,title,data}){
+export default function Modal({clearFunction,content,styles,title,data}: {
+  clearFunction: () => void;
+  content: React.ReactNode;
+  styles?: string;
+  title?: string;
+  data?: any;
+}){
   
     return (
       <div className={`modal ${styles}`}>

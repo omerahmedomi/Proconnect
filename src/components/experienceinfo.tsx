@@ -39,8 +39,8 @@ export default function ExperienceInfo({self}) {
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
   const [isExperienceEditModalOpen, setIsExperienceEditModalOpen] =
     useState(false);
-  const [selectedExperience, setSelectedExperience] = useState({});
-  const [experience, setExperience] = useState([]);
+  const [selectedExperience, setSelectedExperience] = useState<any>({});
+  const [experience, setExperience] = useState<any[]>([]);
   const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
@@ -65,9 +65,12 @@ export default function ExperienceInfo({self}) {
     };
   }, [isEditModalOpen]);
   useEffect(() => {
-    if (isAddModalOpen || isEditModalOpen || isExperienceEditModalOpen)
+    if (isAddModalOpen || isEditModalOpen || isExperienceEditModalOpen) {
       document.body.style.overflow = "hidden";
-    return () => (document.body.style.overflow = "unset");
+    } else {
+      document.body.style.overflow = "unset";
+    }
+    return () => {};
   }, [isEditModalOpen, isAddModalOpen,isExperienceEditModalOpen]);
   return (
     <div className="profile-div p-6">

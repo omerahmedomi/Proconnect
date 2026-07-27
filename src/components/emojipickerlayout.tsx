@@ -88,7 +88,8 @@ export default function EmojiPickerLayout({clearFunction}) {
        router.refresh();
 
        // res.data.urls → save in post later
-     } catch (err) {
+     } catch (error) {
+       const err = error as any;
        console.error(err);
        setErrorMessage(err?.response?.data?.error || err.message)
      } finally {

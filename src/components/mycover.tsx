@@ -10,7 +10,7 @@ export default function MyCover({ styles, profile, self }) {
   const router = useRouter();
   const [isUploading,setIsUploading] = useState(false)
   const [menuOpen,setMenuOpen] = useState(false)
-  const modalRef = useRef(null);
+  const modalRef = useRef<HTMLDivElement>(null);
   async function uploadCoverPicture(image: File) {
     if (!image) return;
     const formData = new FormData();
@@ -63,7 +63,8 @@ export default function MyCover({ styles, profile, self }) {
           ref={fileInputRef}
           disabled={isUploading}
           onChange={async (e) => {
-            const imageFile = e.target.files[0];
+            const imageFile = e.target.files?.[0];
+            if (!imageFile) return;
             await uploadCoverPicture(imageFile);
             setMenuOpen(false);
           }}

@@ -1,34 +1,45 @@
 "use client"
 
-import { useState } from "react";
+import { useState, useRef, useEffect } from "react";
 import ProfileModal from "./profilemodal";
 import ProfileImage from "./profileimage";
 
-
 export default function Profile({
   profile
-}) {
-    const [isProfileModalOpen,setIsProfileModalOpne]= useState(false);
+}: { profile: any }) {
+  const [isProfileModalOpen, setIsProfileModalOpen] = useState(false);
+  const containerRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    function handleClickOutside(event: MouseEvent) {
+      if (containerRef.current && !containerRef.current.contains(event.target as Node)) {
+        setIsProfileModalOpen(false);
+      }
+    }
+    
+    if (isProfileModalOpen) {
+      document.addEventListener("mousedown", handleClickOutside);
+    }
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [isProfileModalOpen]);
    
   return (
     <div
-      className="profile rounded-full hover:bg-cyan-100 p-0.5 cursor-pointer"
-      onClick={() => setIsProfileModalOpne((prev) => !prev)}
+      ref={containerRef}
+      className="profile rounded-full p-0.5 relative"
     >
-      {profile?.profile_picture ? (
+      <div 
+        onClick={() => setIsProfileModalOpen((prev) => !prev)}
+        className="cursor-pointer hover:bg-cyan-100 rounded-full"
+      >
         <ProfileImage
           image={profile?.profile_picture}
           styles={"w-10 h-10 border border-gray-300 bg-cyan-50"}
         />
-      ) : (
-        <h5 className="bg-cyan-500  rounded-full size-10 flex justify-center items-center text text-white">
-          {" "}
-          {profile.name.firstName[0].toUpperCase() +
-            "" +
-            profile.name.lastName[0].split("")[0].toUpperCase()}
-        </h5>
-      )}
-      {isProfileModalOpen && <ProfileModal profile={profile} />}
+      </div>
+      {isProfileModalOpen && <ProfileModal profile={profile} closeModal={() => setIsProfileModalOpen(false)} />}
     </div>
   );
 }

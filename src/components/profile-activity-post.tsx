@@ -8,14 +8,14 @@ import { deletePost, updatePost } from "@/app/actions/post";
 import DeleteButton from "./deletebutton";
 import SaveButton from "./savebutton";
 
-export default function ProfileActivityPost({ post, self }) {
+export default function ProfileActivityPost({ post, self }: { post: any; self: boolean }) {
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
 
   useEffect(() => {
     if (isEditModalOpen || isDeleteModalOpen)
       document.body.style.overflow = "hidden";
-    return () => (document.body.style.overflow = "unset");
+    return () => { document.body.style.overflow = "unset" };
   }, [isEditModalOpen, isDeleteModalOpen]);
   return (
     <div className="shadow border-cyan-100 border-2 rounded-lg p-4 bg-white space-y-2 text-xs">

@@ -7,13 +7,21 @@ import Profile from "./profile";
 import NavigationLink from "./navlinks";
 import profile from "@/models/profile";
 import dbConnect from "@/lib/mongodb";
+import notification from "@/models/notification";
+import { getNotifications } from "@/app/actions/notification";
 
 export default async function NavigationBar() {
   const session = await auth.api.getSession({ headers: await headers() });
   await dbConnect();
-  const userProfileDoc = await profile.findOne({ user: session?.user.id });
-  const userProfile = JSON.parse(JSON.stringify(userProfileDoc));
-  console.log("From navbar:", userProfile);
+  let userProfile = null;
+  let unreadNotifications: any[] = [];
+
+  if (session) {
+    const userProfileDoc = await profile.findOne({ user: session.user.id });
+    userProfile = userProfileDoc ? JSON.parse(JSON.stringify(userProfileDoc)) : null;
+    const userNotifications = await getNotifications();
+    unreadNotifications = userNotifications.filter((n: any) => n.read === false);
+  }
 
   return (
     <nav className="nav-bar">
@@ -23,10 +31,10 @@ export default async function NavigationBar() {
       </Link>
       <Search />
 
-      <SideMenu profile={userProfile} />
+      <SideMenu profile={userProfile} notificationCount={unreadNotifications.length} />
       {session ? (
         <div className=" flex text-xs max-lg:hidden items-center text-nowrap gap-2 ">
-          <NavigationLink />
+          <NavigationLink notificationCount={unreadNotifications.length}/>
 
           <Profile profile={userProfile} />
         </div>

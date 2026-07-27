@@ -31,6 +31,7 @@ export async function handleToggleLikeAction(
   console.log(postId, userProfileId);
 
   const userPost = await post.findById(postId);
+  if (!userPost) throw new Error("Post not found");
 
   const alreadyLiked = userPost.likes.some(
     (id) => id.toString() === userProfileId,
@@ -43,6 +44,26 @@ export async function handleToggleLikeAction(
   }
 
   await userPost.save();
+  revalidatePath("/");
+}
+
+export async function fetchPostsAction(page: number, limit: number = 10) {
+  try {
+    const skip = (page - 1) * limit;
+    const postsDoc = await post
+      .find()
+      .populate("profile")
+      .populate("comments.by")
+      .sort({ createdAt: -1 })
+      .skip(skip)
+      .limit(limit)
+      .lean();
+    
+    return JSON.parse(JSON.stringify(postsDoc));
+  } catch (error) {
+    console.error("Failed to fetch posts:", error);
+    return [];
+  }
 }
 
 export async function addCommentAction(
@@ -53,6 +74,7 @@ export async function addCommentAction(
   if (!text.trim()) return;
 
   const userPost = await post.findById(postId);
+  if (!userPost) throw new Error("Post not found");
 
   userPost.comments.push({
     by: userProfileId,
@@ -91,4 +113,25 @@ export async function deleteCommentAction(
   await userPost.save();
 
   revalidatePath('/');
+}
+
+export async function toggleSavePostAction(postId: string, userProfileId: string) {
+  const userProfile = await profile.findById(userProfileId);
+  if (!userProfile) throw new Error("Profile not found");
+
+  const alreadySaved = userProfile.savedPosts?.some(
+    (id: any) => id.toString() === postId
+  );
+
+  if (alreadySaved) {
+    userProfile.savedPosts.pull(postId);
+  } else {
+    if (!userProfile.savedPosts) {
+      userProfile.savedPosts = [];
+    }
+    userProfile.savedPosts.push(postId);
+  }
+
+  await userProfile.save();
+  revalidatePath("/");
 }

@@ -10,6 +10,10 @@
   form label {
     @apply flex flex-col gap-1.5
   }
+  
+  button {
+    @apply cursor-pointer
+  }
 }
 
 @layer components  {
@@ -112,7 +116,7 @@
 }.modal-input-container{
   @apply flex flex-col gap-y-1
 }.final-action-button{
-  @apply mt-1 px-5 py-1 cursor-pointer rounded-full bg-blue-700 text-white hover:bg-blue-500 transition disabled:hover:bg-none disabled:bg-gray-400 disabled:cursor-not-allowed
+  @apply mt-1 px-6 py-2 cursor-pointer rounded-full font-semibold bg-cyan-600 text-white hover:bg-cyan-700 transition disabled:hover:bg-none disabled:bg-gray-400 disabled:cursor-not-allowed
 }
   
 }

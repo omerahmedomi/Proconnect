@@ -20,6 +20,7 @@ const ProfileSchema = new mongoose.Schema({
             trim:true,
         }
     },
+    skills:[String],
     industry:[String],
     headline:{
         type:String,
@@ -60,6 +61,7 @@ const ProfileSchema = new mongoose.Schema({
     },
     
    connections:[{ type: Schema.Types.ObjectId, ref: 'Profile',}],
+   savedPosts: [{ type: Schema.Types.ObjectId, ref: 'Post' }],
    connection_requests: [
   {
     from: {
@@ -88,5 +90,7 @@ const ProfileSchema = new mongoose.Schema({
 })
 
 
-export default mongoose.models.Profile ||
-  mongoose.model("Profile", ProfileSchema);
+if (mongoose.models.Profile) {
+  delete mongoose.models.Profile;
+}
+export default mongoose.model("Profile", ProfileSchema);

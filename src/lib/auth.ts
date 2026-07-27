@@ -13,6 +13,28 @@ const db= client.db()
 export const auth = betterAuth({
   baseURL: process.env.BETTER_AUTH_URL || "http://localhost:3000",
   secret: process.env.BETTER_AUTH_SECRET,
+  databaseHooks: {
+    user: {
+      create: {
+        after: async (user) => {
+          await dbConnect();
+          // Check if profile already exists to be safe
+          const existingProfile = await profile.findOne({ user: user.id });
+          if (!existingProfile) {
+            const nameParts = (user.name || "").trim().split(" ");
+            const firstName = nameParts[0] || "";
+            const lastName = nameParts.length > 1 ? nameParts.slice(1).join(" ") : "";
+            
+            await profile.create({
+              user: user.id,
+              name: { firstName, lastName },
+              profile_picture: user.image || null,
+            });
+          }
+        },
+      },
+    },
+  },
   database: mongodbAdapter(db, {
     client,
   }),
@@ -50,11 +72,8 @@ export const auth = betterAuth({
       });
     },
     async afterEmailVerification(user, request) {
-      await dbConnect();
-      await profile.create({
-        user: user.id,
-        name: { firstName: user.name.split(" ")[0], lastName: user.name.split(" ")[1] },
-      });
+      // Profile creation is now handled by databaseHooks on user creation
+      // to support both OAuth and Email sign-ups.
     },
     autoSignInAfterVerification: true,
   },
