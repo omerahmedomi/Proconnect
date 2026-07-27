@@ -19,7 +19,6 @@ export default function ProfileInfo({ profile, education, experience, self }: { 
     }
     return () => {};
   }, [isModalOpen]);
-  console.log("Client", profile);
 
   // const router = useRouter();
 

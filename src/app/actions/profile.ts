@@ -101,7 +101,6 @@ export async function saveProfile(
       },
     };
   }
-  console.log(selectedEducationId,selectedExperienceId)
   const updatedValue = await profile.findOneAndUpdate(
     { user: user.user.id },
     {
@@ -133,7 +132,6 @@ export async function addEducation(
   prevState: EducationState,
   formData: FormData,
 ) {
-  console.log(formData);
   const educationId = formData.get("educationId");
   const user = await requireAuth();
   const educationData = Object.fromEntries(formData.entries());
@@ -177,11 +175,8 @@ export async function addEducation(
 export const fetchEducation = async () => {
   try {
     const user = await requireAuth();
-    console.log("From edu", user);
     const userProfile = await profile.findOne({ user: user?.user?.id });
-    console.log(userProfile.id);
     const data = await education.find({ profile: userProfile?.id }).lean();
-    console.log(data);
     return data.map((e) => ({
       id: e._id.toString(),
       school: e.school,
@@ -194,17 +189,14 @@ export const fetchEducation = async () => {
       endYear: e.endYear,
     }));
   } catch (error) {
-    console.log(error);
   }
 };
 
 export async function deleteEducation(id: string) {
   try {
-    console.log("ID from ", id);
     const user = await requireAuth();
     await education.findByIdAndDelete(id);
   } catch (error) {
-    console.log(error);
   }
 }
 
@@ -212,7 +204,6 @@ export async function addExperience(
   prevState: ExperienceState,
   formData: FormData,
 ) {
-  console.log(formData);
   const experienceId = formData.get("experienceId");
   const user = await requireAuth();
   const experienceData = Object.fromEntries(formData.entries());
@@ -225,7 +216,6 @@ export async function addExperience(
   const endMonth = formData.get("endMonth");
   const company = formData.get("company");
   const current = formData.get("current") as boolean | null;
-  console.log("Current", current)
   if (!title) {
     errors.title = "Title is required";
   }
@@ -268,11 +258,8 @@ export async function addExperience(
 export const fetchExperience = async () => {
   try {
     const user = await requireAuth();
-    console.log("From exp", user);
     const userProfile = await profile.findOne({ user: user?.user?.id });
-    console.log(userProfile.id);
     const data = await experience.find({ profile: userProfile?.id }).lean();
-    console.log(data);
     return data.map((e) => ({
       id: e._id.toString(),
       title: e.title,
@@ -288,17 +275,14 @@ export const fetchExperience = async () => {
       current:e.current
     }));
   } catch (error) {
-    console.log(error);
   }
 };
 
 export async function deleteExperience(id: string) {
   try {
-    console.log("ID from ", id);
     const user = await requireAuth();
     await experience.findByIdAndDelete(id);
   } catch (error) {
-    console.log(error);
   }
 }
 
@@ -307,7 +291,6 @@ export async function removeProfilePhoto(){
     const user = await requireAuth();
     const userProfile = await profile.findOne({user:user?.user?.id})
     const picturecid = userProfile?.profile_picture.split("/")[4]
-    console.log("picture id",picturecid)
     await profile.updateOne({_id:userProfile._id},{ $unset:{profile_picture:""}})
     revalidatePath('/profile')
       
@@ -315,11 +298,9 @@ const {files} = await pinata.files.public.list().cid(picturecid)
 const pictureFileId = files[0]?.id;
 
 
-console.log(files);
 
     await pinata.files.public.delete([pictureFileId])
   } catch (error) {
-    console.log(error)
   }
 }
 
@@ -328,7 +309,6 @@ export async function removeCoverPhoto() {
     const user = await requireAuth();
     const userProfile = await profile.findOne({ user: user?.user?.id });
     const picturecid = userProfile?.cover_picture.split("/")[4];
-    console.log("picture id", picturecid);
     await profile.updateOne(
       { _id: userProfile._id },
       { $unset: { cover_picture: "" } },
@@ -338,11 +318,9 @@ export async function removeCoverPhoto() {
     const { files } = await pinata.files.public.list().cid(picturecid);
     const pictureFileId = files[0]?.id;
 
-    console.log(files);
 
     await pinata.files.public.delete([pictureFileId]);
   } catch (error) {
-    console.log(error);
   }
 }
 
@@ -367,7 +345,6 @@ export async function requestConnection(id:string){
     });
     
   } catch (error) {
-    console.log(error)
   }
 
   revalidatePath('/')

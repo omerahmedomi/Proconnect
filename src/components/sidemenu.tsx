@@ -86,14 +86,7 @@ export default function SideMenu({profile, notificationCount = 0}: { profile: an
                 <Bookmark size={20} />
                 <span>Saved Items</span>
               </Link>
-              <Link
-                href={"/groups"}
-                className={`${pathname == "/groups" && active}`}
-              >
-                <Users size={20} />
-                <span>Groups</span>
-              </Link>
-              
+
               <Link
                 href={"/messages"}
                 className={`${pathname == "/messages" && active}`}

@@ -1,3 +1,5 @@
+"use client";
+
 import Link from "next/link";
 
 export default function Footer() {
@@ -10,10 +12,10 @@ export default function Footer() {
           <span>&copy; {currentYear}. All rights reserved.</span>
         </div>
         <div className="flex gap-4 sm:gap-6">
-          <Link href="#!" className="hover:text-cyan-600 transition-colors">About</Link>
-          <Link href="#!" className="hover:text-cyan-600 transition-colors">Privacy Policy</Link>
-          <Link href="#!" className="hover:text-cyan-600 transition-colors">Terms of Service</Link>
-          <Link href="#!" className="hover:text-cyan-600 transition-colors">Contact</Link>
+          <a href="#" onClick={(e) => e.preventDefault()} className="hover:text-cyan-600 transition-colors cursor-pointer">About</a>
+          <a href="#" onClick={(e) => e.preventDefault()} className="hover:text-cyan-600 transition-colors cursor-pointer">Privacy Policy</a>
+          <a href="#" onClick={(e) => e.preventDefault()} className="hover:text-cyan-600 transition-colors cursor-pointer">Terms of Service</a>
+          <a href="#" onClick={(e) => e.preventDefault()} className="hover:text-cyan-600 transition-colors cursor-pointer">Contact</a>
         </div>
       </div>
     </footer>

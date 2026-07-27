@@ -2,6 +2,7 @@
 
 import { Trash2, Pencil, AlertTriangle } from "lucide-react";
 import Image from "next/image";
+import Link from "next/link";
 import { useState, useEffect } from "react";
 import Modal from "./modal";
 import { deletePost, updatePost } from "@/app/actions/post";
@@ -39,17 +40,17 @@ export default function ProfileActivityPost({ post, self }: { post: any; self: b
         </div>
       </div>
 
-      <p className=" text-left!">{post.text}</p>
+      <Link href={`/post/${post._id}`} className="block group">
+        <p className="text-left! group-hover:text-cyan-700 transition-colors">{post.text}</p>
 
-      {post.images.length > 0 && (
-        <img
-          src={post.images[0]}
-          className="max-h-80 object-cover"
-          width={200}
-          alt="post-image"
-          height={200}
-        />
-      )}
+        {post.images.length > 0 && (
+          <img
+            src={post.images[0]}
+            className="max-h-80 object-cover mt-2 w-full rounded-md"
+            alt="post-image"
+          />
+        )}
+      </Link>
       {isEditModalOpen && (
         <Modal
           title="Edit Post"

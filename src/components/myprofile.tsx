@@ -29,7 +29,6 @@ const modalRef = useRef<HTMLDivElement>(null);
       );
       router.refresh();
     } catch (error) {
-      console.log(error);
     } finally {
       setIsUploading(false);
     }

@@ -10,7 +10,6 @@ import { redirect } from "next/navigation";
 export const deletePost = async (id: any) => {
   const user = await requireAuth();
   const userProfile = await profile.findOne({ user: user.user.id });
-  console.log(userProfile);
   await post.findOneAndDelete({ profile: userProfile._id, _id: id });
   redirect(`/profile/${userProfile._id}`);
 };
@@ -28,7 +27,6 @@ export async function handleToggleLikeAction(
   postId: string,
   userProfileId: string,
 ) {
-  console.log(postId, userProfileId);
 
   const userPost = await post.findById(postId);
   if (!userPost) throw new Error("Post not found");

@@ -32,10 +32,6 @@ export default function LeftSidebar({ userProfile, session }: { userProfile: any
           <Bookmark size={18} className="text-gray-500" />
           <span>Saved items</span>
         </Link>
-        <Link href="/groups" className="flex items-center gap-3 p-2 hover:bg-gray-50 rounded-lg cursor-pointer transition text-sm text-gray-700 font-medium">
-          <Users size={18} className="text-gray-500" />
-          <span>Groups</span>
-        </Link>
       </div>
     </div>
   );

@@ -1,6 +1,5 @@
 import { months } from "./experienceinfo";
 export default function ExperienceDisplay({experience:e}){
-  console.log("From display",e)
     return (
       <div className="flex flex-col mt-2 pb-4">
         <p className="font-semibold text-[13px]">{e?.title}</p>

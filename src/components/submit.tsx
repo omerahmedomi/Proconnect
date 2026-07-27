@@ -4,8 +4,6 @@ import { Loader2 } from "lucide-react";
 
 export default function Submit({text,styles}:{text:string,styles?:string}){
     const {pending,method,data,action} = useFormStatus()
-    console.log(pending, method, data, action);
-    console.log("From Submit")
 return (
   <button
     type="submit"

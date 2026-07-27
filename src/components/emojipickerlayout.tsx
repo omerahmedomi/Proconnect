@@ -65,9 +65,6 @@ export default function EmojiPickerLayout({clearFunction}) {
 
 
     // Upload logic here
-    console.log("Files to upload:", files);
-    console.log(postText.trim().length,files.length)
-    console.log([...formData.entries()]);
 
      try {
        if (postText.trim().length == 0 && files.length == 0)

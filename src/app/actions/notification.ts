@@ -11,8 +11,6 @@ export async function getNotifications() {
   if (!myProfile) {
     return [];
   }
-  
-  console.log("From noti serv", myProfile._id.toString());
   const notifications = await notification
     .find({
       recipient: myProfile._id.toString(),

@@ -28,7 +28,6 @@ export default function MyCover({ styles, profile, self }) {
       );
       router.refresh();
     } catch (error) {
-      console.log(error);
     }finally{
       setIsUploading(false);
     }

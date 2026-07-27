@@ -92,7 +92,6 @@ export default function ExperienceInfo({self}) {
         <div className="flex flex-col divide-y divide-gray-300">
           {experience &&
             experience.map((e) => {
-              console.log("From Info", e);
               return <ExperienceDisplay key={e.id} experience={e} />;
             })}
         </div>

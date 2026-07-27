@@ -32,13 +32,46 @@ export default function ImageCarousel({ images }: { images: string[] }) {
     setActiveIndex((prev) => (prev === 0 ? images.length - 1 : prev - 1));
   };
 
+  const [touchStart, setTouchStart] = useState<number | null>(null);
+  const [touchEnd, setTouchEnd] = useState<number | null>(null);
+
+  // Minimum swipe distance
+  const minSwipeDistance = 50;
+
+  const onTouchStart = (e: React.TouchEvent) => {
+    setTouchEnd(null);
+    setTouchStart(e.targetTouches[0].clientX);
+  };
+
+  const onTouchMove = (e: React.TouchEvent) => {
+    setTouchEnd(e.targetTouches[0].clientX);
+  };
+
+  const onTouchEnd = () => {
+    if (!touchStart || !touchEnd) return;
+    const distance = touchStart - touchEnd;
+    const isLeftSwipe = distance > minSwipeDistance;
+    const isRightSwipe = distance < -minSwipeDistance;
+    if (isLeftSwipe) {
+      setActiveIndex((prev) => (prev + 1) % images.length);
+    }
+    if (isRightSwipe) {
+      setActiveIndex((prev) => (prev === 0 ? images.length - 1 : prev - 1));
+    }
+  };
+
   return (
-    <div className="relative w-full group mt-3 p-0!">
+    <div 
+      className="relative w-full group mt-3 p-0! overflow-hidden touch-pan-y"
+      onTouchStart={onTouchStart}
+      onTouchMove={onTouchMove}
+      onTouchEnd={onTouchEnd}
+    >
       <div className="overflow-hidden w-full relative">
         <img
           src={images[activeIndex]}
           alt={`post-img-${activeIndex}`}
-          className="w-full h-auto object-cover max-w-full transition-transform duration-300"
+          className="w-full h-auto object-cover max-w-full transition-transform duration-300 pointer-events-none"
         />
       </div>
 

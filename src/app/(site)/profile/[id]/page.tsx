@@ -18,6 +18,7 @@ import education from "@/models/education";
 import experience from "@/models/experience";
 import { Suspense } from "react";
 import Connect from "@/components/connect";
+import MessageButton from "@/components/messagebutton";
 import { getRecommendations } from "@/app/actions/profile";
 
 const PersonalProfile = async ({ params }) => {
@@ -68,8 +69,9 @@ const PersonalProfile = async ({ params }) => {
           <MyProfile profile={userProfile} self={isMe} />
           <ProfileInfo profile={userProfile} education={userEducations} experience={userExperiences} self={isMe}/>
           {!isMe && (
-            <div className="px-6 pb-4">
+            <div className="px-6 pb-4 flex gap-3 items-center">
               <Connect profileId={userProfile._id.toString()} userProfileId={myProfileId} />
+              <MessageButton targetProfileId={userProfile._id.toString()} userProfileId={myProfileId} />
             </div>
           )}
         </div>

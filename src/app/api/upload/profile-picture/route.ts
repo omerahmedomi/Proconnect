@@ -10,20 +10,18 @@ export async function POST(request:NextRequest){
       const user2 = await requireAuth(request);
       const formData = await request.formData();
       const image = formData.get('profileImage') as File;
-      console.log("FormData",formData)
   
       const {cid} = await pinata.upload.public.file(image);
       const url = await pinata.gateways.public.convert(cid);
       await dbConnect();
      const picture = await profile.findOneAndUpdate({user:user2.user.id},{profile_picture:url},{new:true});
-      // console.log("Picture")
+      // 
       return NextResponse.json({
         sucess:"true",
         imagePath:picture,
 
       })
   } catch (error) {
-    console.log(error)
     return NextResponse.json(
         {error:"Error uplaoding picture",}
     )
@@ -36,10 +34,10 @@ export async function POST(request:NextRequest){
 //   try {
 //     const user = await requireAuth(request);
 //     const profilePicture = await profile.findById(user.user.id).populate('profile_picture');
-//     console.log("Profile picture", profilePicture);
+//     
 //     return NextResponse.json({pp:profilePicture});
 //   } catch (error) {
-//     console.log(error);
+//     
 //     NextResponse.json({"Pp fetch error":error});
 //   }
   

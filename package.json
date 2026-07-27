@@ -19,6 +19,8 @@
     "next": "^16.0.7",
     "nodemailer": "^7.0.10",
     "pinata": "^2.5.1",
+    "pusher": "^5.3.4",
+    "pusher-js": "^8.6.0",
     "react": "19.2.0",
     "react-dom": "19.2.0",
     "react-loader-spinner": "^8.0.2",

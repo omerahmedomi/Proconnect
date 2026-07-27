@@ -12,7 +12,6 @@ export async function POST(request: NextRequest) {
   try {
     const user = await requireAuth(request);
     const userProfile = await profile.findOne({user:user.user.id})
-    console.log('User for auth', user)
     const formData = await request.formData();
     const images = formData.getAll("images") as File[];
     const postText = formData.get('text') as string;
@@ -41,7 +40,6 @@ export async function POST(request: NextRequest) {
      images: urls,
      text: postText,
    });
-   console.log("Add to db",addURLstoDB);
 
    revalidatePath('/');
 
