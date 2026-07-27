@@ -34,36 +34,39 @@ const years = Array.from(
   (_, i) => new Date().getFullYear() - i,
 );
 
-export default function ExperienceInfo({self}) {
+export default function ExperienceInfo({self, experiences}: {self: boolean, experiences?: any[]}) {
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
   const [isExperienceEditModalOpen, setIsExperienceEditModalOpen] =
     useState(false);
   const [selectedExperience, setSelectedExperience] = useState<any>({});
-  const [experience, setExperience] = useState<any[]>([]);
+  const [experience, setExperience] = useState<any[]>(experiences || []);
   const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
-    // if (!isEditModalOpen) {
-    //   setExperience([]); // reset when closed
-    //   return;
-    // }
+    if (experiences) {
+      setExperience(experiences);
+    }
+  }, [experiences]);
 
+  useEffect(() => {
     let alive = true;
 
-    (async () => {
-      setIsLoading(true);
-      const edu = await fetchExperience();
-      if (alive) {
-        setExperience(JSON.parse(JSON.stringify(edu)));
-      }
-      setIsLoading(false);
-    })();
+    if (self && !experiences) {
+      (async () => {
+        setIsLoading(true);
+        const edu = await fetchExperience();
+        if (alive) {
+          setExperience(edu ? JSON.parse(JSON.stringify(edu)) : []);
+        }
+        setIsLoading(false);
+      })();
+    }
 
     return () => {
       alive = false;
     };
-  }, [isEditModalOpen]);
+  }, [isEditModalOpen, self, experiences]);
   useEffect(() => {
     if (isAddModalOpen || isEditModalOpen || isExperienceEditModalOpen) {
       document.body.style.overflow = "hidden";

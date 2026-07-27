@@ -102,8 +102,8 @@ const PersonalProfile = async ({ params }) => {
           </div>
         </div>
         
-        <ExperienceInfo self={isMe} />
-        <EducationInfo self={isMe} />
+        <ExperienceInfo self={isMe} experiences={userExperiences} />
+        <EducationInfo self={isMe} educations={userEducations} />
         <SkillsInfo self={isMe} skills={userProfile.skills || []}/>
       </div>
       <div className="self-start profile-div p-6 max-md:mt-0 max-md:w-full md:w-100 ">

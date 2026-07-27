@@ -35,13 +35,13 @@ const years = Array.from(
   { length: 60 },
   (_, i) => new Date().getFullYear() - i,
 );
-export default function EducationInfo({self}) {
+export default function EducationInfo({self, educations}: {self: boolean, educations?: any[]}) {
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
   const [isEducationEditModalOpen, setIsEducationEditModalOpen] =
     useState(false);
   const [selectedEducation, setSelectedEducaiton] = useState<any>({});
-  const [education, setEducation] = useState<any[]>([]);
+  const [education, setEducation] = useState<any[]>(educations || []);
   const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
@@ -54,26 +54,29 @@ export default function EducationInfo({self}) {
   }, [isEditModalOpen, isAddModalOpen, isEducationEditModalOpen]);
 
   useEffect(() => {
-    // if (!isEditModalOpen) {
-    //   setEducation([]); // reset when closed
-    //   return;
-    // }
+    if (educations) {
+      setEducation(educations);
+    }
+  }, [educations]);
 
+  useEffect(() => {
     let alive = true;
 
-    (async () => {
-      setIsLoading(true);
-      const edu = await fetchEducation();
-      if (alive) {
-        setEducation(JSON.parse(JSON.stringify(edu)));
-      }
-      setIsLoading(false);
-    })();
+    if (self && !educations) {
+      (async () => {
+        setIsLoading(true);
+        const edu = await fetchEducation();
+        if (alive) {
+          setEducation(edu ? JSON.parse(JSON.stringify(edu)) : []);
+        }
+        setIsLoading(false);
+      })();
+    }
 
     return () => {
       alive = false;
     };
-  }, [isEditModalOpen]);
+  }, [self, educations, isEditModalOpen]);
 
   return (
     <div className="profile-div p-6">
