@@ -1,7 +1,8 @@
 import "../globals.css";
 export const metadata = {
-  title:"Create or Log In Account"
-}
+  title: "ProConnect | Join or Log In",
+  description: "Join ProConnect to connect with professionals and build your network.",
+};
 import {Dancing_Script,Roboto} from 'next/font/google';
 
 const dancing = Dancing_Script({
